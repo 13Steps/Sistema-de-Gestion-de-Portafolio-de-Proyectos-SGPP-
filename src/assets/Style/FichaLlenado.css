@@ -1,0 +1,22 @@
+/* Carta Principal */
+.fichaEntrada{
+    background-color: rgb(252, 248, 248) !important;
+    min-height: 800px;
+}
+/* Tabs */
+.tabs .tab a{
+    color: rgb(0, 0, 0) !important;
+    font-weight: 600 !important; 
+    transition: border-bottom 0.1s ease !important;
+}
+.tabs .tab a:hover{
+    color: rgb(96, 96, 149) !important;
+}
+.tabs .active a{
+    color: rgb(52, 52, 97) !important;
+    border-bottom: 2px solid rgb(52, 52, 97)!important;
+}
+.tabTitle{
+    color: rgb(52, 52, 97);
+    font-weight: 700;
+}

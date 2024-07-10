@@ -1,0 +1,96 @@
+
+/* chartCards */
+.chartCards .chartContainer{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+  }
+  .chartCards .cardTitle{
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .chartCards .cardTitle span{
+    margin-left: 10px;
+    letter-spacing: 1.5px;
+  }
+  .chartCards .btn{
+    font-size: 12px;
+  }
+
+.appInfo{
+  background-color: rgb(52, 52, 97);
+}
+
+.appInfo .appTitle span{
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
+.appInfo .appDefinition {
+  margin-top: 10px;
+}
+
+.appInfo .appDefinition span {
+  font-size: 15px;
+  line-height: 1.5em;
+  color: #ece9e9;
+  display: block;
+  text-align: start;
+}
+
+/* infoCards */
+  .infoCard .cardContent{
+    width: 100%;  
+
+  }
+  .infoCard .cardInfo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .infoCard .cardIcon{
+    margin-top: 10px;
+  }
+  .infoCard .cardValue{
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  .infoCard .cardTitle{
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: -5px;
+    color: rgba(21, 20, 20, 0.776)
+  }
+  .infoCard .cardMetrics{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+  }
+  .infoCard .cardAction{
+    margin-top: 5px;
+    background-color: rgb(255, 255, 255);
+  }
+  .infoCard .cardAction a{
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .infoCard .cardAction:hover{
+    background-color: rgba(255, 255, 255, 0.879);
+    transition: 0.5s;
+  }
+  .infoCard .cardAction a span, i{
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }

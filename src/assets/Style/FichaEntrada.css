@@ -1,0 +1,65 @@
+/* Carta Principal */
+.fichaEntrada{
+    background-color: rgb(252, 248, 248);
+    min-height: 800px;
+}
+
+/* Estatus de la entrada */
+.entradaStatus{
+    display: flex;
+    align-items: baseline;
+    gap: 30px;
+    margin-bottom: 5px;
+}
+.faseEntrada, .estadoEntrada{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: rgb(114, 109, 109);
+}
+.entradaStatus .colorCircle{
+    height: 8px;
+    width: 8px;
+    border-radius: 100%;
+    background-color: black;
+}
+.statusLabel{
+    font-weight: 700;
+}
+
+/* Modal de selector de fase */
+.selectorFase{
+    display:flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+.selectorFase .optionFase{
+    border: 1px solid rgb(52, 52, 97);
+    border-radius: 20px;
+    min-height: 120px;
+    width: 100%;
+    padding: 5px;
+}
+
+/* Tabs */
+.tabs .tab a{
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+    transition: border-bottom 0.1s ease;
+}
+.tabs .tab a:hover{
+    color: rgb(96, 96, 149);
+}
+.tabs .active a{
+    color: rgb(52, 52, 97);
+    border-bottom: 2px solid rgb(52, 52, 97);
+}
+.dropdown{
+    background-color: rgb(252, 248, 248);
+}
+.dropdown a{
+    color: rgb(52, 52, 97);
+}

@@ -1,0 +1,126 @@
+/* Portafolio */
+.portafolioContainer{
+    background-color: rgb(252, 248, 248) !important;
+    border: 1px solid rgba(28, 28, 28, 0.342) !important;
+    min-height: 500px;
+    max-height: 750px;
+}
+
+/* MaterializeCSS*/
+.selectoresBusqueda .datePicker label.active{
+    color: rgb(52, 52, 97) !important;
+    font-weight: 700;
+}
+.selectoresBusqueda .datePicker i{
+    color: rgb(52, 52, 97) !important;
+}
+.selectoresBusqueda .input-field input[type=text]:focus {
+    border-bottom: 1px solid rgb(52, 52, 97) !important;
+    box-shadow: none !important;
+}
+
+.portafolioSelector .input-field label{
+    color: rgb(52, 52, 97) !important;
+}
+
+.busquedaOpciones .input-field label {
+    color: #e2e2e2 !important;
+    transition: none !important;
+}
+.busquedaOpciones .input-field label.active {
+    color: #e2e2e2 !important;
+    visibility: hidden !important;
+    transition: none !important;
+}
+.busquedaOpciones .input-field input[type=text] {
+    border-bottom: 1px solid #e2e2e2 !important;
+    box-shadow: none !important;
+}
+.busquedaOpciones .input-field input[type=text]:focus {
+    border-bottom: 1px solid #e2e2e2 !important;
+    box-shadow: none !important;
+}
+.busquedaOpciones input{
+    color: #e2e2e2 !important;
+}
+
+/* Tabla Principal */
+.tablaPrincipal{
+    border: 1px solid rgba(28, 28, 28, 0.342);
+}
+/* Header Tabla */
+.tableHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(52, 52, 97);
+    border: 1px solid #2a2a2a;
+    max-height: 65px;
+    width: 100%;
+}
+.tableHeader .aitLogo{
+    margin-left: 25px;
+}
+.tableHeader .aitLogo span{
+    color: white;
+    font-size: 42px;
+    font-weight: 700;
+}
+.tableHeader .busquedaOpciones{
+    display: flex;
+    align-items: center;
+    margin-right: 25px;
+
+}
+.busquedaOpciones{
+    margin-left: 10px;
+    gap: 10px;
+}
+.busquedaOpciones a{
+    margin: 0px;
+    padding: 0px;
+}
+.busquedaOpciones .busquedaForm{
+    max-width: 150px;
+}
+
+/* tabs */
+.tabs {
+    background-color: rgba(252, 248, 248) !important;
+}
+.tabs .tab a{
+    color: rgb(52, 52, 97) !important; 
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 10px 10px 0 0 !important;
+}
+.tabs .tab a:hover{
+    color: rgb(92, 92, 144) !important;
+}
+.tabs .active{
+    border-radius: 10px 10px 0 0 !important;
+    background-color: rgba(52, 52, 97) !important;
+    
+}
+.tabs .active a{
+    color: rgb(252, 248, 248) !important;
+    font-weight: 700 !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+/* Botones */
+.btn{
+    margin: 20px 10px 0 0 !important;
+    background-color: rgb(52, 52, 97) !important;
+}
+.btn:hover{
+    background-color: rgb(98, 98, 155) !important;
+}
+.actionBtn .btn span{
+    display: flex;
+    gap: 5px;
+}
+.actionBtn .btn i {
+    font-size: 24px;
+}

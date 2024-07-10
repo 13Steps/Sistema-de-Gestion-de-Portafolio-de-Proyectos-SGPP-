@@ -1,0 +1,87 @@
+.adminPanel{
+    background-color: rgb(252, 248, 248) !important;
+    min-height: 600px;
+  }
+  
+  .databaseCard{
+    border-radius: 20px !important;
+    background-color: rgb(52, 52, 97) !important;
+    border: 2px solid rgb(252, 248, 248) !important;
+  }
+  .databaseCard .cardTitle{
+    font-weight: 700;
+    font-size: 18px;
+    color: rgba(250, 248, 248, 0.911);
+    margin: 10px, 5px;
+  }
+  .databaseOption{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15px;
+  }
+  .databaseOption .v-line{
+    width: 2px;              
+    height: 100px;           
+    background-color: #eceaeae1; 
+    margin: 0;
+    padding: 0;
+    border-radius: 100%;
+  }
+  .databaseOption .cardOption{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 2px inset rgb(252, 248, 248);
+    border-radius: 20px;
+    transition: background-color 300ms;   
+  }
+  .databaseOption .cardOption i{
+    font-weight: 700;
+    font-size: 36px;
+    color: rgb(252, 248, 248);
+  }
+  .databaseOption .cardOption span{
+    font-weight: 600;
+    font-size: 18px;
+    color: rgb(252, 248, 248);
+  }
+  .databaseOption .cardOption:hover{
+    background-color: rgb(79, 79, 138); 
+    cursor: pointer;
+  }
+
+  .newUser .cardTitle span{
+    font-weight: 700;
+    font-size: 18px;
+    color: rgb(52, 52, 97);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .newUser .input-field{
+    margin-top: 20px;
+  }
+  .newUser .input-field input{
+    text-transform: uppercase;
+    border-bottom: 1px solid #e2e2e2 !important;
+    box-shadow: none !important;
+  }
+  .newUser .input-field input[type=text]:focus {
+    border-bottom: 1px solid #e2e2e2 !important;
+    box-shadow: none !important;
+  }
+  .btn{
+    background-color: rgb(52, 52, 97) !important;
+    margin: 0 2px 0 2px;
+  }
+  .btn:hover{
+    background-color: rgb(98, 98, 155) !important;
+  }
+
+  .tableList{
+    font-weight: 700;
+    font-size: 24px;
+    color: rgb(52, 52, 97);
+  }
