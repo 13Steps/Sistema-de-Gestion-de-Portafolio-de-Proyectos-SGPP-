@@ -28,12 +28,12 @@
                                 <form class="formLogin">
                                     <div class="input-field userLogin">
                                         <i class="material-icons prefix">account_circle</i>
-                                        <input v-model="indicador" id="username" type="text" class="validate" autocomplete="off">
+                                        <input v-model="indicador" id="username" type="text" class="validate" autocomplete="on" required>
                                         <label for="username">Usuario</label>
                                     </div>
                                     <div class="input-field passwordLogin">
                                         <i class="material-icons prefix">lock</i>
-                                        <input v-model="password" id="password" type="password" class="validate" autocomplete="off">
+                                        <input v-model="password" id="password" type="password" class="validate" autocomplete="off" required>
                                         <label for="password">Contraseña</label>
                                     </div> 
                                     <button @click="iniciarSesion" class="btn-flat white-text loginButton" type="submit" name="action">

@@ -49,7 +49,8 @@
         </form>
     </div>
     <div class="row">
-
+        <h6>Historias de Usuario</h6>
+        <CrearHistoriaUsuario/>
     </div>
 
     <div class="row center">
@@ -64,7 +65,17 @@
     </div>
 </template>
 
-x
+<script>
+    import CrearHistoriaUsuario from './ComponentesDeCreacion/CrearHistoriaUsuario.vue';
+
+    export default {
+        components: {
+            CrearHistoriaUsuario,
+        }
+    }
+
+
+</script>
 
 <style scoped>
 /* Text Inputs */
