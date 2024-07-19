@@ -1,5 +1,5 @@
 <template>
-        <h6 class="tabTitle">Datos del Proyecto</h6>
+        <h6>Datos del Proyecto</h6>
         <br>
         <div class="row">
             <div class="col l6">

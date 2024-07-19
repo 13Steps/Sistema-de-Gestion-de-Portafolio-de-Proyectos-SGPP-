@@ -6,7 +6,7 @@
             <span>Registrar Historia de Usuario</span>
         </div>  
           <div class="modal-content">
-            <form @submit.prevent="submitFormHistoria" class="styleBorder row">
+            <form @submit.prevent="submitFormHistoria" class="row">
               <div class="input-field col l12">
                 <input id="titulo" type="text" v-model="historia.titulo" maxlength="30" required>
                 <label for="titulo">Título</label>
@@ -26,7 +26,7 @@
               <div class="input-field col l5">
                   <span class="textArea">Criterio:</span>
                   <textarea id="criterio" class="materialize-textarea" v-model="historia.criterio"></textarea>
-                </div>
+              </div>
               <div class="modal-footer col l12 right">
                 <div class="divider"></div>
                 <button type="submit" class="btn">Guardar</button>
@@ -99,12 +99,16 @@ export default {
     scrollbar-width: none;
     max-width: 500px;
 }
+.modal-header{
+  background-color: rgb(52, 52, 97);
+  padding: 10px;
+}
 .modal-header span{
   text-align: center;
-  font-size: 24px;
+  font-size: 28px;
   margin: 10px;
   font-weight: 700;
-  color: rgb(52, 52, 97) !important;
+  color: rgb(253, 253, 253) !important;
 }
 .modal-content .modalBody{
     padding-top: 10px;

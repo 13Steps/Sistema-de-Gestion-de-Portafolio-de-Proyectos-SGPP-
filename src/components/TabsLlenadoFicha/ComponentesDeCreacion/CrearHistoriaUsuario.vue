@@ -20,13 +20,13 @@
 
                       <div class="card-tabs">
                         <ul class="tabs transparent">
-                          <li class="tab" :class="{ 'active': historia.tab === 'Rol' }">
+                          <li class="tab">
                             <a @click="cambioTab('Rol')">Rol</a>
                           </li>
-                          <li class="tab" :class="{ 'active': historia.tab === 'Funcionalidad' }">
+                          <li class="tab">
                             <a @click="cambioTab('Funcionalidad')">Funcionalidad</a>
                           </li>
-                          <li class="tab" :class="{ 'active': historia.tab === 'Criterio' }">
+                          <li class="tab">
                             <a @click="cambioTab('Criterio')">Criterio</a>
                           </li>
                         </ul>
@@ -162,5 +162,6 @@ export default {
 }
 .card-tabs a:hover{
   color: rgb(94, 94, 119) !important;
+  cursor: pointer;
 }
 </style>
