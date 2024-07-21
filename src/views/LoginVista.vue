@@ -25,7 +25,7 @@
                                     </h4>
                                     <div class="divider"></div>
                                 </span>
-                                <form class="formLogin">
+                                <form class="formLogin" @submit.prevent="iniciarSesion">
                                     <div class="input-field userLogin">
                                         <i class="material-icons prefix">account_circle</i>
                                         <input v-model="indicador" id="username" type="text" class="validate" autocomplete="on" required>
@@ -36,7 +36,7 @@
                                         <input v-model="password" id="password" type="password" class="validate" autocomplete="off" required>
                                         <label for="password">Contraseña</label>
                                     </div> 
-                                    <button @click="iniciarSesion" class="btn-flat white-text loginButton" type="submit" name="action">
+                                    <button class="btn-flat white-text loginButton" type="submit" name="action">
                                         Iniciar Sesión
                                     </button>
                                 </form>

@@ -75,14 +75,10 @@ export default {
       this.$refs.modalesFormRef.openModal('modal-historia');
     },
     handleNuevaHistoria(historia){
-      console.log('Nueva historia:', historia);
       this.historias.push(historia);
     },
     eliminarHistoria(index) {
       this.historias.splice(index, 1);
-      this.historias.forEach((historia, i) => {
-        historia.codigo = i + 1;
-      });
     },
     cambioTab(nuevaTab) {
       this.tab = nuevaTab;
