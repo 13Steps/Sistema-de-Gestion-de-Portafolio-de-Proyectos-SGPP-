@@ -156,6 +156,7 @@
 </template>
 
 <script>
+import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
 export default {
   data() {
     return {
@@ -172,10 +173,26 @@ export default {
     }
   },
   watch: {
-    entradaTitle: 'validateTitle'
+    entradaTitle(newVal) {
+    const projectFound = this.getProjects.find(project => project.in_titulo === newVal);
+    if (projectFound) {
+         this.titleMessage = 'El título en uso';
+        this.titleClass = 'error-message';
+    } else {
+        this.titleMessage = 'Disponible';
+        this.titleClass = 'success-message';
+
+    }
+  },
   },
   mounted() {
     this.initModals();
+  },
+  computed: {
+    getProjects() {
+      console.log(this.$store.state.projects)
+      return this.$store.state.projects;
+    },
   },
   methods: {
     initModals() {
@@ -214,12 +231,8 @@ export default {
       }
     },
     submitTitulo() {
-      this.validateTitle();
-      if (this.titleClass === 'success-message') {
-        this.$emit('submitTitulo', this.entradaTitle);
-        this.closeModal(0);
-      } else {
-        alert('Titulo invalido');
+      if (this.titleMessage === 'Disponible') {
+        movToFichaLlenado(this.$router)
       }
     },
     downloadReporteG() {
