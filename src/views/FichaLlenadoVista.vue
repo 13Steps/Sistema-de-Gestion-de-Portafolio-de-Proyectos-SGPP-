@@ -32,16 +32,16 @@
                         </div>
                         <br>
                         <div v-if="tab === 'Requerimientos'">
-                            <Requerimientos/>
+                            <Requerimientos @changeTab=""/>
                         </div>
                         <div v-else-if="tab === 'Actividades'">
-                            <Actividades/>
+                            <Actividades @changeTab=""/>
                         </div>
                         <div v-else-if="tab === 'Costos'">
-                            <EstCostos/>
+                            <EstCostos @changeTab=""/>
                         </div>
                         <div v-else>
-                            <InfGeneral/>
+                            <InfGeneral @changeTab="goToRequerimientos()"/>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,6 @@ export default {
     data(){
         return{
             tab: 'InfoGeneral',
-
         }
     },
     components: {
@@ -71,12 +70,12 @@ export default {
         Actividades,
         EstCostos,
     },
-    mounted() {
-
-    },
     methods: {
         cambioTab(nuevaTab){
             this.tab = nuevaTab;
+        },
+        goToRequerimientos(){
+            this.tab = 'Requerimientos';
         },
     }
 };

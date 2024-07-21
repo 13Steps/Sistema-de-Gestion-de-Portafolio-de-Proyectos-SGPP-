@@ -52,6 +52,15 @@ const routes = [
           component: fichaLlenado
         },
       ]},
+      { beforeEnter: [estaAutenticado],
+        path: '/fichaLlenado/', name: 'fichaLlenado', meta: {breadcrumb: ' / fichaLlenado'},
+        children: [
+          {
+            path: '',
+            name: '',
+            component: fichaLlenado
+          },
+        ]},
     { beforeEnter: [estaAutenticado],
       path: '/administrador', name: 'administrador', meta: {breadcrumb: ' / Administrador'},
       children: [

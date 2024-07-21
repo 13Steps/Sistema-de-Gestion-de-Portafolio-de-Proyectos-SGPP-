@@ -34,7 +34,7 @@
                   <span>Portafolio</span>
                 </a>
               </li>
-              <li @click="movAdmin($router)">
+              <li v-if="user.role === 'rolAdministrador'" @click="movAdmin($router)">
                 <a>
                   <span>Administrador</span>
                 </a>
@@ -60,10 +60,10 @@
             <img src="../assets/Imagenes/user_pic.jpeg" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
           </div>
           <div class="userName">
-            <span><h5>Jose Marquez</h5></span>
+            <span><h5>{{user.nombre}} {{user.apellido}}</h5></span>
           </div>
           <div class="userId">
-            <span><h5>( {{ indicador }} )</h5></span>
+            <span><h5>( {{ user.role.replace("rol", "") }} )</h5></span>
           </div>
         </div>
       </li>
@@ -133,6 +133,7 @@
 
 <script>
 import { movDashboard, movPortafolio, movAdmin } from '../Tools/NavOptions'
+import { mapState } from 'vuex';
 
 export default {
   data() {
@@ -145,6 +146,7 @@ export default {
   mounted() {
     const nav = document.querySelector('nav');
     const navOffset = nav.offsetTop;
+    console.log('Usuario:', this.user);
 
     window.addEventListener('scroll', () => {
       if(window.pageYOffset >= navOffset){
@@ -165,6 +167,9 @@ export default {
    // Datos de Usuario  
   this.obtenerDatosUsuarioAutenticado();
 
+  },
+  computed: {
+    ...mapState(['user']) // Asume que 'userData' es una propiedad en tu estado de Vuex
   },
   watch: {
     '$route'() {
@@ -208,13 +213,12 @@ export default {
 
     // Datos de Usuario
     obtenerDatosUsuarioAutenticado() {
-      this.indicador = localStorage.getItem("indicador") || false;
+      this.indicador = localStorage.getItem("payload") || false;
     },
 
     // Botones
     cerrarSesion() {
-      this.indicador = "";
-      localStorage.removeItem("indicador");
+      localStorage.clear();
       this.$router.push("/");
     },
   }

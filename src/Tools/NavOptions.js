@@ -22,5 +22,5 @@ export function movDashboard(router) {
     router.push(`/fichaEntrada/${entryId}`);
   }
   export function movToFichaLlenado(router, entryId) {
-    router.push(`/fichallenado/${entryId}`);
+    router.push(`/fichallenado/${entryId ? entryId : ''}`);
   }
