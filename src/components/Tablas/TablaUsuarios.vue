@@ -3,88 +3,44 @@
         <table class="highlight fixedTable">
             <thead>
                 <tr class="tableHead">
-                    <th>Nombre</th>
                     <th>Indicador</th>
+                    <th>Nombre</th>
                     <th>Rol</th>
-                    <th>Fecha de creacion</th>
+                    <th>Fecha de Creación</th>
                     <th></th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr class="tableBody">
-                    <td>Gabriel Marquez</td>
-                    <td>MARQUEZGA</td>
-                    <td>Admin</td>
-                    <td>24/05/2023</td>
+                <tr v-for="(usuario, index) in usuarios" :key="index" class="tableBody">
+                    <td>{{ usuario.indicador }}</td>
+                    <td class="hoverExpandir">{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                    <td>{{ usuario.rol }}</td>
+                    <td>{{ usuario.fechaCreacion }}</td>
                     <td class="actionButtons">
-                        <a class="btn-floating" @click="openModal"><i class="material-icons">visibility</i></a>
-                    </td>
-                </tr>
-                <tr class="tableBody">
-                    <td>Beverley Brito</td>
-                    <td>BRITOB</td>
-                    <td>Lider de proyecto</td>
-                    <td>11/12/2023</td>
-                    <td class="actionButtons">
-                        <a class="btn-floating" @click="openModal"><i class="material-icons">visibility</i></a>
+                        <a class="btn-floating">
+                            <i class="material-icons">visibility</i>
+                        </a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
-<!-- Modal -->
-    <div class="modal" ref="modal">
-        <div class="modalHeader right">
-            <a class="btn-flat" @click="closeModal()">
-                <i class="material-icons" style="font-size: 24px;">
-                    close
-                </i>
-            </a>
-        </div>
-        <div class="titleContainer">
-            <span class="modalTitle">Informacion Usuario</span>
-        </div>
-        <div class="divider"></div>
-        <div class="modal-content">
-            <div class="modalSection">
-                <div class="userInfo">
-
-                </div>
-            </div>
-            <div class="modalSection">
-                
-            </div>
-        </div>
-    </div>
-
-
 </template>
 
 <script>
 export default {
-    mounted() {
-        this.initModal();
-    },    
-    methods: {
-        initModal(){
-            const modalElements = this.$refs.modal;
-            this.modalInstance = M.Modal.init(modalElements,{
-                dismissible: false,
-            });
-        },
-        openModal(){
-                if (this.modalInstance) {
-                    this.modalInstance.open();
-            }
-        },
-        closeModal(){
-            if (this.modalInstance){
-                this.modalInstance.close()
-            }
-        },
+    props: {
+        usuarios: {
+          type: Array,
+          required: true
+        }
     },
+    mounted() {
+    },
+    methods: {
+
+  }
 }
 </script>
 
@@ -98,22 +54,35 @@ export default {
     border-collapse: collapse;
     width: 100%;
 }
-.tableHead th {
-    text-align: center;
-    font-weight: 700;
-    font-size: 16px;
-    background-color: rgb(52, 52, 97);
-    color: white;
-    position: sticky;
-    top: 0; 
-    z-index: 1;
+th {
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  background-color: rgb(52, 52, 97);
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-
-.tableBody td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid #ddd;
-    max-width: 250px;
+td {
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ddd;
+  max-width: 100px; 
+  max-height: 100px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+.hoverExpandir {
+  max-width: 150px; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hoverExpandir:hover {
+  overflow: visible;
+  white-space: normal;
 }
 .btn-floating i{
     font-size: 16px;

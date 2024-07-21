@@ -1,52 +1,188 @@
 <template>
-    <div>
-      <!-- Modal para registrar Historia de Usuario - Index 0 -->
-      <div ref="modalHistoria" id="modal-historia" class="modal modalTarget">
-        <div class="modal-header center">
-            <span>Registrar Historia de Usuario</span>
-        </div>  
-          <div class="modal-content">
-            <form @submit.prevent="submitFormHistoria" class="row">
-              <div class="input-field col l12">
-                <input id="titulo" type="text" v-model="historia.titulo" maxlength="30" required>
-                <label for="titulo">Título</label>
-              </div>
-              <div class="input-field col l7">
-                  <span class="textArea">Descripción:</span>
-                  <textarea id="descripcion" class="materialize-textarea" v-model="historia.descripcion" required></textarea>
-              </div>
-              <div class="input-field col l5">
-                  <span class="textArea">Rol:</span>
-                  <textarea id="rol" class="materialize-textarea" v-model="historia.rol"></textarea>
-              </div>
-              <div class="input-field col l7">
-                  <span class="textArea">Funcionalidad:</span>
-                  <textarea id="funcionalidad" class="materialize-textarea" v-model="historia.funcionalidad"></textarea>
-              </div>
-              <div class="input-field col l5">
-                  <span class="textArea">Criterio:</span>
-                  <textarea id="criterio" class="materialize-textarea" v-model="historia.criterio"></textarea>
-              </div>
-              <div class="modal-footer col l12 right">
-                <div class="divider"></div>
-                <button type="submit" class="btn">Guardar</button>
-              </div>
-            </form>
-        </div>
+  <div>
+    <!-- Modal para registrar Historia de Usuario - Index 0 -->
+    <div ref="modalHistoria" id="modal-historia" class="modal modalTarget">
+      <div class="modal-header center">
+          <span>Registrar Historia de Usuario</span>
+      </div>  
+        <div class="modal-content">
+          <form @submit.prevent="submitFormHistoria" class="row">
+            <div class="input-field col l12">
+              <input id="titulo" type="text" v-model="historia.titulo" maxlength="30" required>
+              <label for="titulo">Título</label>
+            </div>
+            <div class="input-field col l7">
+                <span class="textArea">Descripción:</span>
+                <textarea id="descripcion" class="materialize-textarea" v-model="historia.descripcion" required></textarea>
+            </div>
+            <div class="input-field col l5">
+                <span class="textArea">Rol:</span>
+                <textarea id="rol" class="materialize-textarea" v-model="historia.rol"></textarea>
+            </div>
+            <div class="input-field col l7">
+                <span class="textArea">Funcionalidad:</span>
+                <textarea id="funcionalidad" class="materialize-textarea" v-model="historia.funcionalidad"></textarea>
+            </div>
+            <div class="input-field col l5">
+                <span class="textArea">Criterio:</span>
+                <textarea id="criterio" class="materialize-textarea" v-model="historia.criterio"></textarea>
+            </div>
+            <div class="modal-footer col l12 right">
+              <div class="divider"></div>
+              <button type="submit" class="btn">Guardar</button>
+            </div>
+          </form>
       </div>
     </div>
-  </template>
-  
+
+    <!-- Modal para registro de nuevo usuario - Index 1 -->
+    <div ref="modalNuevoUsuario" id="modal-nuevo-usuario" class="modal modalTarget">
+      <div class="modal-header center">
+        <span>Registrar Nuevo Usuario</span>
+      </div>  
+        <div class="modal-content">
+          <form @submit.prevent="submitFormUsuario">
+            <div class="formContent row">
+              <div class="col l12 center">
+                  <span class="indicadorUser">
+                    {{ usuario.indicador }}
+                  </span>
+                  <br><br>
+              </div>
+              <div class="col l6">
+                <div class="input-field col l12">
+                  <input id="nombreUsuario" type="text" v-model="usuario.nombre" maxlength="50" required>
+                  <label for="nombreUsuario">Nombre</label>
+                </div>
+                <div class="input-field col l12">
+                  <input id="apellidoUsuario" type="text" v-model="usuario.apellido" maxlength="50" required>
+                  <label for="apellidoUsuario">Apellido</label>
+                </div>
+              </div>
+              <div class="col l6">
+                  <div class="input-field col l12 right">
+                    <select v-model="usuario.rol" class="browser-default" required>
+                      <option disabled value="" class="hide">Rol</option>
+                      <option value="Administrador">Administrador</option>
+                      <option value="Gerente">Gerente</option>
+                      <option value="Líder de Proyecto">Líder de Proyecto</option>
+                      <option value="Trabajador">Trabajador</option>
+                    </select>
+                  </div>
+                </div>
+              <br>
+
+              <br>
+              <div class="col l12 center">
+                <div class="file-field input-field col l12">
+                  <div class="btn">
+                    <span>Foto</span>
+                    <input type="file" @change="handleFileUpload" required>
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="Foto del Usuario">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="modal-footer col l12 center">
+              <div class="divider"></div>
+              <div class="actionButtons right">
+                <button class="btn" @click="closeModal('modal-nuevo-usuario')">Cancelar</button>
+                <button type="submit" class="btn">Guardar</button>
+              </div>
+            </div>
+
+          </form>
+      </div>
+    </div>
+
+    <!-- Modal para editar datos de usuario - Index 2 -->
+    <div ref="modalNuevoUsuario" id="modal-editar-usuario" class="modal modalTarget">
+      <div class="modal-header center">
+        <span>Editar Datos de Usuario</span>
+      </div>  
+        <div class="modal-content">
+          <form @submit.prevent="submitFormUsuario">
+            <div class="formContent row">
+              <div class="col l12 center">
+                  <span class="indicadorUser">
+                    {{ usuario.indicador }}
+                  </span>
+                  <br><br>
+              </div>
+              <div class="col l6">
+                <div class="input-field col l12">
+                  <input id="nombreUsuario" type="text" v-model="usuario.nombre" maxlength="50" required>
+                  <label for="nombreUsuario">Nombre</label>
+                </div>
+                <div class="input-field col l12">
+                  <input id="apellidoUsuario" type="text" v-model="usuario.apellido" maxlength="50" required>
+                  <label for="apellidoUsuario">Apellido</label>
+                </div>
+              </div>
+              <div class="col l6">
+                  <div class="input-field col l12 right">
+                    <select v-model="usuario.rol" class="browser-default" required>
+                      <option disabled value="" class="hide">Rol</option>
+                      <option value="Administrador">Administrador</option>
+                      <option value="Gerente">Gerente</option>
+                      <option value="Líder de Proyecto">Líder de Proyecto</option>
+                      <option value="Trabajador">Trabajador</option>
+                    </select>
+                  </div>
+                </div>
+              <br>
+              <br>
+              <div class="col l12 center">
+                <div class="file-field input-field col l12">
+                  <div class="btn">
+                    <span>Foto</span>
+                    <input type="file" @change="handleFileUpload" required>
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" placeholder="Foto del Usuario">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="modal-footer col l12 center">
+              <div class="divider"></div>
+              <div class="actionButtons right">
+                <button class="btn" @click="closeModal('modal-nuevo-usuario')">Cancelar</button>
+                <button>Eliminar Usuario</button>
+                <button type="submit" class="btn">Guardar</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
 export default {
+  props: {
+    indicador: String
+  },
   data() {
     return {
+      modalInstances: [],
       historia: {
         titulo: '',
         descripcion: '',
         rol: '',
         funcionalidad: '',
         criterio: '',
+      },
+      usuario: {
+        indicador: this.indicador,
+        nombre: '',
+        apellido: '',
+        rol: '',
+        foto: null,
       }
     };
   },
@@ -63,9 +199,10 @@ export default {
         }));
       });
     },
-    openModal(id) {
+    openModal(id, indicador = '') {
       const modal = this.modalInstances.find(modal => modal.el.id === id);
       if (modal) {
+        this.usuario.indicador = indicador;
         modal.open();
       }
     },
@@ -74,11 +211,21 @@ export default {
       if (modal) {
         modal.close();
       }
-      this.clearFormFieldsHistoria();
+      if(id==='modal-historia'){
+        this.clearFormFieldsHistoria();
+      }
+      if(id==='modal-nuevo-usuario'){
+        this.clearFormFieldsUsuario();
+      }
+
     },
     submitFormHistoria() {
       this.$emit('submit-historia', { ...this.historia });
       this.closeModal('modal-historia');
+    },
+    submitFormUsuario() {
+      this.$emit('submit-usuario', { ...this.usuario });
+      this.closeModal('modal-nuevo-usuario');
     },
     clearFormFieldsHistoria() {
       this.historia = {
@@ -88,6 +235,19 @@ export default {
         funcionalidad: '',
         criterio: '',
       };
+    },
+    clearFormFieldsUsuario(){
+      this.usuario = {
+        indicador: '',
+        nombre: '',
+        apellido: '',
+        rol: '',
+        foto: null,
+      }
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      this.usuario.foto = file;
     },
   }
 };
@@ -129,7 +289,6 @@ export default {
 .modal-content .input-field label.active {
     color: rgb(52, 52, 97) !important;
 }
-
 .modal-footer .actionButtons{
     display: flex;
     justify-content: right;
@@ -173,6 +332,10 @@ textarea.active, textarea:focus{
     color: #746c6c;
     line-height: 18px;
 }
+.actionButtons{
+  display: flex;
+  align-items: center;
+}
 .btn{
     margin: 20px 10px 0 0;
     background-color: rgb(52, 52, 97) !important;
@@ -187,4 +350,17 @@ textarea.active, textarea:focus{
 .btn i {
     font-size: 24px;
 }
+
+.indicadorUser{
+  padding: 10PX;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: rgb(52, 52, 97);
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+}
+
+
+
 </style>
