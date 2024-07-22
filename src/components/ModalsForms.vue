@@ -47,7 +47,7 @@
         <div class="modal-content">
           <form @submit.prevent="submitFormUsuario">
             <div class="formContent row">
-              <div class="col l12 center">
+              <div class="col l12 center indicadorContainer">
                   <span class="indicadorUser">
                     {{ usuario.indicador }}
                   </span>
@@ -104,7 +104,6 @@
                 <button type="submit" class="btn">Guardar</button>
               </div>
             </div>
-
           </form>
       </div>
     </div>
@@ -305,13 +304,22 @@ textarea.active, textarea:focus{
     font-size: 24px;
 }
 
-.indicadorUser{
-  padding: 10PX;
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: rgb(52, 52, 97);
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
+.indicadorContainer{
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+
+    background-color: rgb(52, 52, 97);
+    color: rgb(253, 253, 253);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.indicadorContainer .indicadorUser{
+    margin: 10px;
+    font-size: 24px;
+    font-weight: 700;
 }
 </style>
