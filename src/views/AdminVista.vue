@@ -32,7 +32,7 @@
                   <div class="divider"></div>
                   <div class="userOption center">
                     <div class="input-field col l12">
-                      <input v-model="nuevoIndicador" id="indicador" type="text" class="validate" required>
+                      <input v-model="nuevoIndicador" @input="convertirAMayusculas" id="indicador" type="text" class="validate" required>
                       <label for="indicador">Ingrese un Indicador</label>
                     </div>
                     <button class="btn">
@@ -96,8 +96,8 @@
       return {
         nuevoIndicador: '',
         usuarios: [
-          { nombre: 'Gabriel Marquez', indicador: 'MARQUEZGA', rol: 'Admin', fechaCreacion: '24/05/2023' },
-          { nombre: 'Beverley Brito', indicador: 'BRITOB', rol: 'Lider de proyecto', fechaCreacion: '11/12/2023' },
+          { nombre: 'Gabriel', apellido: 'Marquez', indicador: 'MARQUEZGA', rol: 'Administrador', fechaCreacion: '24/05/2023', password: 'pdvsa1234', },
+          { nombre: 'Beverley', apellido: 'Brito', indicador: 'BRITOB',  correo: 'britob@pdvsa.com', rol: 'Líder de Proyecto', fechaCreacion: '11/12/2023', password: 'pdvsa1234' },
         ],
       };
     },
@@ -107,6 +107,9 @@
       ModalsForms,
     },
     methods: {
+      convertirAMayusculas() {
+        this.nuevoIndicador = this.nuevoIndicador.toUpperCase();
+      },
       crearUser() {
         if (this.usuarios.some(user => user.indicador === this.nuevoIndicador)) {
           alert('El indicador ya existe.');

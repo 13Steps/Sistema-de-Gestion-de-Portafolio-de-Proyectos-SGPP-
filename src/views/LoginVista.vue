@@ -33,6 +33,7 @@
                       type="text"
                       class="validate"
                       autocomplete="off"
+                      required
                     />
                     <label for="username">Usuario</label>
                   </div>
@@ -44,6 +45,7 @@
                       type="password"
                       class="validate"
                       autocomplete="off"
+                      required
                     />
                     <label for="password">Contraseña</label>
                   </div>

@@ -43,7 +43,7 @@
   </div>
   <div class="row">
     <h6>Modelo de Datos</h6>
-    <form class="col l8 offset-l2">
+    <form class="col l6">
       <div class="file-field input-field">
         <div class="btn">
           <span>
@@ -62,12 +62,24 @@
         </div>
       </div>
     </form>
+    <form class="col l6">
+      <div class="row">
+        <div class="input-field col l6 offset-l5 textArea">
+          <span>Comentario:</span>
+          <textarea
+            id="entradaComentario"
+            v-model="entradaComentario"
+            class="materialize-textarea"
+          ></textarea>
+          <label for="entradaComentario"></label>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="row">
     <h6>Historias de Usuario</h6>
     <CrearHistoriaUsuario />
   </div>
-
   <div class="row center">
     <div class="divider"></div>
     <button class="btn" @click="guardarDatos">

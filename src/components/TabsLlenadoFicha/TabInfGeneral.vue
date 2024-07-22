@@ -89,19 +89,6 @@
         </div>
       </div>
     </form>
-    <form class="col l4">
-      <div class="row">
-        <div class="input-field col l10 textArea">
-          <span>Comentario:</span>
-          <textarea
-            id="entradaComentario"
-            v-model="entradaComentario"
-            class="materialize-textarea"
-          ></textarea>
-          <label for="entradaComentario"></label>
-        </div>
-      </div>
-    </form>
   </div>
   <div class="divider"></div>
   <div class="row center">

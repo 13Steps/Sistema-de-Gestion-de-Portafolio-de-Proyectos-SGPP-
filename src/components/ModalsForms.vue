@@ -29,7 +29,11 @@
             </div>
             <div class="modal-footer col l12 right">
               <div class="divider"></div>
-              <button type="submit" class="btn">Guardar</button>
+              <br>
+              <div class="actionButtons right">
+                <button class="btn" @click="closeModal('modal-historia')">Cancelar</button>
+                <button type="submit" class="btn">Guardar</button>
+              </div>
             </div>
           </form>
       </div>
@@ -60,19 +64,26 @@
                 </div>
               </div>
               <div class="col l6">
-                  <div class="input-field col l12 right">
-                    <select v-model="usuario.rol" class="browser-default" required>
-                      <option disabled value="" class="hide">Rol</option>
-                      <option value="Administrador">Administrador</option>
-                      <option value="Gerente">Gerente</option>
-                      <option value="Líder de Proyecto">Líder de Proyecto</option>
-                      <option value="Trabajador">Trabajador</option>
-                    </select>
-                  </div>
+                <div class="input-field col l12">
+                  <input id="correoUsuario" type="email" v-model="usuario.email" maxlength="50" required>
+                  <label for="correoUsuario">Correo Empresarial</label>
                 </div>
-              <br>
-
-              <br>
+                <div class="input-field col l12">
+                  <input id="contraseñaUsuario" type="password" v-model="usuario.password" maxlength="50" required>
+                  <label for="contraseñaUsuario">Contraseña</label>
+                </div>
+              </div>
+              <div class="col l12">
+                <div class="input-field col l12 ">
+                  <select v-model="usuario.rol" class="browser-default" required>
+                    <option disabled value="" class="hide">Rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Gerente">Gerente</option>
+                    <option value="Líder de Proyecto">Líder de Proyecto</option>
+                    <option value="Trabajador">Trabajador</option>
+                  </select>
+                </div>
+              </div>
               <div class="col l12 center">
                 <div class="file-field input-field col l12">
                   <div class="btn">
@@ -98,67 +109,6 @@
       </div>
     </div>
 
-    <!-- Modal para editar datos de usuario - Index 2 -->
-    <div ref="modalNuevoUsuario" id="modal-editar-usuario" class="modal modalTarget">
-      <div class="modal-header center">
-        <span>Editar Datos de Usuario</span>
-      </div>  
-        <div class="modal-content">
-          <form @submit.prevent="submitFormUsuario">
-            <div class="formContent row">
-              <div class="col l12 center">
-                  <span class="indicadorUser">
-                    {{ usuario.indicador }}
-                  </span>
-                  <br><br>
-              </div>
-              <div class="col l6">
-                <div class="input-field col l12">
-                  <input id="nombreUsuario" type="text" v-model="usuario.nombre" maxlength="50" required>
-                  <label for="nombreUsuario">Nombre</label>
-                </div>
-                <div class="input-field col l12">
-                  <input id="apellidoUsuario" type="text" v-model="usuario.apellido" maxlength="50" required>
-                  <label for="apellidoUsuario">Apellido</label>
-                </div>
-              </div>
-              <div class="col l6">
-                  <div class="input-field col l12 right">
-                    <select v-model="usuario.rol" class="browser-default" required>
-                      <option disabled value="" class="hide">Rol</option>
-                      <option value="Administrador">Administrador</option>
-                      <option value="Gerente">Gerente</option>
-                      <option value="Líder de Proyecto">Líder de Proyecto</option>
-                      <option value="Trabajador">Trabajador</option>
-                    </select>
-                  </div>
-                </div>
-              <br>
-              <br>
-              <div class="col l12 center">
-                <div class="file-field input-field col l12">
-                  <div class="btn">
-                    <span>Foto</span>
-                    <input type="file" @change="handleFileUpload" required>
-                  </div>
-                  <div class="file-path-wrapper">
-                    <input class="file-path validate" type="text" placeholder="Foto del Usuario">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <br>
-            <div class="modal-footer col l12 center">
-              <div class="divider"></div>
-              <div class="actionButtons right">
-                <button class="btn" @click="closeModal('modal-nuevo-usuario')">Cancelar</button>
-                <button>Eliminar Usuario</button>
-                <button type="submit" class="btn">Guardar</button>
-              </div>
-            </div>
-          </form>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -181,6 +131,8 @@ export default {
         indicador: this.indicador,
         nombre: '',
         apellido: '',
+        correo: '',
+        password: '',
         rol: '',
         foto: null,
       }
@@ -241,6 +193,8 @@ export default {
         indicador: '',
         nombre: '',
         apellido: '',
+        correo: '',
+        password: '',
         rol: '',
         foto: null,
       }
@@ -360,7 +314,4 @@ textarea.active, textarea:focus{
   font-weight: 700;
   color: white;
 }
-
-
-
 </style>
