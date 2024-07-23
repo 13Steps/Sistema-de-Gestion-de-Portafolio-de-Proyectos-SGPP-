@@ -1,47 +1,161 @@
 <template>
-    <div class="table-container">
-        <table class="highlight fixedTable">
-            <thead>
-                <tr class="tableHead">
-                    <th>Indicador</th>
-                    <th>Nombre</th>
-                    <th>Rol</th>
-                    <th>Fecha de Creación</th>
-                    <th></th>
-                </tr>
-            </thead>
+<div class="table-container">
+    <table class="highlight fixedTable">
+        <thead>
+            <tr class="tableHead">
+                <th>Indicador</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Fecha de Creación</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(usuario, index) in usuarios" :key="index" class="tableBody">
+                <td>{{ usuario.indicador }}</td>
+                <td class="hoverExpandir">{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                <td>{{ usuario.rol }}</td>
+                <td>{{ usuario.fechaCreacion }}</td>
+                <td class="actionButtons">
+                    <a class="btn-floating">
+                        <i class="material-icons" @click="openModal(usuario)">visibility</i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-            <tbody>
-                <tr v-for="(usuario, index) in usuarios" :key="index" class="tableBody">
-                    <td>{{ usuario.indicador }}</td>
-                    <td class="hoverExpandir">{{ usuario.nombre }} {{ usuario.apellido }}</td>
-                    <td>{{ usuario.rol }}</td>
-                    <td>{{ usuario.fechaCreacion }}</td>
-                    <td class="actionButtons">
-                        <a class="btn-floating">
-                            <i class="material-icons">visibility</i>
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<!-- Modal editar/eliminar usuario -->
+<div class="modal" ref="modal">
+    <div class="modal-header center">
+        <span class="white-text">Editar Datos de Usuario</span>
     </div>
+    <div class="modal-content">
+        <form @submit.prevent="editarUsuario">
+            <div class="row">
+                <div class="col l12 center indicadorContainer">
+                    <span class="indicadorUser">
+                        {{ usuarioSeleccionado.indicador }}
+                    </span>
+                    <br><br>
+                </div>
+                <div class="col l6">
+                  <div class="input-field col l12">
+                    <input id="nombreUsuario" type="text" v-model="usuarioSeleccionado.nombre" maxlength="50" required>
+                    <label for="nombreUsuario" class="active">Nombre</label>
+                  </div>
+                  <div class="input-field col l12">
+                    <input id="apellidoUsuario" type="text" v-model="usuarioSeleccionado.apellido" maxlength="50" required>
+                    <label for="apellidoUsuario" class="active">Apellido</label>
+                  </div>
+                </div>
+                <div class="col l6">
+                  <div class="input-field col l12">
+                    <input id="correoUsuario" type="email" v-model="usuarioSeleccionado.email" maxlength="50" required>
+                    <label for="correoUsuario" class="active">Correo Empresarial</label>
+                  </div>
+                  <div class="input-field col l12">
+                    <input id="contraseñaUsuario" type="password" v-model="usuarioSeleccionado.password" maxlength="50" required>
+                    <label for="contraseñaUsuario" class="active">Contraseña</label>
+                  </div>
+                </div>
+                <div class="col l12">
+                  <div class="input-field col l12 ">
+                    <select v-model="usuarioSeleccionado.rol" class="browser-default" required>
+                      <option disabled value="" class="hide">Rol</option>
+                      <option value="Administrador">Administrador</option>
+                      <option value="Gerente">Gerente</option>
+                      <option value="Líder de Proyecto">Líder de Proyecto</option>
+                      <option value="Trabajador">Trabajador</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col l12 center">
+                  <div class="file-field input-field col l12">
+                    <div class="btn">
+                      <span>Foto</span>
+                      <input type="file" @change="handleFileUpload" required>
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" placeholder="Foto del Usuario">
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <br>
+            <div class="modal-footer col l12 center">
+                <div class="divider"></div>
+                <div class="actionButtons right">
+                  <button class="btn" @click="closeModal">Cancelar</button>
+                  <button class="btn" @click="eliminarUsuario">Eliminar Usuario</button>
+                  <button class="btn" type="submit">Guardar Cambios</button>
+                </div>
+            </div>
+        </form>
+  </div>
+</div>
+
 </template>
 
 <script>
 export default {
-    props: {
-        usuarios: {
-          type: Array,
-          required: true
-        }
+  props: {
+    usuarios: {
+      type: Array,
+      required: true
+    }
+  },
+  data() {
+    return {
+      usuarioSeleccionado: {
+        indicador: '',
+        nombre: '',
+        apellido: '',
+        email: '',
+        password: '',
+        rol: ''
+      }
+    };
+  },
+  mounted() {
+    this.initModal();
+  },
+  methods: {
+    initModal() {
+      const modalElements = this.$refs.modal;
+      this.modalInstance = M.Modal.init(modalElements, {
+        dismissible: false
+      });
     },
-    mounted() {
+    openModal(usuario) {
+      this.usuarioSeleccionado = { ...usuario };
+      if (this.modalInstance) {
+        this.modalInstance.open();
+      }
     },
-    methods: {
-
+    closeModal() {
+      if (this.modalInstance) {
+        this.modalInstance.close();
+      }
+    },
+    editarUsuario() {
+        //Lofica de actualizar usuario
+        this.closeModal();
+    },
+    eliminarUsuario() {
+        //   Logica de eliminar usuario
+        this.closeModal();
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        
+        console.log('Archivo seleccionado:', file);
+      }
+    }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -95,15 +209,87 @@ td {
     background-color: rgb(98, 98, 155);
 }
 
-
-/* modal */
-.titleContainer{
-    margin: 10px 0 10px 20px;
+/* Modal */
+.modal{
+    scrollbar-width: none;
+    max-width: 500px;
 }
-.modalTitle{
-    color: rgb(52, 52, 97);
-    font-size: 28px;
+.modal-header{
+  background-color: rgb(52, 52, 97);
+  padding: 10px;
+}
+.modal-header span{
+  text-align: center;
+  font-size: 28px;
+  margin: 10px;
+  font-weight: 700;
+  color: rgb(253, 253, 253) !important;
+}
+.indicadorContainer{
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+
+    background-color: rgb(52, 52, 97);
+    color: rgb(253, 253, 253);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.indicadorContainer .indicadorUser{
+    margin: 10px;
+    font-size: 24px;
     font-weight: 700;
 }
 
+.modal-content .modalBody{
+    padding-top: 10px;
+    text-align: justify;
+}
+.modal-content .input-field{
+    margin-top: 25px;
+    margin-bottom: -10px;
+}
+.modal-content .input-field input{
+    border-bottom: 1px solid #e2e2e2 !important;
+    box-shadow: none !important;
+}
+.modal-content .input-field input[type=text]:focus {
+    border-bottom: 1px solid #e2e2e2 !important;
+    box-shadow: none !important;
+}
+.modal-content .input-field label.active {
+    color: rgb(52, 52, 97) !important;
+}
+.modal-footer .actionButtons{
+    display: flex;
+    justify-content: right;
+    gap: 5px;
+}
+.actionButtons .btn{
+    background-color: rgb(52, 52, 97) !important;
+}
+.actionButtons .btn{
+    background-color: rgb(52, 52, 97) !important;
+}
+.actionButtons .btn:hover{
+    background-color: rgb(98, 98, 155) !important;
+}
+
+.btn{
+    margin: 20px 10px 0 0;
+    background-color: rgb(52, 52, 97) !important;
+}
+.btn:hover{
+    background-color: rgb(98, 98, 155) !important;
+}
+.btn span{
+    display: flex;
+    gap: 5px;
+}
+.btn i {
+    font-size: 24px;
+}
 </style>

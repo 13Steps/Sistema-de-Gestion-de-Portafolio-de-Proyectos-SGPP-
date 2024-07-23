@@ -101,93 +101,105 @@
 
     <!-- Modal #1 Index === 0 - Reporte -->
     <div class="modal modalTarget" ref="mFiltro0">
-      <div class="modal-content modalTitle">
-        <span>Modal Title</span>
+      <div class="modal-header">
+        <h4>Generar Reporte</h4>
+        <div class="divider"></div>
       </div>
-      <div class="divider"></div>
-
-      <div class="modal-content modalBody">
-        <span>Modal Title</span>
+      <div class="modalContent">
+        <p>
+          Se generar un reporte del siguiente entrada:  entrada.title 
+        </p>
       </div>
-
-      <div class="divider"></div>
-      <div class="modal-footer">
-        <a class="btn"> Cancelar </a>
-        <a class="btn"> Aceptar </a>
+      <div class="modal-footer center">
+        <div class="divider"></div>
+        <div class="actionButtons">
+          <a class="btn" @click="closeModal(0)">Cancelar</a>
+          <a class="btn" @click="generarReporteEspecifico">Aceptar</a>
+        </div>
       </div>
     </div>
 
-    <!-- Modal #2  Index === 1 - Fase-->
+    <!-- Modal #2  Index === 1 - Fase y Estado-->
     <div class="modal modalTarget" ref="mFiltro1">
-      <div class="modal-content modalTitle">
-        <span>Cambiar Fase</span>
+      <div class="modal-header">
+        <h4>Estado de Proyecto</h4>
+        <div class="divider"></div>
       </div>
-      <div class="divider"></div>
-
-      <div class="modal-content modalBody">
-        <span>Seleccione la nueva fase de la entrada actual:</span>
-        <div class="selectorFase">
-          <div class="optionFase" @click="setFase('Solicitud')">
-            <div class="optionTitle">
-              <span>Solicitud</span>
+      <div class="modalContent">
+        <form @submit.prevent="guardarCambios">
+          <div class="row">
+            	<div class="col l6">
+            	  <div class="input-field col l12 ">
+            	    <span>Fase de Entrada</span>
+            	    <select class="browser-default" v-model="entrada.fase" required>
+            	      <option disabled value="" class="hide">Fase</option>
+            	      <option value="Proyecto">Proyecto</option>
+            	      <option value="Requerimiento">Requerimiento</option>
+            	      <option value="Solicitud">Solicitud</option>
+            	    </select>
+            	  </div>
+            	</div>
+              <div class="col l6">
+                  <div class="input-field col l12 ">
+                    <span>Estado de Entrada</span>
+                    <select class="browser-default" v-model="entrada.estado" required>
+                      <option disabled value="" class="hide">Estado</option>
+                      <option value="Completado">Completado</option>
+                      <option value="En Desarrollo">En Desarrollo</option>
+                      <option value="En Revisión">En Revisión</option>
+                      <option value="Atrasado">Atrasado</option>
+                    </select>
+                  </div>
+              </div>
+          	</div>
+            <div class="modal-footer center">
+              <div class="divider"></div>
+              <div class="actionButtons">
+                <a class="btn" @click="closeModal(1)">Cancelar</a>
+                <a class="btn" @click="guardarCambios">Guardar Cambios</a>
+              </div>
             </div>
-            <div class="optionBody">
-              <div class="colorCircle"></div>
-            </div>
-          </div>
-          <div class="optionFase" @click="setFase('Requerimiento')">
-            <div class="optionTitle">
-              <span>Requerimiento</span>
-            </div>
-            <div class="optionBody">
-              <div class="colorCircle"></div>
-            </div>
-          </div>
-          <div class="optionFase" @click="setFase('Proyecto')">
-            <div class="optionTitle">
-              <span>Proyecto</span>
-            </div>
-            <div class="optionBody">
-              <div class="colorCircle"></div>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
 
     <!-- Modal #3 Index === 2 - Editar-->
     <div class="modal modalTarget" ref="mFiltro2">
-      <div class="modal-content modalTitle">
-        <span>Modal Title</span>
+      <div class="modal-header">
+        <h4>Editar Entrada</h4>
+        <div class="divider"></div>
       </div>
-      <div class="divider"></div>
-
-      <div class="modal-content modalBody">
-        <span>Modal Title</span>
+      <div class="modalContent">
+        <p>
+          ¿Desea editar la información de esta entrada?
+        </p>
       </div>
-
-      <div class="divider"></div>
-      <div class="modal-footer">
-        <a class="btn"> Cancelar </a>
-        <a class="btn"> Aceptar </a>
+      <div class="modal-footer center">
+        <div class="divider"></div>
+        <div class="actionButtons">
+          <a class="btn" @click="closeModal(2)">Cancelar</a>
+          <a class="btn" @click="movFichaLlenado">Aceptar</a>
+        </div>
       </div>
     </div>
 
     <!-- Modal #4 Index === 3 - Eliminar-->
     <div class="modal modalTarget" ref="mFiltro3">
-      <div class="modal-content modalTitle">
-        <span>Modal Title</span>
+      <div class="modal-header">
+        <h4>Eliminar Entrada</h4>
+        <div class="divider"></div>
       </div>
-      <div class="divider"></div>
-
-      <div class="modal-content modalBody">
-        <span>Modal Title</span>
+      <div class="modalContent">
+        <p>
+          ¿Desea eliminar esta entrada?
+        </p>
       </div>
-
-      <div class="divider"></div>
-      <div class="modal-footer">
-        <a class="btn"> Cancelar </a>
-        <a class="btn"> Aceptar </a>
+      <div class="modal-footer center">
+        <div class="divider"></div>
+        <div class="actionButtons">
+          <a class="btn" @click="closeModal(3)">Cancelar</a>
+          <a class="btn" @click="deleteEntrada">Aceptar</a>
+        </div>
       </div>
     </div>
   </main>
@@ -207,7 +219,7 @@ export default {
       tab: "resumen",
       entrada: {
         fase: "Proyecto",
-        estado: "En desarrollo",
+        estado: "En Desarrollo",
       },
       modalInstances: [],
     };
@@ -231,6 +243,7 @@ export default {
     // Modal
     this.initModals();
 
+    //Carga de datos
     this.loadEntryData(this.entryId);
   },
   methods: {
@@ -278,6 +291,24 @@ export default {
       this.entrada.fase = nuevaFase;
       this.closeModal(1);
     },
+
+    generarReporteEspecifico(){
+      // logica de generacion de reporte
+      this.closeModal(0);
+    },
+    guardarCambios() {
+      // Lógica para guardar los cambios en la entrada
+      console.log("Guardar cambios:", this.entrada);
+      this.closeModal(1);
+    },
+    movFichaLlenado(){
+      // Logica de moverse a la ficha de llenado de la entrada seleccionada
+      this.closeModal(2);
+    },
+    deleteEntrada(){
+      // logica de borrado de entrada y luego mover al usuario a la VistaPortafolio
+      this.closeModal(3);
+    }
   },
 };
 </script>
