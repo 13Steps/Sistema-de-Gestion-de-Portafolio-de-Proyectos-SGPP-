@@ -32,10 +32,10 @@
                         </div>
                         <br>
                         <div v-if="tab === 'Requerimientos'">
-                            <Requerimientos @changeTab=""/>
+                            <Requerimientos @changeTab="goToActividades()"/>
                         </div>
                         <div v-else-if="tab === 'Actividades'">
-                            <Actividades @changeTab=""/>
+                            <Actividades @changeTab="goToCostos()"/>
                         </div>
                         <div v-else-if="tab === 'Costos'">
                             <EstCostos @changeTab=""/>
@@ -77,6 +77,12 @@ export default {
         goToRequerimientos(){
             this.tab = 'Requerimientos';
         },
+        goToActividades(){
+            this.tab = 'Actividades';
+        },
+        goToCostos(){
+            this.tab = 'Costos';
+        }
     }
 };
 </script>

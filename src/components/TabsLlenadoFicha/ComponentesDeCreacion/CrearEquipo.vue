@@ -6,7 +6,11 @@
         <span>Agregar Miembro</span>
       </div>
       <div class="col l12 input-field">
-        <input class="mayusCase" v-model="indicador" placeholder="Indicador" maxlength="30" required />
+        <!-- <input class="mayusCase" v-model="indicador" placeholder="Indicador" maxlength="30" required /> -->
+        <select v-model="nuevoMiembro.indicador" class="browser-default" required>
+            <option disabled value="" class="hide">Seleccione un Tipo Líder</option>
+            <option v-for="user in users" :value="user">{{user.in_nombre}}</option>
+          </select>
       </div>
 
       <div class="card-tabs">
@@ -68,8 +72,8 @@
           <tr class="tableBody" v-for="(miembro, index) in miembros" :key="index" :class="{
             'lider': ['Líder Técnico', 'Líder Funcional', 'Líder GALBA'].includes(miembro.cargo)}
             ">
-            <td class="hoverExpandir mayusCase">{{ miembro.indicador }}</td>
-            <td class="hoverExpandir">{{ miembro.nombre || 'Nombre desde base de datos' }}</td>
+            <td class="hoverExpandir mayusCase">{{ miembro.indicador.in_nombre }}</td>
+            <td class="hoverExpandir">{{ miembro.indicador.in_nombre || 'Nombre desde base de datos' }}</td>
             <td class="hoverExpandir">{{ miembro.cargo }}</td>
             <td class="actionButtons">
               <button class="btn-floating" @click="eliminarMiembro(index)">
@@ -84,20 +88,25 @@
 </template>
 
 <script>
+import { getUsers } from '@/Services/Services';
 export default {
   data() {
     return {
       tab: "Lider",
       miembros: [],
       nuevoMiembro: {
-        indicador: '',
+        indicador: {},
         nombre: '',
         cargo: '',
       },
+      users: [],
       //Valida Usuarios desde la base de datos
       usuariosBaseDatos: ['USUARIO1', 'USUARIO2', 'USUARIO3'],
       cargosReservados: ['Líder Técnico', 'Líder Funcional', 'Líder GALBA'],
     };
+  },
+  async mounted() {
+    this.users = await getUsers();
   },
   computed: {
   indicador: {
@@ -111,7 +120,7 @@ export default {
   },
   methods: {
     agregarMiembro() {
-      const indicador = this.nuevoMiembro.indicador.trim();
+      const indicador = this.nuevoMiembro.indicador
       const cargo = this.nuevoMiembro.cargo.trim();
       // Verificar si el usuario ya existe en el grupo
       const miembroExistente = this.miembros.find(miembro => miembro.indicador === indicador);
@@ -121,11 +130,11 @@ export default {
       }
 
       // Simulación de verificación en la base de datos
-      const usuarioEnBaseDatos = this.usuariosBaseDatos.includes(indicador);
-      if (!usuarioEnBaseDatos) {
-        alert('El usuario no existe.');
-        return;
-      }
+      // const usuarioEnBaseDatos = this.usuariosBaseDatos.includes(indicador);
+      // if (!usuarioEnBaseDatos) {
+      //   alert('El usuario no existe.');
+      //   return;
+      // }
 
       if (this.tab === 'Lider') {
         const liderExistente = this.miembros.find(miembro => miembro.cargo === cargo);
@@ -146,6 +155,13 @@ export default {
         nombre: '',
         cargo: '',
       };
+
+      const lideres = {
+        c008f_i001t_lider_funcional: this.miembros.find(miembro => miembro.cargo === 'Líder Funcional')?.indicador,
+        c008f_i001t_lider_negocio: this.miembros.find(miembro => miembro.cargo === 'Líder GALBA')?.indicador,
+        c008f_i001t_lider_tecnico: this.miembros.find(miembro => miembro.cargo === 'Líder Técnico')?.indicador,
+      }
+      localStorage.setItem('miembros', JSON.stringify(lideres));
     },
     eliminarMiembro(index) {
       this.miembros.splice(index, 1);

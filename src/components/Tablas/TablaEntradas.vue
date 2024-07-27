@@ -15,11 +15,11 @@
       <tbody>
         <tr
           class="tableBody"
-          v-for="entrada in proyectos"
+          v-for="entrada in filteredEntradas"
           :key="entrada.i003i_entrada"
         >
           <td class="tableTitle">{{ entrada.in_titulo }}</td>
-          <td>{{ entrada.i003f_i006t_estado_entrada.in_nombre_estado}}</td>
+          <td>{{ entrada.i003f_i006t_estado_entrada.in_nombre_estado }}</td>
           <td>{{ entrada.i003f_i010t_area_tecnica.in_nombre }}</td>
           <td>{{ entrada.i003f_i011_tipo_proyecto.in_nombre }}</td>
           <td>{{ entrada.inicioR }}</td>
@@ -31,10 +31,7 @@
             <a class="btn-floating" @click="abrirModalEditEntrada(entrada.i003i_entrada)">
               <i class="material-icons">edit</i>
             </a>
-            <a
-              class="btn-floating"
-              @click="abrirModalDeleteEntrada(entrada.id)"
-            >
+            <a class="btn-floating" @click="abrirModalDeleteEntrada(entrada.id)">
               <i class="material-icons">delete</i>
             </a>
           </td>
@@ -170,10 +167,19 @@ export default {
   },
   computed: {
     filteredEntradas() {
-      let currentEntradas = this.entradas[this.tab] || [];
+      if (this.proyectos.length === 0) {
+        return [];
+      }
+
+      let faseEntrada = this.proyectos.filter((entrada) => {
+        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+      });
+
+      let currentEntradas = faseEntrada
+console.log(faseEntrada)
       if (this.filter) {
         return currentEntradas.filter((entrada) =>
-          entrada.titulo.toLowerCase().includes(this.filter.toLowerCase())
+          entrada.in_titulo.toLowerCase().includes(this.filter.toLowerCase())
         );
       }
       return currentEntradas;

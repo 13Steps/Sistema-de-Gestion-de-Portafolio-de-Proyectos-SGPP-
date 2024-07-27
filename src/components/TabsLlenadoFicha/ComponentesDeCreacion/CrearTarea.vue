@@ -20,7 +20,7 @@
                       <td class="tableTitle">{{ tarea.titulo }}</td>
                       <td>{{ tarea.fechaInicio }}</td>
                       <td>{{ tarea.fechaFinalizacion }}</td>
-                      <td class="hoverExpandir">{{ tarea.descripcion }}</td>
+                      <td class="hoverExpandir">{{ tarea.tx_descripcion }}</td>
                       <td class="actionButtons">
                         <button class="btn-floating" @click="eliminarTarea(index)">
                           <i class="material-icons">delete</i>
@@ -53,7 +53,7 @@
         </div>
         <div class="input-field col l12 input-field">
           <span>Descripción:</span>
-          <textarea class="materialize-textarea" v-model="nuevaTarea.descripcion" maxlength="180" required></textarea>
+          <textarea class="materialize-textarea" v-model="nuevaTarea.tx_descripcion" maxlength="180" required></textarea>
         </div>
       </form>
     </div>
@@ -69,7 +69,7 @@ export default {
         titulo: '',
         fechaInicio: '',
         fechaFinalizacion: '',
-        descripcion: '',
+        tx_descripcion: '',
       }
     };
   },
@@ -81,9 +81,10 @@ export default {
           titulo: '',
           fechaInicio: '',
           fechaFinalizacion: '',
-          descripcion: '',
+          tx_descripcion: '',
         };
       }
+      localStorage.setItem('tareas', JSON.stringify(this.tareas));
     },
     eliminarTarea(index) {
       this.tareas.splice(index, 1);

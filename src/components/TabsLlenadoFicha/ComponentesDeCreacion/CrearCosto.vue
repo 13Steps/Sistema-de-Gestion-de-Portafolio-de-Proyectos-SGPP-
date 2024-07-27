@@ -17,8 +17,8 @@
               </thead>
               <tbody>
                 <tr class="tableBody" v-for="(costo, index) in costos" :key="index">
-                  <td class="tableTitle">{{ costo.titulo }}</td>
-                  <td>{{ formatCurrency(costo.monto) }}</td>
+                  <td class="tableTitle">{{ costo.in_titulo }}</td>
+                  <td>{{ formatCurrency(costo.nu_monto) }}</td>
                   <td>{{ costo.fechaDeRegistro }}</td>
                   <td class="actionButtons">
                     <button class="btn-floating" @click="eliminarCosto(index)">
@@ -37,11 +37,11 @@
               <span>Agregar Costo</span>
             </div>
             <div class="col l11 input-field">
-              <input v-model="nuevoCosto.titulo" placeholder="Titulo" maxlength="10" required />
+              <input v-model="nuevoCosto.in_titulo" placeholder="Titulo" maxlength="10" required />
             </div>
             <div class="col l8 input-field">
               <div class="input-wrapper">
-                <input v-model="nuevoCosto.monto" placeholder="0.00 $" maxlength="10" @input="validateMonto" required />
+                <input v-model="nuevoCosto.nu_monto" placeholder="0.00 $" maxlength="10" @input="validateMonto" required />
               </div>
             </div>
             <div class="col l4 centerButton">
@@ -71,28 +71,29 @@
       return {
         costos: [],
         nuevoCosto: {
-          titulo: '',
-          monto: '',
+          in_titulo: '',
+          nu_monto: '',
           fechaDeRegistro: '',
         }
       };
     },
     computed: {
         totalCostos() {
-          return this.costos.reduce((total, costo) => total + parseFloat(costo.monto) || 0, 0);
+          return this.costos.reduce((total, costo) => total + parseFloat(costo.nu_monto) || 0, 0);
         }
     },
     methods: {
     agregarCosto() {
-      if (this.nuevoCosto.titulo.trim() !== '' && this.nuevoCosto.monto.trim() !== '') {
+      if (this.nuevoCosto.in_titulo.trim() !== '' && this.nuevoCosto.nu_monto.trim() !== '') {
         this.nuevoCosto.fechaDeRegistro = new Date().toISOString().split('T')[0]; 
         this.costos.push({ ...this.nuevoCosto });
         this.nuevoCosto = {
-          titulo: '',
-          monto: '',
+          in_titulo: '',
+          nu_monto: '',
           fechaDeRegistro: '',
         };
       }
+      localStorage.setItem('costos', JSON.stringify(this.costos));
     },
     validateMonto(event) {
       let value = event.target.value;

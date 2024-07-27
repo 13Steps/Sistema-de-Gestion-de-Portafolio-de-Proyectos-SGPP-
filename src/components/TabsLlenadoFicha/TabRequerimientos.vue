@@ -101,6 +101,7 @@ export default {
       seguridad: null,
       interconexión: null,
       cargarDataModel: null,
+      entradaComentario: null,
     };
   },
   methods: {
@@ -113,15 +114,17 @@ export default {
         },
     guardarDatos() {
       const requerimientos = {
-        interfaz: this.interfaz,
-        seguridad: this.seguridad,
-        interconexión: this.interconexión,
-        cargarDataModel: this.cargarDataModel,
+        tx_interfaz: this.interfaz,
+        tx_interconexion: this.seguridad,
+        tx_seguridad: this.interconexión,
+        tx_datamodelo: this.cargarDataModel,
+        tx_comentario: entradaComentario
       };
       console.log(requerimientos);
-      if (this.interfaz && this.seguridad && this.interconexión && this.cargarDataModel) {
+      if (this.interfaz && this.seguridad && this.interconexión && this.cargarDataModel && this.entradaComentario) {
         // Aquí puedes subir el archivo a tu servidor
         localStorage.setItem("requerimientos", JSON.stringify(requerimientos));
+        this.$emit("changeTab", requerimientos);
       } else {
         alert("Por favor, llena todos los campos");
       }

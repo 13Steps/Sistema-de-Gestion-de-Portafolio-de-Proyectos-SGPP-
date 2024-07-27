@@ -29,6 +29,17 @@ export async function loginUser(credentials) {
   }
 }
 
+// FUncion para obtener todos los usuarios
+export async function getUsers() {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/v1/users`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 // Función para crear un proyecto
 export async function createProject(projectData) {
   try {
