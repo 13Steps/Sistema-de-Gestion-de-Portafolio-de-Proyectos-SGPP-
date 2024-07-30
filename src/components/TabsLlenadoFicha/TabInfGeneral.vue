@@ -39,7 +39,7 @@
           <label>Área Técnica</label>
           <select v-model="technicalArea" class="browser-default">
             <option disabled selected>Selecciona una opción</option>
-            <option v-for="areas in technicalAreas">
+            <option v-for="areas in technicalAreas" :value="areas.i010i_area_tecnica">
               {{ areas?.in_nombre }}
             </option>
           </select>
@@ -122,6 +122,7 @@ export default {
       objetivoGeneral: null,
       alcance: null,
       comentario: null,
+      technicalArea: null
     };
   },
   watch: {
@@ -140,77 +141,81 @@ export default {
       // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
     }
   },
-    methods: {
-      // Date pickers
-        initDatepickers() {
-    const vm = this; // Guarda la referencia a la instancia de Vue
-    const elems = document.querySelectorAll('.datepicker');
-    elems.forEach((elem) => {
-      M.Datepicker.init(elem, {
-        format: 'yyyy-mm-dd', // Especifica el formato de fecha deseado
-        onSelect(date) {
-          // Obtiene el ID del input asociado al datepicker
-          const id = elem.getAttribute('id');
-          // Formatea la fecha seleccionada al formato deseado
-          const formattedDate = date.toISOString().substring(0, 10);
-          // Actualiza el modelo de datos de Vue basado en el ID
-          if (id === 'fechaInicio') {
-            vm.fechaInicio = formattedDate;
-          } else if (id === 'fechaFin') {
-            vm.fechaFin = formattedDate;
-          }
-          // Actualiza el valor del input para reflejar el formato correcto
-          elem.value = formattedDate;
-        },
-        // Otras opciones de configuración...
+  methods: {
+    // Date pickers
+    initDatepickers() {
+      const vm = this; // Guarda la referencia a la instancia de Vue
+      const elems = document.querySelectorAll(".datepicker");
+      elems.forEach((elem) => {
+        M.Datepicker.init(elem, {
+          format: "yyyy-mm-dd", // Especifica el formato de fecha deseado
+          onSelect(date) {
+            // Obtiene el ID del input asociado al datepicker
+            const id = elem.getAttribute("id");
+            // Formatea la fecha seleccionada al formato deseado
+            const formattedDate = date.toISOString().substring(0, 10);
+            // Actualiza el modelo de datos de Vue basado en el ID
+            if (id === "fechaInicio") {
+              vm.fechaInicio = formattedDate;
+            } else if (id === "fechaFin") {
+              vm.fechaFin = formattedDate;
+            }
+            // Actualiza el valor del input para reflejar el formato correcto
+            elem.value = formattedDate;
+          },
+          // Otras opciones de configuración...
+        });
       });
-    });
-  },
-      validateTitle() {
-        if (this.entradaTitulo === "No disponible") {
-          this.titleMessage = "El título en uso";
-          this.titleClass = "error-message";
-        } else if (this.entradaTitulo) {
-          this.titleMessage = "Disponible";
-          this.titleClass = "success-message";
-        } else {
-          this.titleMessage = "";
-          this.titleClass = "";
-        }
-      },
-      async setEntradaData() {
-        const entradaData = {
-          in_titulo: this.entradaTitulo,
-          fechaInicio: this.fechaInicio,
-          fechaFin: this.fechaFin,
-          tx_descripcion: this.entradaDescripcion,
-          areaTecnica: this.technicalArea,
-          lineaNegocios: this.managementVal,
-          tx_objetivo: this.entradaObjetivo,
-          tx_alcance: this.entradaAlcance,
-          tx_comentario: this.entradaComentario,
-        };
-        console.log(entradaData)
-
-        if (
-          this.entradaTitulo &&
-          this.fechaInicio &&
-          this.fechaFin &&
-          this.entradaDescripcion &&
-          this.technicalArea &&
-          this.managementVal &&
-          this.entradaObjetivo &&
-          this.entradaAlcance &&
-          this.entradaComentario
-        ) {
-         await createProject(entradaData);
-          this.$emit('changeTab', entradaData);
-        } else {
-          alert("Por favor, llene todos los campos");
-        }
-      },
     },
-  }
+    validateTitle() {
+      if (this.entradaTitulo === "No disponible") {
+        this.titleMessage = "El título en uso";
+        this.titleClass = "error-message";
+      } else if (this.entradaTitulo) {
+        this.titleMessage = "Disponible";
+        this.titleClass = "success-message";
+      } else {
+        this.titleMessage = "";
+        this.titleClass = "";
+      }
+    },
+    async setEntradaData() {
+      // const entradaData = {
+      //   in_titulo: this.entradaTitulo,
+      //   tx_descripcion: this.entradaDescripcion,
+      //   areaTecnica: this.technicalArea,
+      //   lineaNegocios: this.managementVal,
+      //   tx_objetivo: this.entradaObjetivo,
+      //   tx_alcance: this.entradaAlcance,
+      // };
+
+      const entradaData = {
+        co_entrada: this.entradaTitulo,
+        i003f_i010t_area_tecnica: this.technicalArea,
+        in_titulo: this.entradaTitulo,
+        tx_descripcion: this.entradaDescripcion,
+        tx_objetivo: this.entradaObjetivo,
+        tx_alcance: this.entradaAlcance,
+      };
+      console.log(entradaData);
+
+      if (
+        this.entradaTitulo &&
+        this.entradaDescripcion &&
+        this.technicalArea &&
+        this.managementVal &&
+        this.entradaObjetivo &&
+        this.entradaAlcance
+      ) {
+        // await createProject(entradaData);
+        localStorage.setItem("entradaData", JSON.stringify(entradaData));
+        this.$emit("changeTab", entradaData);
+      } else {
+        alert("Por favor, llene todos los campos");
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

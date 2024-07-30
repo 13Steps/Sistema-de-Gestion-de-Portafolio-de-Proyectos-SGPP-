@@ -76,6 +76,7 @@ export default {
     },
     handleNuevaHistoria(historia){
       this.historias.push(historia);
+      localStorage.setItem('historias', JSON.stringify(this.historias));
     },
     eliminarHistoria(index) {
       this.historias.splice(index, 1);

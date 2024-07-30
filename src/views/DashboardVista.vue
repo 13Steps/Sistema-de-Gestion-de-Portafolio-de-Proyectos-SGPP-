@@ -83,7 +83,7 @@
         <div class="col l12 m12 s12 cardInfo">
             <i class="material-icons white-text cardIcon" style="font-size: 92px;">folder_open</i>
           <div class="center cardMetrics">
-            <span class="white-text cardValue">2</span>
+            <span class="white-text cardValue">{{proyectos.length}}</span>
             <span class="white-text cardTitle">Proyectos</span>
           </div>
         </div>
@@ -103,7 +103,7 @@
         <div class="col l12 m12 s12 cardInfo">
             <i class="material-icons white-text cardIcon" style="font-size: 92px;">task</i>
           <div class="center cardMetrics">
-            <span class="white-text cardValue">4</span>
+            <span class="white-text cardValue">{{tareas.length}}</span>
             <span class="white-text cardTitle">Tareas</span>
           </div>
         </div>
@@ -123,7 +123,7 @@
         <div class="col l12 m12 s12 cardInfo">
             <i class="material-icons white-text cardIcon" style="font-size: 92px;">format_list_numbered</i>
           <div class="center cardMetrics">
-            <span class="white-text cardValue">1</span>
+            <span class="white-text cardValue">{{requerimientos.length}}</span>
             <span class="white-text cardTitle">Requerimientos</span>
           </div>
         </div>
@@ -143,7 +143,7 @@
         <div class="col l12 m12 s12 cardInfo">
             <i class="material-icons white-text cardIcon" style="font-size: 92px;">description</i>
           <div class="center cardMetrics">
-            <span class="white-text cardValue">1</span>
+            <span class="white-text cardValue">{{solicitudes.length}}</span>
             <span class="white-text cardTitle">Solicitudes</span>
           </div>
         </div>
@@ -169,12 +169,41 @@
 import Navigation from '../components/Navigation.vue';
 import ProyectoChart from '../components/Charts/proyectosChart.vue';
 import SemiCircle from '../components/Charts/semicircleChart.vue';
+import { getProjects, getTasks } from '@/Services/Services';
 
 export default {
   components: {
     Navigation,
     ProyectoChart,
     SemiCircle,
+  },
+  data() {
+    return {
+      proyectos: [],
+      requerimientos: [],
+      solicitudes: [],
+      tareas: []
+    }
+  },
+  async mounted() {
+    try {
+      const responseTask = await getTasks();
+      const response = await getProjects();
+      this.proyectos = response.filter((entrada) => {
+        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes("proyecto");
+      });
+      this.requerimientos = response.filter((entrada) => {
+        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes("requerimiento");
+      });
+      this.solicitudes = response.filter((entrada) => {
+        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes("solicitud");
+      });
+      this.tareas = responseTask;
+
+    } catch (error) {
+      console.error("Error al cargar los proyectos:", error);
+      // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+    }
   },
   methods: {
     movPortafolio(){
