@@ -65,7 +65,7 @@
 <script>
 import CrearTarea from "./ComponentesDeCreacion/CrearTarea.vue";
 import CrearEquipo from "./ComponentesDeCreacion/CrearEquipo.vue";
-import { getManagements, getProjectTypes } from "@/Services/Services";
+import { getManagements, getProjectTypes, updateProject } from "@/Services/Services";
 
 export default {
   components: {
@@ -82,9 +82,11 @@ export default {
       galba: {},
       projectTypes: [],
       selectedType: {},
+      entrada: null
     };
   },
   async mounted() {
+    this.entrada = JSON.parse(localStorage.getItem("entradaData"));
     try {
       this.gerencias = await getManagements();
       this.projectTypes = await getProjectTypes();
@@ -97,6 +99,7 @@ export default {
   },
   methods: {
     setActividades() {
+      this.$store.dispatch('getShowLoader', true);
       const miembros = JSON.parse(localStorage.getItem("miembros"));
       const actividades = {
         i0003f_i008t_equipo_trabajo: {
@@ -110,7 +113,15 @@ export default {
         },
         i003f_i011_tipo_proyecto: this.selectedType,
       };
-      localStorage.setItem("actividades", JSON.stringify(actividades));
+      updateProject(this.entrada.i003i_entrada, actividades)
+        .then((response) => {
+          console.log(response);
+          this.$store.dispatch('getShowLoader', false);
+        })
+        .catch((error) => {
+          this.$store.dispatch('getShowLoader', false);
+          console.log(error);
+        });
       this.$emit("changeTab", actividades);
     },
   },

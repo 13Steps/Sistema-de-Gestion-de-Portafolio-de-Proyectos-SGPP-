@@ -38,6 +38,7 @@
         </tr>
       </tbody>
     </table>
+    
   </div>
 
   <ModalesPequeños
@@ -47,12 +48,14 @@
     @confirmVer="movToFichaEntrada"
     @confirmEdit="movToFichaLlenado"
   />
+ 
 </template>
 
 <script>
 import ModalesPequeños from "../ModalsPequeños.vue";
 import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
 import { getProjects } from "@/Services/Services";
+import Loader from "../Loader.vue";
 
 export default {
   props: {
@@ -67,6 +70,7 @@ export default {
   },
   components: {
     ModalesPequeños,
+    Loader,
   },
   data() {
     return {
@@ -156,6 +160,8 @@ export default {
     };
   },
   async mounted() {
+
+    this.$store.dispatch('getShowLoader', true);
     try {
       const response = await getProjects(); // Llama a getProjects()
       this.proyectos = response; // Guarda la respuesta en la variable projects
@@ -164,6 +170,7 @@ export default {
       console.error("Error al cargar los proyectos:", error);
       // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
     }
+    this.$store.dispatch('getShowLoader', false);
   },
   computed: {
     filteredEntradas() {
@@ -172,11 +179,12 @@ export default {
       }
 
       let faseEntrada = this.proyectos.filter((entrada) => {
-        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+        if( entrada?.i003f_i005t_fase_entrada?.in_nombre_fase) {
+          return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+        }
       });
 
       let currentEntradas = faseEntrada
-console.log(faseEntrada)
       if (this.filter) {
         return currentEntradas.filter((entrada) =>
           entrada.in_titulo.toLowerCase().includes(this.filter.toLowerCase())

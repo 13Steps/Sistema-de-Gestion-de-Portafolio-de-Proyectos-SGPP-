@@ -190,13 +190,13 @@ export default {
       const responseTask = await getTasks();
       const response = await getProjects();
       this.proyectos = response.filter((entrada) => {
-        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes("proyecto");
+        return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes("proyecto");
       });
       this.requerimientos = response.filter((entrada) => {
-        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes("requerimiento");
+        return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes("requerimiento");
       });
       this.solicitudes = response.filter((entrada) => {
-        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes("solicitud");
+        return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes("solicitud");
       });
       this.tareas = responseTask;
 

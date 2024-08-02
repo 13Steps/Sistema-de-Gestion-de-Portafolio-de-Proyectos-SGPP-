@@ -12,7 +12,7 @@
 
 <script>
 import CrearCosto from "./ComponentesDeCreacion/CrearCosto.vue";
-import { createProject } from "@/Services/Services";
+import { createProject, updateProject } from "@/Services/Services";
 
 export default {
   components: {
@@ -25,6 +25,7 @@ export default {
   },
   methods: {
     CrearProyecto() {
+      this.$store.dispatch('getShowLoader', true);
       const entrada = JSON.parse(localStorage.getItem("entradaData"));
       const requerimientos = JSON.parse(localStorage.getItem("requerimientos"));
       const actividades = JSON.parse(localStorage.getItem("actividades"));
@@ -44,15 +45,17 @@ export default {
         i003f_i016i_costo: costos,
       };
 
-      createProject(projectPayload)
+      updateProject(id, projectPayload)
         .then((response) => {
           console.log(response);
           localStorage.removeItem("entradaData");
           localStorage.removeItem("requerimientos");
           localStorage.removeItem("actividades");
           localStorage.removeItem("costos");
+          this.$store.dispatch('getShowLoader', false);
         })
         .catch((error) => {
+          this.$store.dispatch('getShowLoader', false);
           console.log(error);
         });
     },
