@@ -16,22 +16,22 @@
         <tr
           class="tableBody"
           v-for="entrada in filteredEntradas"
-          :key="entrada.i003i_entrada"
+          :key="entrada?.i003i_entrada"
         >
-          <td class="tableTitle">{{ entrada.in_titulo }}</td>
-          <td>{{ entrada.i003f_i006t_estado_entrada.in_nombre_estado }}</td>
-          <td>{{ entrada.i003f_i010t_area_tecnica.in_nombre }}</td>
-          <td>{{ entrada.i003f_i011_tipo_proyecto.in_nombre }}</td>
-          <td>{{ entrada.inicioR }}</td>
-          <td>{{ entrada.finR }}</td>
+          <td class="tableTitle">{{ entrada?.in_titulo }}</td>
+          <td>{{ entrada?.i003f_i006t_estado_entrada?.in_nombre_estado }}</td>
+          <td>{{ entrada?.i003f_i010t_area_tecnica?.in_nombre }}</td>
+          <td>{{ entrada?.i003f_i011_tipo_proyecto?.in_nombre }}</td>
+          <td>{{ entrada?.inicioR }}</td>
+          <td>{{ entrada?.finR }}</td>
           <td class="actionButtons">
-            <a class="btn-floating" @click="abrirModalSeeEntrada(entrada.i003i_entrada)">
+            <a class="btn-floating" @click="abrirModalSeeEntrada(entrada?.i003i_entrada)">
               <i class="material-icons">visibility</i>
             </a>
-            <a class="btn-floating" @click="abrirModalEditEntrada(entrada.i003i_entrada)">
+            <a class="btn-floating" @click="abrirModalEditEntrada(entrada?.i003i_entrada)">
               <i class="material-icons">edit</i>
             </a>
-            <a class="btn-floating" @click="abrirModalDeleteEntrada(entrada.id)">
+            <a class="btn-floating" @click="abrirModalDeleteEntrada(entrada?.id)">
               <i class="material-icons">delete</i>
             </a>
           </td>

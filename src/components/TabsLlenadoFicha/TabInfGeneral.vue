@@ -199,20 +199,8 @@ export default {
       };
       console.log(entradaData);
 
-      if (
-        this.entradaTitulo &&
-        this.entradaDescripcion &&
-        this.technicalArea &&
-        this.managementVal &&
-        this.entradaObjetivo &&
-        this.entradaAlcance
-      ) {
-        // await createProject(entradaData);
-        localStorage.setItem("entradaData", JSON.stringify(entradaData));
+      localStorage.setItem("entradaData", JSON.stringify(entradaData));
         this.$emit("changeTab", entradaData);
-      } else {
-        alert("Por favor, llene todos los campos");
-      }
     },
   },
 };

@@ -119,6 +119,20 @@ export async function createManagement(managementData) {
   }
 }
 
+// Funcion para generar reportes de un proyecto 
+export async function generateReport(projectId) {
+  try {
+    const response = await axios.get(
+      
+      `${BASE_URL}/api/v1/projects/reports/${projectId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 // Función para obtener todas las gerencias
 export async function getManagements() {
   try {
