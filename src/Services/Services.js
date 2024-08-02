@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "https://backend-gestion-proyectos.onrender.com";
+const BASE_URL = "http://34.225.211.222:3000";
+
 // Función para registrar un usuario
 export async function registerUser(userData) {
   try {
