@@ -116,7 +116,8 @@
 import Navigation from "../components/Navigation.vue";
 import TablaEntradas from "../components/Tablas/TablaEntradas.vue";
 import ModalesPequeños from "../components/ModalsPequeños.vue";
-import { projects } from '../Services/Services';
+import { projects } from "../Services/Services";
+import { createProject, updateProject } from "@/Services/Services";
 
 export default {
   data() {
@@ -127,7 +128,7 @@ export default {
       titleClass: "",
       titleMessage: "",
       searchQuery: "",
-      projects: []
+      projects: [],
     };
   },
   components: {

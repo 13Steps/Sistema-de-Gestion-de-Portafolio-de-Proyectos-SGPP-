@@ -16,28 +16,29 @@
         <tr
           class="tableBody"
           v-for="entrada in filteredEntradas"
-          :key="entrada.i003i_entrada"
+          :key="entrada?.i003i_entrada"
         >
-          <td class="tableTitle">{{ entrada.in_titulo }}</td>
-          <td>{{ entrada.i003f_i006t_estado_entrada.in_nombre_estado }}</td>
-          <td>{{ entrada.i003f_i010t_area_tecnica.in_nombre }}</td>
-          <td>{{ entrada.i003f_i011_tipo_proyecto.in_nombre }}</td>
-          <td>{{ entrada.inicioR }}</td>
-          <td>{{ entrada.finR }}</td>
+          <td class="tableTitle">{{ entrada?.in_titulo }}</td>
+          <td>{{ entrada?.i003f_i006t_estado_entrada?.in_nombre_estado }}</td>
+          <td>{{ entrada?.i003f_i010t_area_tecnica?.in_nombre }}</td>
+          <td>{{ entrada?.i003f_i011_tipo_proyecto?.in_nombre }}</td>
+          <td>{{ entrada?.inicioR }}</td>
+          <td>{{ entrada?.finR }}</td>
           <td class="actionButtons">
-            <a class="btn-floating" @click="abrirModalSeeEntrada(entrada.i003i_entrada)">
+            <a class="btn-floating" @click="abrirModalSeeEntrada(entrada?.i003i_entrada)">
               <i class="material-icons">visibility</i>
             </a>
-            <a class="btn-floating" @click="abrirModalEditEntrada(entrada.i003i_entrada)">
+            <a class="btn-floating" @click="abrirModalEditEntrada(entrada?.i003i_entrada)">
               <i class="material-icons">edit</i>
             </a>
-            <a class="btn-floating" @click="abrirModalDeleteEntrada(entrada.id)">
+            <a class="btn-floating" @click="abrirModalDeleteEntrada(entrada?.id)">
               <i class="material-icons">delete</i>
             </a>
           </td>
         </tr>
       </tbody>
     </table>
+    
   </div>
 
   <ModalesPequeños
@@ -47,12 +48,14 @@
     @confirmVer="movToFichaEntrada"
     @confirmEdit="movToFichaLlenado"
   />
+ 
 </template>
 
 <script>
 import ModalesPequeños from "../ModalsPequeños.vue";
 import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
 import { getProjects } from "@/Services/Services";
+import Loader from "../Loader.vue";
 
 export default {
   props: {
@@ -67,6 +70,7 @@ export default {
   },
   components: {
     ModalesPequeños,
+    Loader,
   },
   data() {
     return {
@@ -156,6 +160,8 @@ export default {
     };
   },
   async mounted() {
+
+    this.$store.dispatch('getShowLoader', true);
     try {
       const response = await getProjects(); // Llama a getProjects()
       this.proyectos = response; // Guarda la respuesta en la variable projects
@@ -164,6 +170,7 @@ export default {
       console.error("Error al cargar los proyectos:", error);
       // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
     }
+    this.$store.dispatch('getShowLoader', false);
   },
   computed: {
     filteredEntradas() {
@@ -172,11 +179,12 @@ export default {
       }
 
       let faseEntrada = this.proyectos.filter((entrada) => {
-        return entrada.i003f_i005t_fase_entrada.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+        if( entrada?.i003f_i005t_fase_entrada?.in_nombre_fase) {
+          return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+        }
       });
 
       let currentEntradas = faseEntrada
-console.log(faseEntrada)
       if (this.filter) {
         return currentEntradas.filter((entrada) =>
           entrada.in_titulo.toLowerCase().includes(this.filter.toLowerCase())

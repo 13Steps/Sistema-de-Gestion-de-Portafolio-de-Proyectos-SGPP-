@@ -129,11 +129,13 @@
     </ul>
 
   </div>
+  <Loader v-if="showLoader"/>
 </template>
 
 <script>
 import { movDashboard, movPortafolio, movAdmin } from '../Tools/NavOptions'
 import { mapState } from 'vuex';
+import Loader from './Loader.vue';
 
 export default {
   data() {
@@ -141,6 +143,9 @@ export default {
       indicador: "",
       breadcrumbs: [],
     }
+  },
+    components: {
+    Loader,
   },
   //Sticky Navbar
   mounted() {
@@ -169,7 +174,10 @@ export default {
 
   },
   computed: {
-    ...mapState(['user']) // Asume que 'userData' es una propiedad en tu estado de Vuex
+    ...mapState(['user']), // Asume que 'userData' es una propiedad en tu estado de Vuex
+    showLoader() {
+      return this.$store.state.showLoader;
+    },
   },
   watch: {
     '$route'() {

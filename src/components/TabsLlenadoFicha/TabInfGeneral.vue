@@ -96,6 +96,7 @@
       <span> <i class="material-icons"> save </i>Guardar </span>
     </button>
   </div>
+  <Loader />
 </template>
 
 <script>
@@ -103,7 +104,9 @@ import {
   getTechnicalAreas,
   getManagements,
   createProject,
+  updateProject
 } from "@/Services/Services";
+import Loader from "@/components/loader/loader.vue";
 
 export default {
   data() {
@@ -122,14 +125,16 @@ export default {
       objetivoGeneral: null,
       alcance: null,
       comentario: null,
-      technicalArea: null
+      technicalArea: null,
+      entrada: null
     };
   },
   watch: {
     entradaTitulo: "validateTitle",
   },
   async mounted() {
-    // Date pickers
+    this.entrada = JSON.parse(localStorage.getItem("entradaData"));
+    this.entradaTitulo = this.entrada.in_titulo;
     this.initDatepickers();
     try {
       this.technicalAreas = await getTechnicalAreas();
@@ -180,15 +185,7 @@ export default {
       }
     },
     async setEntradaData() {
-      // const entradaData = {
-      //   in_titulo: this.entradaTitulo,
-      //   tx_descripcion: this.entradaDescripcion,
-      //   areaTecnica: this.technicalArea,
-      //   lineaNegocios: this.managementVal,
-      //   tx_objetivo: this.entradaObjetivo,
-      //   tx_alcance: this.entradaAlcance,
-      // };
-
+      this.$store.dispatch('getShowLoader', true);
       const entradaData = {
         co_entrada: this.entradaTitulo,
         i003f_i010t_area_tecnica: this.technicalArea,
@@ -197,22 +194,18 @@ export default {
         tx_objetivo: this.entradaObjetivo,
         tx_alcance: this.entradaAlcance,
       };
-      console.log(entradaData);
 
-      if (
-        this.entradaTitulo &&
-        this.entradaDescripcion &&
-        this.technicalArea &&
-        this.managementVal &&
-        this.entradaObjetivo &&
-        this.entradaAlcance
-      ) {
-        // await createProject(entradaData);
-        localStorage.setItem("entradaData", JSON.stringify(entradaData));
+
+      updateProject(this.entrada.i003i_entrada, entradaData)
+        .then((response) => {
+          console.log(response);
+          this.$store.dispatch('getShowLoader', false);
+        })
+        .catch((error) => {
+          this.$store.dispatch('getShowLoader', false);
+          console.log(error);
+        });
         this.$emit("changeTab", entradaData);
-      } else {
-        alert("Por favor, llene todos los campos");
-      }
     },
   },
 };

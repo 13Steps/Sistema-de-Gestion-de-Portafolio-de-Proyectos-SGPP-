@@ -8,6 +8,7 @@ export default createStore({
     selectedEntryId: null,
     project: {},
     projects: [],
+    showLoader: false,
   },
   getters: {
     isLoggedIn(state) {
@@ -24,6 +25,9 @@ export default createStore({
     },
     getProjects(state) {
       return state.projects;
+    },
+    getShowLoader(state) {
+      return state.showLoader;
     }
   },
   mutations: {
@@ -47,6 +51,9 @@ export default createStore({
     setProjects(state, projects) {
       state.projects = projects;
     },
+    setShowLoader(state, showLoader) {
+      state.showLoader = showLoader;
+    }
   },
     actions: {
       restoreSession({ commit }) {
@@ -68,6 +75,9 @@ export default createStore({
       },
       getProjects({ commit }, projects) {
         commit("setProjects", projects);
+      },
+      getShowLoader({ commit }, showLoader) {
+        commit("setShowLoader", showLoader);
       }
     },
 });
