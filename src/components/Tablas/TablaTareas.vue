@@ -14,7 +14,7 @@
         <tr v-for="task in tasksData" :key="task.i013i_tarea" class="tableBody">
           <td>{{task?.tx_descripcion}}</td>
           <td>{{task?.i013f_i003t_entrada.i003f_i006t_estado_entrada?.in_nombre_estado}}</td>
-          <td>{{task?.i013f_i014t_seguimiento}}%</td>
+          <td>{{task?.i013f_i014t_seguimiento?.nu_completado}}%</td>
           <td class="actionButtons">
             <a class="btn-floating" @click="openModal"
               ><i class="material-icons">more_vert</i></a

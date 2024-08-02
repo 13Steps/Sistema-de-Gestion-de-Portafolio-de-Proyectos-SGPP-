@@ -107,14 +107,14 @@
       </div>
       <div class="modalContent">
         <p>
-          Se generar un reporte del siguiente entrada:  entrada.title 
+          Se generar un reporte del siguiente entrada:  {{getProject?.in_titulo}}
         </p>
       </div>
       <div class="modal-footer center">
         <div class="divider"></div>
         <div class="actionButtons">
           <a class="btn" @click="closeModal(0)">Cancelar</a>
-          <a class="btn" @click="generarReporteEspecifico">Aceptar</a>
+          <a class="btn" @click="generarReporteEspecifico(getProject.i003i_entrada)">Aceptar</a>
         </div>
       </div>
     </div>
@@ -211,6 +211,7 @@ import TabResumen from "../components/TabsFichaEntrada/TabResumen.vue";
 import TabRequerimientos from "../components/TabsFichaEntrada/TabRequerimientos.vue";
 import TabTareas from "../components/TabsFichaEntrada/TabTareas.vue";
 import TabForo from "../components/TabsFichaEntrada/TabForo.vue";
+import { generateReport } from "@/Services/Services";
 
 export default {
   props: ["entryId"],
@@ -292,8 +293,9 @@ export default {
       this.closeModal(1);
     },
 
-    generarReporteEspecifico(){
-      // logica de generacion de reporte
+    generarReporteEspecifico(id){
+      // petición para generar reporte de la entrada con id
+      generateReport(id);
       this.closeModal(0);
     },
     guardarCambios() {

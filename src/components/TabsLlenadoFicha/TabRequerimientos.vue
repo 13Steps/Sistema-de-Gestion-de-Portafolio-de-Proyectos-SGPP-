@@ -121,13 +121,8 @@ export default {
         tx_comentario: entradaComentario
       };
       console.log(requerimientos);
-      if (this.interfaz && this.seguridad && this.interconexión && this.cargarDataModel && this.entradaComentario) {
-        // Aquí puedes subir el archivo a tu servidor
-        localStorage.setItem("requerimientos", JSON.stringify(requerimientos));
+      localStorage.setItem("requerimientos", JSON.stringify(requerimientos));
         this.$emit("changeTab", requerimientos);
-      } else {
-        alert("Por favor, llena todos los campos");
-      }
     },
   },
 };
