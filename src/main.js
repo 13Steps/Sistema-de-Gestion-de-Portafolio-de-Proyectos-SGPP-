@@ -9,7 +9,11 @@ import 'material-icons/iconfont/material-icons.css';
 
 import HighchartsVue from 'highcharts-vue';
 
+import minIx from '@/Tools/mixIn';
+
 const app = createApp(App);
+
+app.mixin(minIx);
 
 app.use(store)
    .use(router)
