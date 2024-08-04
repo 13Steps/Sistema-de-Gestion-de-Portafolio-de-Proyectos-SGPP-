@@ -96,7 +96,6 @@
       <span> <i class="material-icons"> save </i>Guardar </span>
     </button>
   </div>
-  <Loader />
 </template>
 
 <script>
@@ -106,7 +105,6 @@ import {
   createProject,
   updateProject
 } from "@/Services/Services";
-import Loader from "@/components/loader/loader.vue";
 
 export default {
   data() {

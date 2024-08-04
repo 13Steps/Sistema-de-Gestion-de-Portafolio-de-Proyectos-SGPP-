@@ -55,7 +55,6 @@
 import ModalesPequeños from "../ModalsPequeños.vue";
 import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
 import { getProjects } from "@/Services/Services";
-import Loader from "../Loader.vue";
 
 export default {
   props: {
@@ -70,7 +69,6 @@ export default {
   },
   components: {
     ModalesPequeños,
-    Loader,
   },
   data() {
     return {
