@@ -57,7 +57,8 @@
       <li>
         <div class="userContainer">
           <div class="picContainer">
-            <img src="../assets/Imagenes/user_pic.jpeg" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
+            <img v-if="user.foto === 'string'" :src="user.foto" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
+            <img v-else src="../assets/Imagenes/perfil.jpg" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
           </div>
           <div class="userName">
             <span><h5>{{user.nombre}} {{user.apellido}}</h5></span>
@@ -136,6 +137,7 @@
 import { movDashboard, movPortafolio, movAdmin } from '../Tools/NavOptions'
 import { mapState } from 'vuex';
 import Loader from './Loader.vue';
+import perfil from '@/assets/Imagenes/perfil.jpg';
 
 export default {
   data() {

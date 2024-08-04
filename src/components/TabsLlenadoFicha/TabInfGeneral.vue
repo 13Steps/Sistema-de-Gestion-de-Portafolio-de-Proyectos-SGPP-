@@ -67,8 +67,8 @@
           <label>Línea de Negocios</label>
           <select v-model="managementVal" class="browser-default">
             <option disabled selected>Selecciona una opción</option>
-            <option v-for="management in managements">
-              {{ management?.in_nombre }}
+            <option v-for="areas in technicalAreas" :value="areas.i010i_area_tecnica">
+              {{ areas?.in_nombre }}
             </option>
           </select>
         </div>

@@ -78,7 +78,7 @@
           <div class="formContent row">
             <div class="col l12 center indicadorContainer">
               <span class="indicadorUser">
-                {{ usuario.indicador }}
+                {{ usuario.in_usuario }}
               </span>
               <br /><br />
             </div>
@@ -87,7 +87,7 @@
                 <input
                   id="nombreUsuario"
                   type="text"
-                  v-model="usuario.nombre"
+                  v-model="usuario.in_nombre"
                   maxlength="50"
                   required
                 />
@@ -97,7 +97,7 @@
                 <input
                   id="apellidoUsuario"
                   type="text"
-                  v-model="usuario.apellido"
+                  v-model="usuario.in_apellido"
                   maxlength="50"
                   required
                 />
@@ -109,7 +109,7 @@
                 <input
                   id="correoUsuario"
                   type="email"
-                  v-model="usuario.email"
+                  v-model="usuario.in_correo"
                   maxlength="50"
                   required
                 />
@@ -128,12 +128,12 @@
             </div>
             <div class="col l12">
               <div class="input-field col l12">
-                <select v-model="usuario.rol" class="browser-default" required>
+                <select v-model="usuario.in_role" class="browser-default" required>
                   <option disabled value="" class="hide">Rol</option>
-                  <option value="Administrador">Administrador</option>
-                  <option value="Gerente">Gerente</option>
-                  <option value="Líder de Proyecto">Líder de Proyecto</option>
-                  <option value="Trabajador">Trabajador</option>
+                  <option value="rolAdministrador">Administrador</option>
+                  <option value="rolGerente">Gerente</option>
+                  <option value="rolLiderProyecto">Líder de Proyecto</option>
+                  <option value="rolTrabajador">Trabajador</option>
                 </select>
               </div>
             </div>
@@ -170,9 +170,10 @@
 </template>
 
 <script>
+import { registerUser } from "@/Services/Services";
 export default {
   props: {
-    indicador: String,
+    in_usuario: String,
   },
   data() {
     return {
@@ -186,12 +187,12 @@ export default {
         tx_criterio: "",
       },
       usuario: {
-        indicador: this.indicador,
-        nombre: "",
-        apellido: "",
-        correo: "",
+        in_usuario: this.in_usuario,
+        in_nombre: "",
+        in_apellido: "",
+        in_correo: "",
         password: "",
-        rol: "",
+        in_role: "",
         foto: null,
       },
     };
@@ -211,10 +212,10 @@ export default {
         );
       });
     },
-    openModal(id, indicador = "") {
+    openModal(id, in_usuario = "") {
       const modal = this.modalInstances.find((modal) => modal.el.id === id);
       if (modal) {
-        this.usuario.indicador = indicador;
+        this.usuario.in_usuario = in_usuario;
         modal.open();
       }
     },
@@ -231,10 +232,32 @@ export default {
       }
     },
     submitFormHistoria() {
-      this.$emit("submit-historia", { ...this.historia, co_historia: this.historia.in_titulo });
+      this.$emit("submit-historia", {
+        ...this.historia,
+        co_historia: this.historia.in_titulo,
+      });
       this.closeModal("modal-historia");
     },
-    submitFormUsuario() {
+    async submitFormUsuario() {
+      this.$store.dispatch('getShowLoader', true);
+      try {
+        // Crear una instancia de FormData
+        const formData = new FormData();
+
+        // Añadir cada campo del objeto usuario a FormData
+        for (const key in this.usuario) {
+          formData.append(key, this.usuario[key]);
+        }
+
+        // Enviar la solicitud usando FormData
+        const response = await registerUser(formData);
+        console.log(response);
+        this.$store.dispatch('getShowLoader', false);
+      } catch (error) {
+        console.error("Error al crear el usuario:", error);
+        alert("Error al crear el usuario");
+        this.$store.dispatch('getShowLoader', falso);
+      }
       this.$emit("submit-usuario", { ...this.usuario });
       this.closeModal("modal-nuevo-usuario");
     },
@@ -250,12 +273,12 @@ export default {
     },
     clearFormFieldsUsuario() {
       this.usuario = {
-        indicador: "",
-        nombre: "",
-        apellido: "",
-        correo: "",
+        in_usuario: "",
+        in_nombre: "",
+        in_apellido: "",
+        in_correo: "",
         password: "",
-        rol: "",
+        in_role: "",
         foto: null,
       };
     },

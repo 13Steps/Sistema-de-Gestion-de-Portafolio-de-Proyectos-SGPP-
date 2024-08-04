@@ -11,13 +11,14 @@
         :key="miembro.in_id"
         class="listaEntrada"
       >
-        <div class="imgContainer">
-          <img src="../assets/Imagenes/user_pic.jpeg" class="responsive-img" />
+        <div v-if="!nombrePropiedad.includes('gerencia')" class="imgContainer">
+          <img v-if="miembro.foto === 'string'" :src="user.foto" class="responsive-img">
+          <img v-else src="../assets/Imagenes/user_pic.jpeg" class="responsive-img" />
         </div>
         <div class="infoContainer">
           <div class="userDatos">
-            <h1>Gabriel Marquez</h1>
-            <h3>( MARQUEZGA )</h3>
+            <h1>{{miembro.in_nombre}} {{miembro.in_apellido}}</h1>
+            <h3 v-if="miembro.in_usuario">( {{ miembro.in_usuario }} )</h3>
           </div>
           <div class="rolContainer">
             <span>{{

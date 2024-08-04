@@ -228,7 +228,7 @@ export default {
           i0003f_i008t_equipo_trabajo: {},
           i003f_i005t_fase_entrada: {},
           i003f_i006t_estado_entrada: { },
-          i004i_datos_adi: {},
+          i003f_i004t_datos_adi: {},
           i003f_i013t_tareas: [],
           i003f_i007i_historia_usuario: [],
           i003f_i016i_costo: [],

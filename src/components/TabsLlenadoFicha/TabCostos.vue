@@ -21,37 +21,23 @@ export default {
   data() {
     return {
       costos: [],
+      entrada: null,
     };
+  },
+  mounted() {
+    this.entrada = JSON.parse(localStorage.getItem("entradaData"));
   },
   methods: {
     CrearProyecto() {
       this.$store.dispatch('getShowLoader', true);
-      const entrada = JSON.parse(localStorage.getItem("entradaData"));
-      const requerimientos = JSON.parse(localStorage.getItem("requerimientos"));
-      const actividades = JSON.parse(localStorage.getItem("actividades"));
       const costos = JSON.parse(localStorage.getItem("costos"));
-      const historias = JSON.parse(localStorage.getItem("historias"));
-      const tareas = JSON.parse(localStorage.getItem("tareas"));
       const projectPayload = {
-        ...entrada,
-        ...actividades,
-        i003f_i005t_fase_entrada: 1,
-        i003f_i006t_estado_entrada: 5,
-        i004i_datos_adi: {
-          ...requerimientos,
-        },
-        i003f_i013t_tareas: tareas,
-        i003f_i007i_historia_usuario: historias,
         i003f_i016i_costo: costos,
       };
 
-      updateProject(id, projectPayload)
+      updateProject(this.entrada.i003i_entrada, projectPayload)
         .then((response) => {
           console.log(response);
-          localStorage.removeItem("entradaData");
-          localStorage.removeItem("requerimientos");
-          localStorage.removeItem("actividades");
-          localStorage.removeItem("costos");
           this.$store.dispatch('getShowLoader', false);
         })
         .catch((error) => {

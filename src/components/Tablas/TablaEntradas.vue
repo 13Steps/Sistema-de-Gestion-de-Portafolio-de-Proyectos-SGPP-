@@ -181,6 +181,8 @@ export default {
       let faseEntrada = this.proyectos.filter((entrada) => {
         if( entrada?.i003f_i005t_fase_entrada?.in_nombre_fase) {
           return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+        } else {
+          return '-'
         }
       });
 
@@ -215,6 +217,20 @@ export default {
     },
     movToFichaLlenado(entryId) {
       movToFichaLlenado(this.$router, entryId);
+      if (entryId) {
+        //Obtener la entrada seleccionada
+        const entrada = this.proyectos.find((entrada) => entrada.i003i_entrada === entryId);
+        const entradaData = {
+        co_entrada: entrada.in_titulo,
+        i003f_i010t_area_tecnica: entrada.i003f_i010t_area_tecnica,
+        in_titulo: entrada.in_titulo,
+        tx_descripcion: entrada.tx_descripcion,
+        tx_objetivo: entrada.tx_objetivo,
+        tx_alcance: entrada.tx_alcance,
+        };
+
+        localStorage.setItem("entradaData", JSON.stringify(entradaData));
+      };
     },
   },
 };

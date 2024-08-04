@@ -44,7 +44,7 @@ const routes = [
       },
     ]}, 
     { beforeEnter: [estaAutenticado],
-      path: '/fichaLlenado/:entryId', name: 'fichaLlenado', meta: {breadcrumb: ' / fichaLlenado'},
+      path: '/fichaLlenado/:entryId', name: 'fichaLlenadoId', meta: {breadcrumb: ' / fichaLlenado id'},
       children: [
         {
           path: '',

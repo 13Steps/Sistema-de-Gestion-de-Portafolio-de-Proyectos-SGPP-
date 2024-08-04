@@ -101,6 +101,7 @@ export default {
     setActividades() {
       this.$store.dispatch('getShowLoader', true);
       const miembros = JSON.parse(localStorage.getItem("miembros"));
+      const tareas = JSON.parse(localStorage.getItem("tareas"));
       const actividades = {
         i0003f_i008t_equipo_trabajo: {
           c008f_i009t_gerencia_funcional: this.functional,
@@ -112,6 +113,7 @@ export default {
           in_cargo: "strasdasdasing",
         },
         i003f_i011_tipo_proyecto: this.selectedType,
+        i003f_i013t_tareas: tareas,
       };
       updateProject(this.entrada.i003i_entrada, actividades)
         .then((response) => {

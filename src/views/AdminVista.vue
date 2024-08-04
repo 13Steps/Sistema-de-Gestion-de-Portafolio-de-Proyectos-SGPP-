@@ -80,7 +80,7 @@
   
   
   </div>
-  <ModalsForms ref="modalesFormRef" :indicador="nuevoIndicador"/>
+  <ModalsForms ref="modalesFormRef" :in_usuario="nuevoIndicador"/>
   </main>
   
   
@@ -90,15 +90,13 @@
   import Navigation from '../components/Navigation.vue';
   import TablaUsuarios from '../components/Tablas/TablaUsuarios.vue';
   import ModalsForms from '../components/ModalsForms.vue';
+  import { getUsers } from '@/Services/Services';
   
   export default {
     data() {
       return {
         nuevoIndicador: '',
-        usuarios: [
-          { nombre: 'Gabriel', apellido: 'Marquez', indicador: 'MARQUEZGA', rol: 'Administrador', fechaCreacion: '24/05/2023', password: 'pdvsa1234', },
-          { nombre: 'Beverley', apellido: 'Brito', indicador: 'BRITOB',  correo: 'britob@pdvsa.com', rol: 'Líder de Proyecto', fechaCreacion: '11/12/2023', password: 'pdvsa1234' },
-        ],
+        usuarios: [],
       };
     },
     components: {
@@ -106,12 +104,22 @@
       TablaUsuarios,
       ModalsForms,
     },
+    async mounted() {
+      try {
+      const response = await getUsers(); // Llama a getProjects()
+      this.usuarios = response; 
+      console.log( this.usuarios)
+    } catch (error) {
+      console.error("Error al cargar los proyectos:", error);
+      // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+    }
+    },
     methods: {
       convertirAMayusculas() {
         this.nuevoIndicador = this.nuevoIndicador.toUpperCase();
       },
       crearUser() {
-        if (this.usuarios.some(user => user.indicador === this.nuevoIndicador)) {
+        if (this.usuarios.some(user => user.in_usuario === this.nuevoIndicador)) {
           alert('El indicador ya existe.');
           this.nuevoIndicador = '';
         } else {

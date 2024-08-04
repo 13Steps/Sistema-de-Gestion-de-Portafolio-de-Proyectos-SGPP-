@@ -120,15 +120,19 @@ export default {
             }
         },
     guardarDatos() {
+      const id_adi = JSON.parse(localStorage.getItem("entradaData")).i003f_i004t_datos_adi.i004i_datos_adi;
+      const historias = JSON.parse(localStorage.getItem("historias"));
       this.$store.dispatch('getShowLoader', true);
       const requerimientos = {
-        i004i_datos_adi: {
+        i003f_i004t_datos_adi: {
+          i004i_datos_adi: id_adi,
           tx_interfaz: this.interfaz,
           tx_interconexion: this.interconexión,
           tx_seguridad: this.seguridad ,
           tx_datamodelo: this.cargarDataModel,
           tx_comentario: this.entradaComentario
-        }
+        },
+        i003f_i007i_historia_usuario: historias
       }
       
       updateProject(this.entrada.i003i_entrada, requerimientos)

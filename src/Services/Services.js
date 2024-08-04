@@ -41,6 +41,31 @@ export async function getUsers() {
   }
 }
 
+//Funcion para obtener un usuario por ID
+export async function getUserById(userId) {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/v1/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// Funcion para actualizar un usuario
+export async function updateUser(userId, userData) {
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}/api/v1/users/${userId}`,
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 // Función para crear un proyecto
 export async function createProject(projectData) {
   try {
