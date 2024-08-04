@@ -44,7 +44,7 @@
 /* infoCards */
   .infoCard .cardContent{
     width: 100%;  
-
+    cursor: pointer;
   }
   .infoCard .cardInfo{
     display: flex;

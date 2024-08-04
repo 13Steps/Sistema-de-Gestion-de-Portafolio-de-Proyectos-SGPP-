@@ -14,7 +14,7 @@ export default {
 <style>
   *{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    scrollbar-width: none;
+    scrollbar-width: thin;
   }
   .backgroundImg{
     background-image: url('../src/assets/Fondos/sampleBackground.jpeg');
@@ -23,11 +23,20 @@ export default {
     background-position: center;
     height: 100%;
   }
+  body.modal-open {
+  overflow: auto !important;
+}
+
   main{
     overflow-y: scroll;
     max-height: 100%;
     min-height: 100vh;
+    scrollbar-width: none;
   }
+  .ganttContainer, .collapsible-body{
+    scrollbar-width: none;
+  }
+  
 
 /* MaterializeCSS */
   .datepicker-date-display{

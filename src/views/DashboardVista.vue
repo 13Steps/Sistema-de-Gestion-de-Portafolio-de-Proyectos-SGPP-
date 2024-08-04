@@ -70,14 +70,14 @@
             <span class="btn amber lighten-2">Revisión</span>
           </div>
           <div class="col l6 m6 s6">
-            <span class="btn red lighten-1">Cancelados</span>
+            <span class="btn red lighten-1">Atrasados</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="col l4 m6 s12 infoCard totalProyectos">
+  <div class="col l4 m6 s12 infoCard totalProyectos" @click="movPortafolio()">
     <div class="card horizontal --border teal lighten-2 hoverable">
       <div class="cardContent">
         <div class="col l12 m12 s12 cardInfo">
@@ -88,8 +88,8 @@
           </div>
         </div>
         <div class="col l12 m12 s12 cardAction">
-          <a @click="movPortafolio()">
-            <span class="teal-text">Ver proyectos</span> 
+          <a>
+            <span class="teal-text">Ver Detalles</span> 
             <i class="material-icons right teal-text">navigate_next</i>
           </a>
         </div>
@@ -97,7 +97,7 @@
     </div>
   </div>
 
-  <div class="col l4 m6 s12 infoCard totalTareas">
+  <div class="col l4 m6 s12 infoCard totalTareas" @click="movPortafolio()">
     <div class="card horizontal --border indigo lighten-2 hoverable">
       <div class="cardContent">
         <div class="col l12 m12 s12 cardInfo">
@@ -108,8 +108,8 @@
           </div>
         </div>
         <div class="col l12 m12 s12 cardAction">
-          <a @click="movPortafolio()">
-            <span class="indigo-text">Ver tareas</span> 
+          <a>
+            <span class="indigo-text">Ver Detalles</span> 
             <i class="material-icons indigo-text">navigate_next</i>
           </a>
         </div>
@@ -117,7 +117,7 @@
     </div>
   </div>
 
-  <div class="col l4 m6 s12 infoCard totalRequerimientos">
+  <div class="col l4 m6 s12 infoCard totalRequerimientos"  @click="movPortafolio()">
     <div class="card horizontal --border deep-orange lighten-2 hoverable">
       <div class="cardContent">
         <div class="col l12 m12 s12 cardInfo">
@@ -128,8 +128,8 @@
           </div>
         </div>
         <div class="col l12 m12 s12 cardAction">
-          <a @click="movPortafolio()">
-            <span class="deep-orange-text">Ver hojas de requerimientos</span> 
+          <a>
+            <span class="deep-orange-text">Ver Detalles</span> 
             <i class="material-icons deep-orange-text">navigate_next</i>
           </a>
         </div>
@@ -137,7 +137,7 @@
     </div>
   </div>
 
-  <div class="col l4 m6 s12 infoCard totalSolicitudes">
+  <div class="col l4 m6 s12 infoCard totalSolicitudes" @click="movPortafolio()">
     <div class="card horizontal --border  amber lighten-1 hoverable">
       <div class="cardContent">
         <div class="col l12 m12 s12 cardInfo">
@@ -148,8 +148,8 @@
           </div>
         </div>
         <div class="col l12 m12 s12 cardAction">
-          <a @click="movPortafolio()">
-            <span class="amber-text">Ver solicitudes</span> 
+          <a>
+            <span class="amber-text">Ver Detalles</span> 
             <i class="material-icons amber-text">navigate_next</i>
           </a>
         </div>
