@@ -12,8 +12,8 @@
         class="listaEntrada"
       >
         <div v-if="!nombrePropiedad.includes('gerencia')" class="imgContainer">
-          <img v-if="miembro.foto === 'string'" :src="user.foto" class="responsive-img">
-          <img v-else src="../assets/Imagenes/user_pic.jpeg" class="responsive-img" />
+          <img v-if="typeof miembro.foto === 'string' &&  miembro.foto !== null" :src="`http://34.225.211.222:3000/${miembro.foto}`" alt="#" class="responsive-img">
+          <img v-else src="../assets/Imagenes/perfil.jpg" class="responsive-img" />
         </div>
         <div class="infoContainer">
           <div class="userDatos">

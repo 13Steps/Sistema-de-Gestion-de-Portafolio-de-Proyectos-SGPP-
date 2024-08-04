@@ -57,7 +57,7 @@
       <li>
         <div class="userContainer">
           <div class="picContainer">
-            <img v-if="user.foto === 'string'" :src="user.foto" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
+            <img v-if="typeof user.foto === 'string' &&  user.foto !== null" :src="`http://34.225.211.222:3000/${user.foto}`" alt="#" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
             <img v-else src="../assets/Imagenes/perfil.jpg" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
           </div>
           <div class="userName">

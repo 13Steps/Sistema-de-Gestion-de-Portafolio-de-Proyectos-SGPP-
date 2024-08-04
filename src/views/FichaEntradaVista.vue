@@ -133,9 +133,9 @@
             	    <span>Fase de Entrada</span>
             	    <select class="browser-default" v-model="entrada.fase" required>
             	      <option disabled value="" class="hide">Fase</option>
-            	      <option value="Proyecto">Proyecto</option>
-            	      <option value="Requerimiento">Requerimiento</option>
-            	      <option value="Solicitud">Solicitud</option>
+            	      <option value="1">Proyecto</option>
+            	      <option value="2">Requerimiento</option>
+            	      <option value="3">Solicitud</option>
             	    </select>
             	  </div>
             	</div>
@@ -144,10 +144,10 @@
                     <span>Estado de Entrada</span>
                     <select class="browser-default" v-model="entrada.estado" required>
                       <option disabled value="" class="hide">Estado</option>
-                      <option value="Completado">Completado</option>
-                      <option value="En Desarrollo">En Desarrollo</option>
-                      <option value="En Revisión">En Revisión</option>
-                      <option value="Atrasado">Atrasado</option>
+                      <option value="1">En Revisión</option>
+                      <option value="2">En Ejecución</option>
+                      <option value="3">Completado</option>
+                      <option value="4">Atrasado</option>
                     </select>
                   </div>
               </div>
@@ -212,8 +212,9 @@ import TabRequerimientos from "../components/TabsFichaEntrada/TabRequerimientos.
 import TabTareas from "../components/TabsFichaEntrada/TabTareas.vue";
 import TabForo from "../components/TabsFichaEntrada/TabForo.vue";
 import { generateReport } from "@/Services/Services";
+import { updateProject } from "@/Services/Services";
 
-export default {
+export default { 
   props: ["entryId"],
   data() {
     return {
@@ -223,6 +224,8 @@ export default {
         estado: "En Desarrollo",
       },
       modalInstances: [],
+      entradas: null, 
+      id: null,
     };
   },
   components: {
@@ -238,6 +241,10 @@ export default {
     },
   },
   mounted() {
+    const url = window.location.href; // Obtiene la URL completa
+    const parts = url.split('/'); // Divide la URL en partes
+    this.id = parts[parts.length - 1]; // Obtiene la última parte, que es el ID
+
     // Dropdown
     this.initDropdown();
 
@@ -245,7 +252,7 @@ export default {
     this.initModals();
 
     //Carga de datos
-    this.loadEntryData(this.entryId);
+    this.loadEntryData(this.id);
   },
   methods: {
     loadEntryData(entryId) {
@@ -299,6 +306,27 @@ export default {
       this.closeModal(0);
     },
     guardarCambios() {
+
+      const projectType = this.entrada.fase === 'Proyecto' ? 1 : this.entrada.fase === 'Requerimiento' ? 2 : 3;
+
+        this.$store.dispatch('getShowLoader', true);
+
+        const estados = {
+          i003f_i006t_estado_entrada: this.entrada.estado,
+          i003f_i005t_fase_entrada: typeof this.entrada.fase === 'string' ? projectType : this.entrada.fase,
+        };
+
+
+      updateProject(this.id, estados)
+        .then((response) => {
+          console.log(response);
+          this.$store.dispatch('getShowLoader', false);
+        })
+        .catch((error) => {
+          this.$store.dispatch('getShowLoader', false);
+          console.log(error);
+        });
+
       // Lógica para guardar los cambios en la entrada
       console.log("Guardar cambios:", this.entrada);
       this.closeModal(1);

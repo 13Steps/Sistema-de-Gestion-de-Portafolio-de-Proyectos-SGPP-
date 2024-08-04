@@ -17,12 +17,22 @@
               <!-- Datepickers -->
               <div class="col l3 m5 s8 datePicker input-field">
                 <i class="material-icons prefix">calendar_month</i>
-                <input id="fechaInicio" type="text" class="datepicker" />
+                <input
+                  v-model="fechaInicio"
+                  id="fechaInicio"
+                  type="text"
+                  class="datepicker"
+                />
                 <label for="fechaInicio">Inicio</label>
               </div>
               <div class="col l3 m5 s8 datePicker input-field">
                 <i class="material-icons prefix">calendar_month</i>
-                <input id="fechaFin" type="text" class="datepicker" />
+                <input
+                  v-model="fechaFin"
+                  id="fechaFin"
+                  type="text"
+                  class="datepicker"
+                />
                 <label for="fechaFin">Finalización</label>
               </div>
             </div>
@@ -63,9 +73,8 @@
                         <i
                           class="material-icons white-text"
                           style="font-size: 32px"
+                          >search</i
                         >
-                          search
-                        </i>
                       </span>
                       <div class="input-field busquedaForm">
                         <input
@@ -78,7 +87,11 @@
                     </div>
                   </div>
                   <div class="tableMain">
-                    <TablaEntradas :filter="searchQuery" :tab="showTabla" />
+                    <TablaEntradas
+                      :filter="searchQuery"
+                      :tab="showTabla"
+                      :entradas="entradasFiltradas"
+                    />
                   </div>
                 </div>
               </div>
@@ -118,6 +131,7 @@ import TablaEntradas from "../components/Tablas/TablaEntradas.vue";
 import ModalesPequeños from "../components/ModalsPequeños.vue";
 import { projects } from "../Services/Services";
 import { createProject, updateProject } from "@/Services/Services";
+import { getProjects } from "@/Services/Services";
 
 export default {
   data() {
@@ -129,6 +143,10 @@ export default {
       titleMessage: "",
       searchQuery: "",
       projects: [],
+      fechaInicio: '',
+      fechaFin: '',
+      entradas: [], 
+      entradasFiltradas: []
     };
   },
   components: {
@@ -136,17 +154,47 @@ export default {
     TablaEntradas,
     ModalesPequeños,
   },
-  mounted() {
+ async mounted() {
     // Date pickers
     this.initDatepickers();
+    this.$store.dispatch("getShowLoader", true);
+    try {
+      const response = await getProjects(); // Llama a getProjects()
+      this.proyectos = response; // Guarda la respuesta en la variable projects
+      this.entradas = this.projects; // Ejemplo de inicialización
+      this.entradasFiltradas = response; 
+      this.$store.dispatch("getProjects", this.proyectos);
+    } catch (error) {
+      console.error("Error al cargar los proyectos:", error);
+      // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
+    }
+    this.$store.dispatch("getShowLoader", false);
   },
   methods: {
     // Date pickers
     initDatepickers() {
-      const datepickerElement = document.querySelectorAll(".datepicker");
-      const datepickerInstances = M.Datepicker.init(datepickerElement);
+      const vm = this; // Guarda la referencia a la instancia de Vue
+      const elems = document.querySelectorAll(".datepicker");
+      elems.forEach((elem) => {
+        M.Datepicker.init(elem, {
+          format: "yyyy-mm-dd", // Especifica el formato de fecha deseado
+          onSelect(date) {
+            // Obtiene el ID del input asociado al datepicker
+            const id = elem.getAttribute("id");
+            // Formatea la fecha seleccionada al formato deseado
+            const formattedDate = date.toISOString().substring(0, 10);
+            // Actualiza el modelo de datos de Vue basado en el ID
+            if (id === "fechaInicio") {
+              vm.fechaInicio = formattedDate;
+            } else if (id === "fechaFin") {
+              vm.fechaFin = formattedDate;
+            }
+            // Actualiza el valor del input para reflejar el formato correcto
+            elem.value = formattedDate;
+          },
+        });
+      });
     },
-
     // Modales
     abrirModalCrearEntrada() {
       this.$refs.modalesPequeñosRef.openModal(0);
@@ -162,7 +210,28 @@ export default {
       // Lógica para generar el reporte
       console.log("Descargando el reporte...");
     },
+    filtrarEntradasPorFecha() {
+      const inicio = new Date(this.fechaInicio);
+      const fin = new Date(this.fechaFin);
+      const projects1 = this.$store.state.projects;
+      console.log(projects1)
+
+      this.entradasFiltradas = projects1.filter(entrada => {
+        const fechaEntrada = new Date(entrada.createdAt);
+        return fechaEntrada >= inicio && fechaEntrada <= fin;
+      });
+    }
   },
+  watch: {
+    fechaInicio(newVal) {
+      this.filtrarEntradasPorFecha();
+      console.log(this.entradasFiltradas, newVal)
+    },
+    fechaFin(newVal) {
+      this.filtrarEntradasPorFecha();
+      console.log(this.entradasFiltradas, newVal)
+    }
+  }
 };
 </script>
 

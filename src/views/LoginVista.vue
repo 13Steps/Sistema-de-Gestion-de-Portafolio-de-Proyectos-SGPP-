@@ -81,7 +81,7 @@ export default {
     ...mapActions(['setUserData', 'setToken']), // Asegúrate de definir estas acciones en tu store de Vuex si planeas usarlas
     async login() {
       const formData = {
-        in_correo: this.email,
+        in_usuario: this.email,
         password: this.password,
       };
       try {

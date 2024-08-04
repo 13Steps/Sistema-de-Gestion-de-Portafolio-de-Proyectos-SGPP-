@@ -12,7 +12,15 @@
           <th>Acciones</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody
+        style="display: flex; align-items: center; justify-content: center; position: absolute; left: 50%;"
+        v-if="filteredEntradas.length == 0"
+      >
+        <tr class="tableBody">
+          <p>No hay entradas</p>
+        </tr>
+      </tbody>
+      <tbody v-else>
         <tr
           class="tableBody"
           v-for="entrada in filteredEntradas"
@@ -25,20 +33,28 @@
           <td>{{ entrada?.inicioR }}</td>
           <td>{{ entrada?.finR }}</td>
           <td class="actionButtons">
-            <a class="btn-floating" @click="abrirModalSeeEntrada(entrada?.i003i_entrada)">
+            <a
+              class="btn-floating"
+              @click="abrirModalSeeEntrada(entrada?.i003i_entrada)"
+            >
               <i class="material-icons">visibility</i>
             </a>
-            <a class="btn-floating" @click="abrirModalEditEntrada(entrada?.i003i_entrada)">
+            <a
+              class="btn-floating"
+              @click="abrirModalEditEntrada(entrada?.i003i_entrada)"
+            >
               <i class="material-icons">edit</i>
             </a>
-            <a class="btn-floating" @click="abrirModalDeleteEntrada(entrada?.id)">
+            <a
+              class="btn-floating"
+              @click="abrirModalDeleteEntrada(entrada?.id)"
+            >
               <i class="material-icons">delete</i>
             </a>
           </td>
         </tr>
       </tbody>
     </table>
-    
   </div>
 
   <ModalesPequeños
@@ -48,13 +64,12 @@
     @confirmVer="movToFichaEntrada"
     @confirmEdit="movToFichaLlenado"
   />
- 
 </template>
 
 <script>
 import ModalesPequeños from "../ModalsPequeños.vue";
 import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
-import { getProjects } from "@/Services/Services";
+
 
 export default {
   props: {
@@ -66,6 +81,10 @@ export default {
       type: String,
       default: "Proyectos",
     },
+    entradas: {
+      type: Array,
+      default: () => [],
+    },
   },
   components: {
     ModalesPequeños,
@@ -75,116 +94,41 @@ export default {
       proyectos: [],
       selectedEntryId: null,
       modalInstances: null,
-      entradas: {
-        proyectos: [
-          {
-            id: 1,
-            titulo: "Sistema de Prueba",
-            estado: "En desarrollo",
-            area: "Exploracion",
-            tipo: "Desarrollo de Software",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-        ],
-        requerimientos: [
-          {
-            id: 2,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "Desarrollo de Software",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-        ],
-        solicitudes: [
-          {
-            id: 3,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-          {
-            id: 4,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-          {
-            id: 5,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-          {
-            id: 6,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-          {
-            id: 7,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-          {
-            id: 8,
-            titulo: "Sistema de Prueba",
-            estado: "",
-            area: "",
-            tipo: "",
-            inicioR: "May 24, 2023",
-            finR: "Nov 27, 2024",
-          },
-        ],
-      },
     };
   },
   async mounted() {
-
-    this.$store.dispatch('getShowLoader', true);
-    try {
-      const response = await getProjects(); // Llama a getProjects()
-      this.proyectos = response; // Guarda la respuesta en la variable projects
-      this.$store.dispatch('getProjects', this.proyectos);
-    } catch (error) {
-      console.error("Error al cargar los proyectos:", error);
-      // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
-    }
-    this.$store.dispatch('getShowLoader', false);
+    this.proyectos = this.entradas;
+    console.log("Entradas", this.proyectos, this.entradas);
+  },
+  watch: {
+    entradas: {
+      handler(newVal) {
+        this.proyectos = newVal;
+      },
+      deep: true,
+    },
   },
   computed: {
     filteredEntradas() {
+      const tab =
+        this.tab.toLowerCase() === "proyectos"
+          ? 1
+          : this.tab.toLowerCase() === "requerimientos"
+            ? 2
+            : 3;
       if (this.proyectos.length === 0) {
         return [];
       }
 
       let faseEntrada = this.proyectos.filter((entrada) => {
-        if( entrada?.i003f_i005t_fase_entrada?.in_nombre_fase) {
-          return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes(this.tab.toLowerCase().replace("s", ""));
+        if (entrada?.i003f_i005t_fase_entrada?.i0005i_fase_entrada) {
+          return entrada.i003f_i005t_fase_entrada.i0005i_fase_entrada == tab;
         } else {
-          return '-'
+          return false;
         }
       });
 
-      let currentEntradas = faseEntrada
+      let currentEntradas = faseEntrada;
       if (this.filter) {
         return currentEntradas.filter((entrada) =>
           entrada.in_titulo.toLowerCase().includes(this.filter.toLowerCase())
@@ -203,7 +147,7 @@ export default {
     },
     abrirModalSeeEntrada(entryId) {
       this.selectedEntryId = entryId;
-      this.$store.dispatch('updateSelectedEntryId', entryId);
+      this.$store.dispatch("updateSelectedEntryId", entryId);
       this.$refs.modalesPequeñosRef.openModal(4);
     },
     movToFichaEntrada(entryId) {
@@ -217,18 +161,21 @@ export default {
       movToFichaLlenado(this.$router, entryId);
       if (entryId) {
         //Obtener la entrada seleccionada
-        const entrada = this.proyectos.find((entrada) => entrada.i003i_entrada === entryId);
+        const entrada = this.proyectos.find(
+          (entrada) => entrada.i003i_entrada === entryId
+        );
         const entradaData = {
-        co_entrada: entrada.in_titulo,
-        i003f_i010t_area_tecnica: entrada.i003f_i010t_area_tecnica,
-        in_titulo: entrada.in_titulo,
-        tx_descripcion: entrada.tx_descripcion,
-        tx_objetivo: entrada.tx_objetivo,
-        tx_alcance: entrada.tx_alcance,
+          i003i_entrada: entrada.i003i_entrada,
+          co_entrada: entrada.in_titulo,
+          i003f_i010t_area_tecnica: entrada.i003f_i010t_area_tecnica,
+          in_titulo: entrada.in_titulo,
+          tx_descripcion: entrada.tx_descripcion,
+          tx_objetivo: entrada.tx_objetivo,
+          tx_alcance: entrada.tx_alcance,
         };
 
         localStorage.setItem("entradaData", JSON.stringify(entradaData));
-      };
+      }
     },
   },
 };
