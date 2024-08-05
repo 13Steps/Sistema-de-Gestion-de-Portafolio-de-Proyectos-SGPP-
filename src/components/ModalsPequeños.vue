@@ -135,7 +135,13 @@
 
 <script>
 import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
-import { createProject, updateProject } from "@/Services/Services";
+import {
+  createProject,
+  updateProject,
+  deleteProject,
+  generateManyReport,
+  generateReport,
+} from "@/Services/Services";
 
 export default {
   data() {
@@ -215,7 +221,7 @@ export default {
       }
     },
     submitTitulo() {
-      this.$store.dispatch('getShowLoader', true);
+      this.$store.dispatch("getShowLoader", true);
       if (this.titleMessage === "Disponible") {
         const projectPayload = {
           co_entrada: this.entradaTitle,
@@ -227,7 +233,7 @@ export default {
           tx_objetivo: "",
           i0003f_i008t_equipo_trabajo: {},
           i003f_i005t_fase_entrada: {},
-          i003f_i006t_estado_entrada: { },
+          i003f_i006t_estado_entrada: {},
           i003f_i004t_datos_adi: {},
           i003f_i013t_tareas: [],
           i003f_i007i_historia_usuario: [],
@@ -239,25 +245,51 @@ export default {
             const project = response;
             localStorage.setItem("entradaData", JSON.stringify(project));
             movToFichaLlenado(this.$router);
-        this.$store.dispatch('getShowLoader', false);
+            this.$store.dispatch("getShowLoader", false);
           })
           .catch((error) => {
             console.log(error);
-        this.$store.dispatch('getShowLoader', false);
+            this.$store.dispatch("getShowLoader", false);
           });
       }
-      console.log("loader")
-      
+      console.log("loader");
     },
-    downloadReporteG() {
+    async downloadReporteG() {
+      this.$store.dispatch("getShowLoader", true);
       this.$emit("downloadReporteG");
+      const userId = JSON.parse(localStorage.getItem("user")).id;
+      // generar reporte general
+      try {
+        const response = await generateManyReport(userId);
+        this.$store.dispatch("getShowLoader", false);
+        const filePath = response.replace(
+          "/home/ubuntu/projects/backend-gestion-proyectos",
+          ""
+        );
+        const urlPdf = `http://34.225.211.222:3000${filePath}`;
+        window.open(urlPdf, "_blank");
+      } catch (error) {
+        console.log(error);
+        this.$store.dispatch("getShowLoader", false);
+      }
       this.closeModal(1);
     },
-    downloadReporteE() {
+    async downloadReporteE() {
+      console.log('ejecutando downloadReporteE'); 
+      
       this.$emit("downloadReporteE");
+      
       this.closeModal(2);
     },
-    confirmarEliminar() {
+     confirmarEliminar() {
+
+      // crear try catch para eliminar la entrada
+      try {
+        const response = deleteProject(this.entryId);
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
       this.$emit("confirmarEliminar");
       this.closeModal(3);
     },

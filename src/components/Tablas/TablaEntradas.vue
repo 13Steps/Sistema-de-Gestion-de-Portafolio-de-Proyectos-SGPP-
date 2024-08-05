@@ -47,7 +47,7 @@
             </a>
             <a
               class="btn-floating"
-              @click="abrirModalDeleteEntrada(entrada?.id)"
+              @click="abrirModalDeleteEntrada(entrada?.i003i_entrada)"
             >
               <i class="material-icons">delete</i>
             </a>
@@ -143,6 +143,7 @@ export default {
       this.$refs.modalesPequeñosRef.openModal(3);
     },
     borrarEntrada(entryId) {
+      this.selectedEntryId = entryId;
       console.log("Entrada borrada", entryId);
     },
     abrirModalSeeEntrada(entryId) {

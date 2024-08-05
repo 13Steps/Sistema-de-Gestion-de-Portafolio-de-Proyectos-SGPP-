@@ -11,8 +11,8 @@
               <i class="material-icons"> event </i>
             </div>
             <div class="cardInfo center">
-              <h4>24</h4>
-              <span>Abril 2024</span>
+              <h4>{{ fechaInicioProyecto.getDate() }}</h4>
+              <span>{{ fechaInicioProyecto.toLocaleDateString('es-ES', { month: 'long' }) }} {{ fechaInicioProyecto.getFullYear() }}</span>
             </div>
           </div>
           <div class="white teal-text center cardLabel">
@@ -27,8 +27,8 @@
               <i class="material-icons"> event_available </i>
             </div>
             <div class="cardInfo center">
-              <h4>31</h4>
-              <span>Mayo 2026</span>
+              <h4>{{ fechaFinProyecto.getDate() }}</h4>
+              <span>{{ fechaFinProyecto.toLocaleDateString('es-ES', { month: 'long' }) }} {{ fechaFinProyecto.getFullYear() }}</span>
             </div>
           </div>
           <div class="white indigo-text center cardLabel">
@@ -40,8 +40,7 @@
 
     <div class="row">
       <div class="col l3 m8 offset-m2 hide-on-small-only">
-        <div
-         class="card z-depth-2 hoverable miembrosEntrada">
+        <div class="card z-depth-2 hoverable miembrosEntrada">
           <ListaTrabajadores />
         </div>
       </div>
@@ -54,14 +53,12 @@
     </div>
     <div class="row">
       <div class="col l7 m8 s12">
-        <div
-          class="card-panel z-depth-2 hoverable completacionChart indigo lighten-2"
-        >
+        <div class="card-panel z-depth-2 hoverable completacionChart indigo lighten-2">
           <RealPlanChart />
         </div>
       </div>
       <div class="col l5 m4 s12">
-        <CostoProyecto />
+        <CostoProyecto :costo="getProject.i003f_i016i_costo" />
       </div>
     </div>
   </div>
@@ -73,6 +70,7 @@ import ListaTrabajadores from "../ListaTrabajadores.vue";
 import GanttTareas from "../Charts/GanttTareas.vue";
 import RealPlanChart from "../Charts/RealVsPlan.vue";
 import CostoProyecto from "../CostoProyecto.vue";
+import { getProjects } from '@/Services/Services';
 
 export default {
   components: {
@@ -82,16 +80,25 @@ export default {
     RealPlanChart,
     CostoProyecto,
   },
-  data() {
-    return {};
-  },
-  mounted() {},
   computed: {
     getProject() {
       return this.$store.state.project;
     },
-  },
-  methods: {},
+    fechaInicioProyecto() {
+      if (!this.getProject?.i003f_i013t_tareas || this.getProject?.i003f_i013t_tareas.length === 0) {
+        return new Date();
+      }
+      const fechasInicio = this.getProject?.i003f_i013t_tareas?.map(tarea => new Date(tarea?.i013f_i014t_seguimiento?.fe_plan_inicio));
+      return new Date(Math.min(...fechasInicio));
+    },
+    fechaFinProyecto() {
+      if (!this.getProject?.i003f_i013t_tareas || this.getProject?.i003f_i013t_tareas.length === 0) {
+        return new Date();
+      }
+      const fechasFin = this.getProject?.i003f_i013t_tareas?.map(tarea => new Date(tarea?.i013f_i014t_seguimiento?.fe_plan_fin));
+      return new Date(Math.max(...fechasFin));
+    }
+  }
 };
 </script>
 

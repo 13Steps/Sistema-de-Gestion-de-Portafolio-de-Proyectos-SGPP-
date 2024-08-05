@@ -35,15 +35,19 @@ export default {
 
     watch: {
         completados() {
+            console.log('completados')
             this.createChart();
         },
         ejecucion() {
+            console.log('completados1')
             this.createChart();
         },
         revision() {
+            console.log('completados2')
             this.createChart();
         },
         atrasados() {
+            console.log('completados3')
             this.createChart();
         },
     },

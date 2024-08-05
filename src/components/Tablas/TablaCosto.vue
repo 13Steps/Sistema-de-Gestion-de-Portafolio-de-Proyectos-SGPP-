@@ -10,10 +10,10 @@
             </thead>
 
             <tbody>
-                <tr class="tableBody">
-                    <td>Salarios</td>
-                    <td>205 $</td>
-                    <td>24/05/2024</td>
+                <tr v-for="(costo, index) in costos" :key="index" class="tableBody">
+                    <td>{{ costo.in_titulo }}</td>
+                    <td>{{ costo.nu_monto }} $</td>
+                    <td>{{ costo.fechaRegistro }}</td>
                 </tr>
             </tbody>
             <br>
@@ -22,7 +22,14 @@
 </template>
 
 <script>
-
+export default {
+    props: {
+        costos: {
+            type: Array,
+            required: true
+        }
+    }
+}
 </script>
 
 <style scoped>

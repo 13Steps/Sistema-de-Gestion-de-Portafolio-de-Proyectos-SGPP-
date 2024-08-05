@@ -159,6 +159,20 @@ export async function generateReport(projectId) {
   }
 }
 
+// Funcion para obtener los reportes
+export async function generateManyReport(userId) {
+  try {
+    const response = await axios.get(
+      
+      `${BASE_URL}/api/v1/projects/reports/many/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 // Función para obtener todas las gerencias
 export async function getManagements() {
   try {

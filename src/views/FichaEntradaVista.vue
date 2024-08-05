@@ -300,9 +300,22 @@ export default {
       this.closeModal(1);
     },
 
-    generarReporteEspecifico(id){
+   async generarReporteEspecifico(id){
       // petición para generar reporte de la entrada con id
-      generateReport(id);
+      this.$store.dispatch("getShowLoader", true);
+      try {
+        const response = await generateReport(id);
+        this.$store.dispatch("getShowLoader", false);
+        const filePath = response.replace(
+          "/home/ubuntu/projects/backend-gestion-proyectos",
+          ""
+        );
+        const urlPdf = `http://34.225.211.222:3000${filePath}`;
+        window.open(urlPdf, "_blank");
+      } catch (error) {
+        console.log(error);
+        this.$store.dispatch("getShowLoader", false);
+      }
       this.closeModal(0);
     },
     guardarCambios() {

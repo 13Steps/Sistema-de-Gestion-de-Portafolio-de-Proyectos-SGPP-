@@ -217,7 +217,7 @@ export default {
         return entrada?.i003f_i006t_estado_entrada?.in_nombre_estado.toLowerCase().includes("atrasado");
       });
 
-      console.log(this.completados)
+      console.log(this.completados, 'hbs')
 
     } catch (error) {
       console.error("Error al cargar los proyectos:", error);

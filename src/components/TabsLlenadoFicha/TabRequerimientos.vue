@@ -120,7 +120,7 @@ export default {
             }
         },
     guardarDatos() {
-      const id_adi = JSON.parse(localStorage.getItem("entradaData")).i003f_i004t_datos_adi.i004i_datos_adi;
+      const id_adi = JSON.parse(localStorage.getItem("entradaData"))?.i003f_i004t_datos_adi?.i004i_datos_adi;
       const historias = JSON.parse(localStorage.getItem("historias"));
       this.$store.dispatch('getShowLoader', true);
       const requerimientos = {
