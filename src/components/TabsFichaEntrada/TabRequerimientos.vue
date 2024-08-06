@@ -125,8 +125,10 @@
     <span> Lista de Historias de Usuarios </span>
   </div>
   <div class="cardsContainer">
-    <div class="row" v-for="historias in getProject.i003f_i007i_historia_usuario" :key="historias">
-      <HistoriaUsuario :historia="historias" />
+    <div class="row historiasContainer">
+      <div class="col l3" v-for="historias in getProject.i003f_i007i_historia_usuario" :key="historias"> 
+        <HistoriaUsuario :historia="historias" />
+      </div>
     </div>
   </div>
 </template>
@@ -166,6 +168,10 @@ export default {
   font-size: 26px;
   font-weight: 800;
 }
+.historiasContainer{
+  scrollbar-width: thin;
+  overflow-y: scroll
+}
 
 .datosCard {
   display: flex;
@@ -188,6 +194,7 @@ export default {
   max-width: 280px;
   max-height: 400px;
   overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .titleContainer {

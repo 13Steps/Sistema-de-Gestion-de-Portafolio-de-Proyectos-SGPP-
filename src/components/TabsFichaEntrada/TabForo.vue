@@ -104,6 +104,7 @@ export default {
     .foroBody{
         height: 450px;
         overflow-y: scroll;
+        scrollbar-width: thin;
     }
     .foroBody .card-content{
         height: 100%;
