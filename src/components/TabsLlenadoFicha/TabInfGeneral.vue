@@ -11,7 +11,7 @@
             class="validate"
             v-model="entradaTitulo"
           />
-          <label for="entradaTitulo">Titulo entrada</label>
+          <label for="entradaTitulo" class="active">Titulo entrada</label>
           <span v-if="titleMessage" :class="titleClass">
             {{ titleMessage }}
           </span>
@@ -280,7 +280,7 @@ textarea {
   border-radius: 10px 10px 0 0 !important;
   border: 1px solid rgb(139, 133, 133) !important;
   padding: 10px !important;
-  text-align-last: justify;
+  text-align-last: left;
   transition: height 0.25s ease-out !important;
   transition: border 0.25s ease-in-out !important;
 }
