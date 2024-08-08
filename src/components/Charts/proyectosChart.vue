@@ -43,6 +43,7 @@ export default {
   },
   methods: {
     initChart() {
+      console.log([this.proyectos[0]?.in_titulo, this.proyectos[1]?.in_titulo], 'dead')
       Highcharts.chart(this.$refs.proyectosChart, {
         chart: {
           type: "bar",
@@ -60,7 +61,7 @@ export default {
           text: "",
         },
         xAxis: {
-          categories: this.chartItem,
+          categories: [this.proyectos[0]?.in_titulo, this.proyectos[1]?.in_titulo],
           title: {
             text: "Proyectos",
           },
@@ -87,11 +88,11 @@ export default {
         series: [
           {
             name: "Planificado",
-            data: [this.proyectos?.promedio_tareas_plan ? this.proyectos?.promedio_tareas_plan : 0 , this.proyectos?.promedio_tareas_real ? this.proyectos?.promedio_tareas_real : 0],
+            data: [2, 53],
           },
           {
             name: "Real",
-            data: [this.proyectos?.promedio_tareas_plan ? this.proyectos?.promedio_tareas_plan : 0 , this.proyectos?.promedio_tareas_real ? this.proyectos?.promedio_tareas_real : 0],
+            data: [35, 42],
           },
         ],
       });

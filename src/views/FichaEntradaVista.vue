@@ -344,17 +344,18 @@ export default {
           : this.entrada.fase === "Requerimiento"
             ? 2
             : 3;
+
       const projectState =
-        parseInt(this.entrada.estado) === "En Revision"
+        this.entrada.estado === "En Revision"
           ? 1
-          : parseInt(this.entrada.estado) === "En Ejecucion"
+          : this.entrada.estado === "En Ejecucion"
             ? 2
-            : parseInt(this.entrada.estado) === "Completado"
+            : this.entrada.estado === "Completado"
               ? 3
               : 4;
 
       const estados = {
-        i003f_i006t_estado_entrada: this.entrada.estado,
+        i003f_i006t_estado_entrada: projectState,
         i003f_i005t_fase_entrada:
           typeof this.entrada.fase === "string"
             ? projectType
