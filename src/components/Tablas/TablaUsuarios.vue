@@ -137,11 +137,11 @@
 </template>
 
 <script>
-import { getUsers, updateUser } from "@/Services/Services";
+import { getUsers, updateUser, deleteUser } from "@/Services/Services";
 
 export default {
   data() {
-    return {
+    return {  
       usuarioSeleccionado: {
         in_usuario: "",
         in_nombre: "",
@@ -215,9 +215,33 @@ export default {
 
       this.closeModal();
     },
-    eliminarUsuario() {
-      //   Logica de eliminar usuario
-      this.closeModal();
+    async eliminarUsuario() {
+      const confirmed = confirm(
+        `¿Estás seguro de que deseas eliminar al usuario ${this.usuarioSeleccionado.in_nombre} ${this.usuarioSeleccionado.in_apellido}?`
+      );
+
+      if (confirmed) {
+        this.$store.dispatch("getShowLoader", true);
+        try {
+          // Llamada al servicio para eliminar el usuario
+          await deleteUser(this.usuarioSeleccionado.i001i_usuario);
+
+          // Eliminar el usuario de la lista local de usuarios
+          this.usuarios = this.usuarios.filter(
+            (usuario) => usuario.i001i_usuario !== this.usuarioSeleccionado.i001i_usuario
+          );
+
+          console.log("Usuario eliminado correctamente");
+        } catch (error) {
+          console.error("Error al eliminar el usuario:", error);
+          alert("Error al eliminar el usuario");
+        } finally {
+          this.$store.dispatch("getShowLoader", false);
+          this.closeModal();
+        }
+      } else {
+        this.closeModal();
+      }
     },
     handleFileUpload(event) {
     this.usuarioSeleccionado.foto = event.target.files[0];

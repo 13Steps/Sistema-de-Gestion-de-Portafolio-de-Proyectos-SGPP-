@@ -11,7 +11,7 @@
           >
             <div class="listadoHistorias">
               <div class="listadoHeader">
-                <span class="title">{{ historia.in_titulo }}</span>
+                <span class="title white-text">{{ historia.in_titulo }}</span>
                 <div class="listadoActions">
                   <a class="white-text" @click="eliminarHistoria(index)">
                     <i class="material-icons">delete</i>
