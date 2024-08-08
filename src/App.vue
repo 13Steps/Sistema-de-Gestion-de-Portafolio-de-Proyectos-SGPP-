@@ -14,7 +14,6 @@ export default {
 <style>
   *{
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    scrollbar-width: thin;
   }
   .backgroundImg{
     background-image: url('../src/assets/Fondos/sampleBackground.jpeg');
@@ -24,8 +23,8 @@ export default {
     height: 100%;
   }
   body.modal-open {
-  overflow: auto !important;
-}
+    overflow: auto !important;
+  }
 
   main{
     overflow-y: scroll;
@@ -33,8 +32,12 @@ export default {
     min-height: 100vh;
     scrollbar-width: none;
   }
-  .ganttContainer, .collapsible-body{
+  .ganttContainer, .collapsible-body, textarea, p{
     scrollbar-width: none;
+  }
+  .table-container{
+    overflow-y: scroll;
+    scrollbar-width: thin;
   }
   
 

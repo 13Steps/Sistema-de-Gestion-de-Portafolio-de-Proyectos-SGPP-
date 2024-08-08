@@ -177,6 +177,10 @@ export default {
   font-size: 26px;
   font-weight: 800;
 }
+.historiasContainer{
+  scrollbar-width: thin;
+  overflow-y: scroll
+}
 
 .datosCard {
   display: flex;
@@ -199,6 +203,7 @@ export default {
   max-width: 280px;
   max-height: 400px;
   overflow-y: scroll;
+  scrollbar-width: none;
 }
 
 .titleContainer {

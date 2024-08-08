@@ -1,5 +1,4 @@
 <template>
-  <div class="col l3">
     <div class="card horizontal z-depth-2 cartaHistoria">
       <div class="cardContainer">
         <div class="cardInfo">
@@ -18,7 +17,6 @@
         </div>
       </div>
     </div>
-  </div>
 
   <!-- Modal -->
   <div class="modal" ref="modal">
