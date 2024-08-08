@@ -42,6 +42,16 @@ export default {
     this.renderChart();
     window.addEventListener("resize", this.handleResize);
   },
+  watch: {
+    seguimiento: {
+      handler(newSeguimiento) {
+        if (newSeguimiento && newSeguimiento.length !== 0) {
+          this.renderChart();
+        }
+      },
+      immediate: true,
+    },
+  },
   computed: {
     promedioReal() {
     return this.seguimiento
@@ -64,7 +74,7 @@ export default {
   },
   methods: {
     renderChart() {
-      console.log("Promedio Real", this.promedioReal);
+      console.log("Promedio Real", this.seguimiento);
       const chartContainer = this.$refs.realPlanChart;
       if (!chartContainer) return;
       this.chart = Highcharts.chart(chartContainer, {
@@ -135,17 +145,17 @@ export default {
               fillColor: "#4dd0e1",
             },
           },
-          {
-            name: "Planificado",
-            data: this.seguimiento[0]?.i013f_i014t_seguimiento?.nu_completado_plan,
-            color: "#e53935",
-            lineWidth: 5,
-            marker: {
-              symbol: "square",
-              radius: 4,
-              fillColor: "#ef5350",
-            },
-          },
+          // {
+          //   name: "Planificado",
+          //   data: this.seguimiento[0]?.i013f_i014t_seguimiento?.nu_completado_planificado,
+          //   color: "#e53935",
+          //   lineWidth: 5,
+          //   marker: {
+          //     symbol: "square",
+          //     radius: 4,
+          //     fillColor: "#ef5350",
+          //   },
+          // },
         ],
       });
     },

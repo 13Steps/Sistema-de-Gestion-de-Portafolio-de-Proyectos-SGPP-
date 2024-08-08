@@ -67,7 +67,7 @@
 
       <div class="col l9 m12 s12">
         <div class="card-panel z-depth-2 hoverable ganttContainer">
-          <GanttTareas />
+          <GanttTareas :tasksData="project?.i003f_i013t_tareas" />
         </div>
       </div>
     </div>
@@ -76,11 +76,11 @@
         <div
           class="card-panel z-depth-2 hoverable completacionChart indigo lighten-2"
         >
-          <RealPlanChart :seguimiento="getProject?.i003f_i013t_tareas" />
+          <RealPlanChart :seguimiento="project?.i003f_i013t_tareas" />
         </div>
       </div>
       <div class="col l5 m4 s12">
-        <CostoProyecto :costo="getProject?.i003f_i016i_costo" />
+        <CostoProyecto :costo="project?.i003f_i016i_costo" />
       </div>
     </div>
   </div>

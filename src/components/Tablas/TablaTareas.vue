@@ -181,15 +181,32 @@ export default {
       }
     },
     updateTarea() {
-
       const seguimientoEditado = this.tasksData.map(item => {
         if (item.i013i_tarea === this.task.i013i_tarea) {
-          console.log(this.task)
-          item.i013f_i014t_seguimiento.nu_completado_real = [...item.i013f_i014t_seguimiento.nu_completado_real, this.nu_completado_real]
+          console.log(this.task);
+          item.i013f_i014t_seguimiento.nu_completado_real = [...item.i013f_i014t_seguimiento.nu_completado_real, this.nu_completado_real];
+          
+          // Cambiar i015i_estado_tarea si el cumplimiento es mayor de cero o igual a 100
+          if (this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1] > 0) {
+              item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
+                i015i_estado_tarea: 2,
+                in_titulo: "En Desarrollo",
+                tx_descripcion:" "
+              };
+          }
+          if (this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1] === 100) {
+            item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
+                i015i_estado_tarea: 1,
+                in_titulo: "Completada",
+                tx_descripcion:" "
+              };
+          }
         }
-      })
+        return item;
+      });
+
       const newSeguimiento = {
-        i003f_i013t_tareas: [...this.tasksData, this.task]
+        i003f_i013t_tareas: seguimientoEditado
       };
 
       updateProject(this.project.i003i_entrada, newSeguimiento)
@@ -202,7 +219,7 @@ export default {
           console.log(error);
         });
       this.closeModal();
-    },
+    }
   },
 };
 </script>
