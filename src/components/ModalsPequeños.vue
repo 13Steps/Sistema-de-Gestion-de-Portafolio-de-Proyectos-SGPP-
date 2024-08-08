@@ -281,18 +281,27 @@ export default {
       
       this.closeModal(2);
     },
-     confirmarEliminar() {
-
-      // crear try catch para eliminar la entrada
+    async confirmarEliminar() {
       try {
-        const response = deleteProject(this.entryId);
-        window.location.reload();
-      } catch (error) {
-        console.log(error);
-      }
-      this.$emit("confirmarEliminar");
-      this.closeModal(3);
-    },
+          // Espera a que la solicitud de eliminación se complete
+          const response = await deleteProject(this.entryId);
+        
+          if (response.ok) {
+            // Emitir el evento de confirmación de eliminación
+            this.$emit("confirmarEliminar");
+          
+            // Recargar la página para reflejar los cambios
+            window.location.reload();
+          } else {
+            console.log("Error al eliminar el proyecto:", response.statusText);
+          }
+        } catch (error) {
+          console.log("Error al eliminar el proyecto:", error);
+        } finally {
+          // Cerrar el modal independientemente del resultado
+          this.closeModal(3);
+        }
+      },
     confirmVer() {
       this.$emit("confirmVer", this.entryId);
       this.closeModal(4);
