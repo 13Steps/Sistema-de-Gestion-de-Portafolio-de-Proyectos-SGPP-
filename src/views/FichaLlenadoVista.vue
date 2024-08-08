@@ -56,6 +56,7 @@ import InfGeneral from '../components/TabsLlenadoFicha/TabInfGeneral.vue'
 import Requerimientos from '../components/TabsLlenadoFicha/TabRequerimientos.vue'
 import Actividades from '../components/TabsLlenadoFicha/TabActividades.vue'
 import EstCostos from '../components/TabsLlenadoFicha/TabCostos.vue'
+import { getProjectById } from '../Services/Services';
 
 export default {
     data(){
@@ -69,6 +70,18 @@ export default {
         Requerimientos,
         Actividades,
         EstCostos,
+    },
+      async mounted() {
+        const url = window.location.href;
+        const parts = url.split('/');
+        const id = parts[parts.length - 1];
+        try {
+            this.entrada = await getProjectById(id);
+            console.log(this.entrada);
+            localStorage.setItem('entradaData', JSON.stringify(this.entrada));
+        } catch (error) {
+            console.log(error);
+        }
     },
     methods: {
         cambioTab(nuevaTab){

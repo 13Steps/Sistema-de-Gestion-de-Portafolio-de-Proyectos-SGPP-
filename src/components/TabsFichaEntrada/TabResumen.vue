@@ -11,8 +11,18 @@
               <i class="material-icons"> event </i>
             </div>
             <div class="cardInfo center">
-              <h4>{{ fechaInicioProyecto.getDate() }}</h4>
-              <span>{{ fechaInicioProyecto.toLocaleDateString('es-ES', { month: 'long' }) }} {{ fechaInicioProyecto.getFullYear() }}</span>
+              <h4>{{ isValidDate(fechaInicioProyecto)
+                && fechaInicioProyecto.getDate() }}</h4>
+              <span
+                >{{
+                  isValidDate(fechaInicioProyecto)
+                && fechaInicioProyecto.toLocaleDateString("es-ES", {
+                    month: "long",
+                  })
+                }}
+                {{ isValidDate(fechaInicioProyecto)
+                && fechaInicioProyecto.getFullYear() }}</span
+              >
             </div>
           </div>
           <div class="white teal-text center cardLabel">
@@ -27,8 +37,18 @@
               <i class="material-icons"> event_available </i>
             </div>
             <div class="cardInfo center">
-              <h4>{{ fechaFinProyecto.getDate() }}</h4>
-              <span>{{ fechaFinProyecto.toLocaleDateString('es-ES', { month: 'long' }) }} {{ fechaFinProyecto.getFullYear() }}</span>
+              <h4>{{ isValidDate(fechaFinProyecto)
+                && fechaFinProyecto.getDate() }}</h4>
+              <span
+                >{{
+                  isValidDate(fechaFinProyecto)
+                && fechaFinProyecto.toLocaleDateString("es-ES", {
+                    month: "long",
+                  })
+                }}
+                {{ isValidDate(fechaFinProyecto)
+                && fechaFinProyecto.getFullYear() }}</span
+              >
             </div>
           </div>
           <div class="white indigo-text center cardLabel">
@@ -41,7 +61,7 @@
     <div class="row">
       <div class="col l3 m8 offset-m2 hide-on-small-only">
         <div class="card z-depth-2 hoverable miembrosEntrada">
-          <ListaTrabajadores />
+          <ListaTrabajadores :project="project" />
         </div>
       </div>
 
@@ -53,12 +73,14 @@
     </div>
     <div class="row">
       <div class="col l7 m8 s12">
-        <div class="card-panel z-depth-2 hoverable completacionChart indigo lighten-2">
-          <RealPlanChart />
+        <div
+          class="card-panel z-depth-2 hoverable completacionChart indigo lighten-2"
+        >
+          <RealPlanChart :seguimiento="getProject?.i003f_i013t_tareas" />
         </div>
       </div>
       <div class="col l5 m4 s12">
-        <CostoProyecto :costo="getProject.i003f_i016i_costo" />
+        <CostoProyecto :costo="getProject?.i003f_i016i_costo" />
       </div>
     </div>
   </div>
@@ -70,7 +92,7 @@ import ListaTrabajadores from "../ListaTrabajadores.vue";
 import GanttTareas from "../Charts/GanttTareas.vue";
 import RealPlanChart from "../Charts/RealVsPlan.vue";
 import CostoProyecto from "../CostoProyecto.vue";
-import { getProjects } from '@/Services/Services';
+import { getProjects, getProjectById } from "@/Services/Services";
 
 export default {
   components: {
@@ -80,25 +102,56 @@ export default {
     RealPlanChart,
     CostoProyecto,
   },
-  computed: {
-    getProject() {
-      return this.$store.state.project;
+  props: {
+    project: {
+      type: Object,
+      default: () => ({}),
     },
-    fechaInicioProyecto() {
-      if (!this.getProject?.i003f_i013t_tareas || this.getProject?.i003f_i013t_tareas.length === 0) {
-        return new Date();
-      }
-      const fechasInicio = this.getProject?.i003f_i013t_tareas?.map(tarea => new Date(tarea?.i013f_i014t_seguimiento?.fe_plan_inicio));
-      return new Date(Math.min(...fechasInicio));
-    },
-    fechaFinProyecto() {
-      if (!this.getProject?.i003f_i013t_tareas || this.getProject?.i003f_i013t_tareas.length === 0) {
-        return new Date();
-      }
-      const fechasFin = this.getProject?.i003f_i013t_tareas?.map(tarea => new Date(tarea?.i013f_i014t_seguimiento?.fe_plan_fin));
-      return new Date(Math.max(...fechasFin));
+  },
+  data() {
+    return {
+      projectt: {},
     }
-  }
+  },
+    watch: {
+    project: {
+      handler(newVal) {
+        console.log(newVal, this.projectt, 'newVal')
+        if (!this.project?.i003f_i013t_tareas || this.project?.i003f_i013t_tareas?.length === 0) {
+          this.fechaInicioProyecto = new Date();
+          this.fechaFinProyecto = new Date();
+        } else {
+          const fechasInicio = this.project.i003f_i013t_tareas
+            .map(tarea => tarea?.i013f_i014t_seguimiento?.fe_real_inicio 
+              ? new Date(tarea.i013f_i014t_seguimiento?.fe_real_inicio) 
+              : null
+            )
+            .filter(fecha => fecha !== null);
+          this.fechaInicioProyecto = fechasInicio.length > 0 
+            ? new Date(Math.min(...fechasInicio)) 
+            : new Date();
+
+          const fechasFin = this.project.i003f_i013t_tareas
+            .map(tarea => tarea?.i013f_i014t_seguimiento?.fe_real_fin 
+              ? new Date(tarea.i013f_i014t_seguimiento?.fe_real_fin) 
+              : null
+            )
+            .filter(fecha => fecha !== null);
+          this.fechaFinProyecto = fechasFin.length > 0 
+            ? new Date(Math.max(...fechasFin)) 
+            : new Date();
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
+  methods: {
+    isValidDate(date) {
+      console.log(this.fechaFinProyecto, 'fechaFinProyecto')
+      return date instanceof Date && !isNaN(date);
+    },
+  },
 };
 </script>
 

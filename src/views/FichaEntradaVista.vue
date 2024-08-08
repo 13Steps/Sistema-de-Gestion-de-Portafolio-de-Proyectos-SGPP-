@@ -10,7 +10,7 @@
           <div class="card-panel hoverable fichaEntrada">
             <div class="card-content fichaTitle">
               <h4 class="card-title">
-                {{getProject?.in_titulo}}
+                {{ projectt?.in_titulo }}
                 <a
                   ref="dropdown"
                   data-target="entradaOpciones"
@@ -25,12 +25,16 @@
                 <div class="faseEntrada">
                   <div class="colorCircle"></div>
                   <span class="statusLabel">Fase:</span>
-                  <span class="statusValue">{{ getProject?.i003f_i005t_fase_entrada?.in_nombre}}</span>
+                  <span class="statusValue">{{
+                    projectt?.i003f_i005t_fase_entrada?.in_nombre_fase
+                  }}</span>
                 </div>
                 <div class="estadoEntrada">
                   <div class="colorCircle"></div>
                   <span class="statusLabel">Estado:</span>
-                  <span class="statusValue">{{ getProject?.i003f_i006t_estado_entrada?.in_nombre_estado }}</span>
+                  <span class="statusValue">{{
+                    projectt?.i003f_i006t_estado_entrada?.in_nombre_estado
+                  }}</span>
                 </div>
               </div>
               <div class="divider"></div>
@@ -53,16 +57,16 @@
             </div>
             <br />
             <div v-if="tab === 'tareas'">
-              <TabTareas />
+              <TabTareas :project="projectt" />
             </div>
             <div v-else-if="tab === 'requerimientos'">
-              <TabRequerimientos />
+              <TabRequerimientos :project="projectt" />
             </div>
             <div v-else-if="tab === 'foro'">
-              <TabForo />
+              <TabForo :project="projectt" />
             </div>
             <div v-else>
-              <TabResumen />
+              <TabResumen :project="projectt" />
             </div>
           </div>
         </div>
@@ -79,18 +83,18 @@
           </a>
         </li>
         <li>
-          <a @click="openModal(1)">
+          <a v-if="rol !== 'rolGerente' && rol !== 'rolTrabajador'" @click="openModal(1)">
             <i class="material-icons" style="font-weight: 700">category</i>
             Fase
           </a>
         </li>
-        <li>
+        <li v-if="rol !== 'rolGerente' && rol !== 'rolTrabajador'">
           <a @click="openModal(2)">
             <i class="material-icons">edit</i>
             Editar
           </a>
         </li>
-        <li>
+        <li v-if="rol !== 'rolGerente' && rol !== 'rolTrabajador'">
           <a @click="openModal(3)">
             <i class="material-icons">delete</i>
             Eliminar
@@ -107,14 +111,19 @@
       </div>
       <div class="modalContent">
         <p>
-          Se generar un reporte del siguiente entrada:  {{getProject?.in_titulo}}
+          Se generar un reporte del siguiente entrada:
+          {{ project?.in_titulo }}
         </p>
       </div>
       <div class="modal-footer center">
         <div class="divider"></div>
         <div class="actionButtons">
           <a class="btn" @click="closeModal(0)">Cancelar</a>
-          <a class="btn" @click="generarReporteEspecifico(getProject.i003i_entrada)">Aceptar</a>
+          <a
+            class="btn"
+            @click="generarReporteEspecifico(project.i003i_entrada)"
+            >Aceptar</a
+          >
         </div>
       </div>
     </div>
@@ -128,37 +137,41 @@
       <div class="modalContent">
         <form @submit.prevent="guardarCambios">
           <div class="row">
-            	<div class="col l6">
-            	  <div class="input-field col l12 ">
-            	    <span>Fase de Entrada</span>
-            	    <select class="browser-default" v-model="entrada.fase" required>
-            	      <option disabled value="" class="hide">Fase</option>
-            	      <option value="1">Proyecto</option>
-            	      <option value="2">Requerimiento</option>
-            	      <option value="3">Solicitud</option>
-            	    </select>
-            	  </div>
-            	</div>
-              <div class="col l6">
-                  <div class="input-field col l12 ">
-                    <span>Estado de Entrada</span>
-                    <select class="browser-default" v-model="entrada.estado" required>
-                      <option disabled value="" class="hide">Estado</option>
-                      <option value="1">En Revisión</option>
-                      <option value="2">En Ejecución</option>
-                      <option value="3">Completado</option>
-                      <option value="4">Atrasado</option>
-                    </select>
-                  </div>
-              </div>
-          	</div>
-            <div class="modal-footer center">
-              <div class="divider"></div>
-              <div class="actionButtons">
-                <a class="btn" @click="closeModal(1)">Cancelar</a>
-                <a class="btn" @click="guardarCambios">Guardar Cambios</a>
+            <div class="col l6">
+              <div class="input-field col l12">
+                <span>Fase de Entrada</span>
+                <select class="browser-default" v-model="entrada.fase" required>
+                  <option disabled value="" class="hide">Fase</option>
+                  <option :value="1">Proyecto</option>
+                  <option :value="2">Requerimiento</option>
+                  <option :value="3">Solicitud</option>
+                </select>
               </div>
             </div>
+            <div class="col l6">
+              <div class="input-field col l12">
+                <span>Estado de Entrada</span>
+                <select
+                  class="browser-default"
+                  v-model="entrada.estado"
+                  required
+                >
+                  <option disabled value="" class="hide">Estado</option>
+                  <option :value="1">En Revisión</option>
+                  <option :value="2">En Ejecución</option>
+                  <option :value="3">Completado</option>
+                  <option :value="4">Atrasado</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer center">
+            <div class="divider"></div>
+            <div class="actionButtons">
+              <a class="btn" @click="closeModal(1)">Cancelar</a>
+              <a class="btn" @click="guardarCambios">Guardar Cambios</a>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -170,9 +183,7 @@
         <div class="divider"></div>
       </div>
       <div class="modalContent">
-        <p>
-          ¿Desea editar la información de esta entrada?
-        </p>
+        <p>¿Desea editar la información de esta entrada?</p>
       </div>
       <div class="modal-footer center">
         <div class="divider"></div>
@@ -190,9 +201,7 @@
         <div class="divider"></div>
       </div>
       <div class="modalContent">
-        <p>
-          ¿Desea eliminar esta entrada?
-        </p>
+        <p>¿Desea eliminar esta entrada?</p>
       </div>
       <div class="modal-footer center">
         <div class="divider"></div>
@@ -212,9 +221,14 @@ import TabRequerimientos from "../components/TabsFichaEntrada/TabRequerimientos.
 import TabTareas from "../components/TabsFichaEntrada/TabTareas.vue";
 import TabForo from "../components/TabsFichaEntrada/TabForo.vue";
 import { generateReport } from "@/Services/Services";
-import { updateProject } from "@/Services/Services";
+import {
+  updateProject,
+  deleteProject,
+  getProjectById,
+} from "@/Services/Services";
+import { movToFichaEntrada, movToFichaLlenado } from "@/Tools/NavOptions";
 
-export default { 
+export default {
   props: ["entryId"],
   data() {
     return {
@@ -224,8 +238,10 @@ export default {
         estado: "En Desarrollo",
       },
       modalInstances: [],
-      entradas: null, 
+      entradas: null,
       id: null,
+      rol: null,
+      projectt: null,
     };
   },
   components: {
@@ -235,16 +251,17 @@ export default {
     TabTareas,
     TabForo,
   },
-  computed: {
-    getProject() {
-      return this.$store.state.project;
-    },
-  },
-  mounted() {
+  async mounted() {
+    this.rol = JSON.parse(localStorage.getItem("user")).role;
     const url = window.location.href; // Obtiene la URL completa
-    const parts = url.split('/'); // Divide la URL en partes
+    const parts = url.split("/"); // Divide la URL en partes
     this.id = parts[parts.length - 1]; // Obtiene la última parte, que es el ID
-
+    try {
+      this.projectt = await getProjectById(this.id);
+      console.log(this.projectt)
+    } catch (error) {
+      console.log(error);
+    }
     // Dropdown
     this.initDropdown();
 
@@ -300,7 +317,7 @@ export default {
       this.closeModal(1);
     },
 
-   async generarReporteEspecifico(id){
+    async generarReporteEspecifico(id) {
       // petición para generar reporte de la entrada con id
       this.$store.dispatch("getShowLoader", true);
       try {
@@ -319,24 +336,39 @@ export default {
       this.closeModal(0);
     },
     guardarCambios() {
+      this.$store.dispatch("getShowLoader", true);
+      console.log(parseInt(this.entrada.estado));
+      const projectType =
+        this.entrada.fase === "Proyecto"
+          ? 1
+          : this.entrada.fase === "Requerimiento"
+            ? 2
+            : 3;
+      const projectState =
+        parseInt(this.entrada.estado) === "En Revision"
+          ? 1
+          : parseInt(this.entrada.estado) === "En Ejecucion"
+            ? 2
+            : parseInt(this.entrada.estado) === "Completado"
+              ? 3
+              : 4;
 
-      const projectType = this.entrada.fase === 'Proyecto' ? 1 : this.entrada.fase === 'Requerimiento' ? 2 : 3;
-
-        this.$store.dispatch('getShowLoader', true);
-
-        const estados = {
-          i003f_i006t_estado_entrada: this.entrada.estado,
-          i003f_i005t_fase_entrada: typeof this.entrada.fase === 'string' ? projectType : this.entrada.fase,
-        };
-
+      const estados = {
+        i003f_i006t_estado_entrada: this.entrada.estado,
+        i003f_i005t_fase_entrada:
+          typeof this.entrada.fase === "string"
+            ? projectType
+            : this.entrada.fase,
+      };
 
       updateProject(this.id, estados)
         .then((response) => {
           console.log(response);
-          this.$store.dispatch('getShowLoader', false);
+          this.$store.dispatch("getShowLoader", false);
+          this.$store.dispatch("project", response);
         })
         .catch((error) => {
-          this.$store.dispatch('getShowLoader', false);
+          this.$store.dispatch("getShowLoader", false);
           console.log(error);
         });
 
@@ -344,14 +376,21 @@ export default {
       console.log("Guardar cambios:", this.entrada);
       this.closeModal(1);
     },
-    movFichaLlenado(){
+    movFichaLlenado() {
       // Logica de moverse a la ficha de llenado de la entrada seleccionada
+      movToFichaLlenado(this.$router, this.id);
       this.closeModal(2);
     },
-    deleteEntrada(){
+    deleteEntrada() {
       // logica de borrado de entrada y luego mover al usuario a la VistaPortafolio
+      try {
+        const response = deleteProject(this.id);
+        this.$router.push("/portafolio");
+      } catch (error) {
+        console.log(error);
+      }
       this.closeModal(3);
-    }
+    },
   },
 };
 </script>

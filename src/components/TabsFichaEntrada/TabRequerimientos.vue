@@ -13,7 +13,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-          {{getProject.tx_descripcion}}
+          {{project.tx_descripcion}}
         </p>
       </div>
     </li>
@@ -26,7 +26,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-         {{getProject.tx_objetivo}}
+         {{project.tx_objetivo}}
         </p>
       </div>
     </li>
@@ -39,7 +39,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-          {{getProject.tx_alcance}}
+          {{project.tx_alcance}}
         </p>
       </div>
     </li>
@@ -54,9 +54,10 @@
         <div class="datamodel">
           <span class="docName">
             <div class="colorCircle"></div>
-            {{getProject?.i003f_i004t_datos_adi?.tx_datamodelo}}
+            <!-- {{typeof project?.i003f_i004t_datos_adi?.tx_datamodelo !== 'string' ? 'Modelo' : project?.i003f_i004t_datos_adi?.tx_datamodelo }} -->
+            Modelo de datos
           </span>
-          <a class="btn-flat right descargarBoton"> Descargar </a>
+          <a class="btn-flat right descargarBoton" :href="documentUrl" download> Descargar </a>
         </div>
       </div>
     </li>
@@ -69,7 +70,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-          {{getProject.i003f_i004t_datos_adi.tx_comentario}}
+          {{project.i003f_i004t_datos_adi.tx_comentario}}
         </p>
       </div>
     </li>
@@ -88,7 +89,7 @@
         </div>
         <div class="center infoContainer">
           <p>
-            {{getProject.i003f_i004t_datos_adi.tx_interfaz}}
+            {{project.i003f_i004t_datos_adi.tx_interfaz}}
           </p>
         </div>
       </div>
@@ -102,7 +103,7 @@
           <h4>Seguridad</h4>
         </div>
         <div class="center infoContainer">
-          <p>{{getProject.i003f_i004t_datos_adi.tx_seguridad}}</p>
+          <p>{{project.i003f_i004t_datos_adi.tx_seguridad}}</p>
         </div>
       </div>
     </div>
@@ -115,7 +116,7 @@
           <h4>Interconexión</h4>
         </div>
         <div class="center infoContainer">
-          <p>{{getProject.i003f_i004t_datos_adi.tx_interconexion}}</p>
+          <p>{{project.i003f_i004t_datos_adi.tx_interconexion}}</p>
         </div>
       </div>
     </div>
@@ -125,8 +126,8 @@
     <span> Lista de Historias de Usuarios </span>
   </div>
   <div class="cardsContainer">
-    <div class="row" v-for="historias in getProject.i003f_i007i_historia_usuario" :key="historias">
-      <HistoriaUsuario :historia="historias" />
+    <div class="row" v-for="(historias, index) in project.i003f_i007i_historia_usuario" :key="historias">
+      <HistoriaUsuario :historia="historias" :codigo="formatIndex(index, project.i003f_i007i_historia_usuario.length)" />
     </div>
   </div>
 </template>
@@ -135,6 +136,17 @@
 import HistoriaUsuario from "../HistoriaUsuario.vue";
 
 export default {
+  props: {
+    project: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  data() {
+    return {
+      documentUrl: require('@/assets/modelo.jpg')
+    }
+  },
   components: {
     HistoriaUsuario,
   },
@@ -142,17 +154,16 @@ export default {
     // Collapsible
     this.initCollapsible();
   },
-  computed: {
-    getProject() {
-      return this.$store.state.project;
-    },
-  },
   methods: {
     // Collapsible
     initCollapsible() {
       const collapsibleElement = this.$refs.collapsible;
       this.collapsibleInstance = M.Collapsible.init(collapsibleElement);
     },
+    formatIndex(index, total) {
+      const digits = String(total).length;
+      return String(index).padStart(digits, '0');
+    }
   },
 };
 </script>

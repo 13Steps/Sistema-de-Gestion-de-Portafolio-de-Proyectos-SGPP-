@@ -15,7 +15,7 @@
                 <span>Proyectos Asignados</span>
               </div>
               <div class="divider"></div>
-              <ProyectoChart/>
+              <ProyectoChart :proyectos="proyectos" />
             </div>
           </div>
         </div>

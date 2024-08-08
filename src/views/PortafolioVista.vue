@@ -99,7 +99,7 @@
 
             <div class="row actionBtn right-align">
               <div class="divider"></div>
-              <a class="btn btnNuevo" @click="abrirModalCrearEntrada">
+              <a v-if="rol !== 'rolGerente' && rol !== 'rolTrabajador'" class="btn btnNuevo" @click="abrirModalCrearEntrada">
                 <span>
                   <i class="material-icons">note_add</i>
                   Nuevo
@@ -146,7 +146,8 @@ export default {
       fechaInicio: '',
       fechaFin: '',
       entradas: [], 
-      entradasFiltradas: []
+      entradasFiltradas: [],
+      rol: null,
     };
   },
   components: {
@@ -155,6 +156,8 @@ export default {
     ModalesPequeños,
   },
  async mounted() {
+    this.rol = JSON.parse(localStorage.getItem("user")).role;
+    console.log(this.rol)
     // Date pickers
     this.initDatepickers();
     this.$store.dispatch("getShowLoader", true);

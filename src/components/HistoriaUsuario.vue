@@ -4,7 +4,7 @@
       <div class="cardContainer">
         <div class="cardInfo">
           <div class="cardCode">
-            <span>Codigo: 001</span>
+            <span>Codigo: {{codigo + 1}}</span>
           </div>
           <div class="center cardTitle">
             <span>Abrir Modal</span>
@@ -28,8 +28,8 @@
       </a>
     </div>
     <div class="modal-content">
-      <h4>Generación de Graficas</h4>
-      <span style="margin: 0px">Codigo: 003</span>
+      <h4>{{historia.in_titulo}}</h4>
+      <span style="margin: 0px">Codigo: {{codigo + 1}}</span>
       <div class="divider"></div>
       <div class="modalDesc">
         <span>Descripción:</span>
@@ -78,10 +78,14 @@
 <script>
 export default {
     props: {
-    historia: {
-      type: Object,
-      required: true,
-    },
+      historia: {
+        type: Object,
+        required: true,
+      },
+      codigo: {
+        type: Number,
+        required: true,
+      },
     },
   data() {
     return {

@@ -1,64 +1,65 @@
 <template>
-    <div>
-      <div class="row alignOpciones">
-        <div class="col l7 offset-l1 collectionContainer">
-            <ul class="collection">
-              <li class="collection-item" v-for="(historia, index) in historias" :key="index" style="padding: 0 !important;">
-                <div class="listadoHistorias">
-
-                    <div class="listadoHeader">
-                        <span class="title">{{ historia.titulo }}</span>
-                        <div class="listadoActions">
-                          <a class="white-text" @click="eliminarHistoria(index)">
-                            <i class="material-icons">delete</i>
-                          </a>
-                        </div>
-                    </div>
-
-                    <div class="listadoBody">
-                      <p>{{ historia.descripcion }}</p>
-
-                      <div class="card-tabs">
-                        <ul class="tabs transparent">
-                          <li class="tab">
-                            <a @click="cambioTab('Rol')">Rol</a>
-                          </li>
-                          <li class="tab">
-                            <a @click="cambioTab('Funcionalidad')">Funcionalidad</a>
-                          </li>
-                          <li class="tab">
-                            <a @click="cambioTab('Criterio')">Criterio</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div v-if="tab === 'Funcionalidad'">
-                          <p>{{ historia.funcionalidad }}</p>
-                      </div>
-                      <div v-else-if="tab === 'Criterio'">
-                          <p>{{ historia.criterio }}</p>
-                      </div>
-                      <div v-else>
-                          <p>{{ historia.rol }}</p>
-                      </div>
-                    </div>
-
+  <div>
+    <div class="row alignOpciones">
+      <div class="col l7 offset-l1 collectionContainer">
+        <ul class="collection">
+          <li
+            class="collection-item"
+            v-for="(historia, index) in historias"
+            :key="index"
+            style="padding: 0 !important"
+          >
+            <div class="listadoHistorias">
+              <div class="listadoHeader">
+                <span class="title">{{ historia.in_titulo }}</span>
+                <div class="listadoActions">
+                  <a class="white-text" @click="eliminarHistoria(index)">
+                    <i class="material-icons">delete</i>
+                  </a>
                 </div>
-              </li>
-            </ul>
-        </div>
-        <div class="col l3 offset-l1 nuevaHistoria">
-            <a class="btn" @click="abrirModalCrearHistoria">Nueva Historia</a>
-        </div>
+              </div>
+
+              <div class="listadoBody">
+                <p>{{ historia.tx_descripcion }}</p>
+
+                <div class="card-tabs">
+                  <ul class="tabs transparent">
+                    <li class="tab">
+                      <a @click="cambioTab('Rol')">Rol</a>
+                    </li>
+                    <li class="tab">
+                      <a @click="cambioTab('Funcionalidad')">Funcionalidad</a>
+                    </li>
+                    <li class="tab">
+                      <a @click="cambioTab('Criterio')">Criterio</a>
+                    </li>
+                  </ul>
+                </div>
+                <div v-if="tab === 'Funcionalidad'">
+                  <p>{{ historia.tx_funcionalidad }}</p>
+                </div>
+                <div v-else-if="tab === 'Criterio'">
+                  <p>{{ historia.tx_criterio }}</p>
+                </div>
+                <div v-else>
+                  <p>{{ historia.tx_rol }}</p>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col l3 offset-l1 nuevaHistoria">
+        <a class="btn" @click="abrirModalCrearHistoria">Nueva Historia</a>
       </div>
     </div>
-    <ModalsForms 
-        ref="modalesFormRef"
-        @submit-historia="handleNuevaHistoria">
-    </ModalsForms>
-  </template>
-  
+  </div>
+  <ModalsForms ref="modalesFormRef" @submit-historia="handleNuevaHistoria">
+  </ModalsForms>
+</template>
+
 <script>
-import ModalsForms from '../../ModalsForms.vue';
+import ModalsForms from "../../ModalsForms.vue";
 
 export default {
   components: {
@@ -67,16 +68,16 @@ export default {
   data() {
     return {
       historias: [],
-      tab: 'Rol',
+      tab: "Rol",
     };
   },
   methods: {
     abrirModalCrearHistoria() {
-      this.$refs.modalesFormRef.openModal('modal-historia');
+      this.$refs.modalesFormRef.openModal("modal-historia");
     },
-    handleNuevaHistoria(historia){
+    handleNuevaHistoria(historia) {
       this.historias.push(historia);
-      localStorage.setItem('historias', JSON.stringify(this.historias));
+      localStorage.setItem("historias", JSON.stringify(this.historias));
     },
     eliminarHistoria(index) {
       this.historias.splice(index, 1);
@@ -84,15 +85,15 @@ export default {
     cambioTab(nuevaTab) {
       this.tab = nuevaTab;
     },
-  }
+  },
 };
 </script>
 
 <style scoped>
-.alignOpciones{
+.alignOpciones {
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 }
 
 .collectionContainer {
@@ -101,9 +102,9 @@ export default {
 }
 .collection-item {
   overflow-wrap: break-word;
-  word-wrap: break-word; 
+  word-wrap: break-word;
   white-space: pre-wrap;
-  border-bottom: 1px solid #272727; 
+  border-bottom: 1px solid #272727;
 }
 
 .btn {
@@ -128,7 +129,7 @@ export default {
   padding: 10px;
   background-color: rgb(52, 52, 97);
 }
-.listadoHeader span{
+.listadoHeader span {
   color: white;
   font-size: 16px;
   font-weight: 700;
@@ -137,14 +138,14 @@ export default {
   margin-left: 10px;
   transition: all 0.3s ease;
 }
-.listadoActions a:hover{
+.listadoActions a:hover {
   color: rgb(94, 94, 119) !important;
   cursor: pointer;
 }
 .listadoBody {
   padding: 8px;
 }
-.listadoBody p{
+.listadoBody p {
   font-size: 13px;
   font-weight: 500;
   color: rgb(20, 20, 20);
@@ -154,10 +155,10 @@ export default {
   width: 100%;
   font-weight: 700;
 }
-.card-tabs a{
+.card-tabs a {
   color: rgb(52, 52, 97) !important;
 }
-.card-tabs a:hover{
+.card-tabs a:hover {
   color: rgb(94, 94, 119) !important;
   cursor: pointer;
 }

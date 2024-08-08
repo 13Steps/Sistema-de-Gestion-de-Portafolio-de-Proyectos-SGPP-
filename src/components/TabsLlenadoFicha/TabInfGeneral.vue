@@ -129,10 +129,18 @@ export default {
   },
   watch: {
     entradaTitulo: "validateTitle",
+    entrada: {
+      handler(newVal) {
+        this.entradaTitulo = newVal?.in_titulo;
+        this.initDatepickers();
+      },
+      immediate: true,
+    },
   },
   async mounted() {
     this.entrada = JSON.parse(localStorage.getItem("entradaData"));
-    this.entradaTitulo = this.entrada.in_titulo;
+    console.log("Entrada:", this.entrada);
+    this.entradaTitulo = this.entrada?.in_titulo;
     this.initDatepickers();
     try {
       this.technicalAreas = await getTechnicalAreas();

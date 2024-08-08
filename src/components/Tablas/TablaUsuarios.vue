@@ -17,7 +17,7 @@
             {{ usuario.in_nombre }} {{ usuario.in_apellido }}
           </td>
           <td>{{ usuario.in_role.replace("rol", "") }}</td>
-          <td>{{ usuario?.fechaCreacion }}</td>
+          <td>{{ usuario?.createdAt?.toLocaleString()}}</td>
           <td class="actionButtons">
             <a class="btn-floating">
               <i class="material-icons" @click="openModal(usuario)"
@@ -36,7 +36,6 @@
       <span class="white-text">Editar Datos de Usuario</span>
     </div>
     <div class="modal-content">
-      <form @submit.prevent="editarUsuario">
         <div class="row">
           <div class="col l12 center indicadorContainer">
             <span class="indicadorUser">
@@ -116,6 +115,7 @@
                   class="file-path validate"
                   type="text"
                   placeholder="Foto del Usuario"
+                  :value="usuarioSeleccionado.foto"
                 />
               </div>
             </div>
@@ -129,10 +129,9 @@
             <button class="btn" @click="eliminarUsuario">
               Eliminar Usuario
             </button>
-            <button class="btn" type="submit">Guardar Cambios</button>
+            <button class="btn" @click="editarUsuario()">Guardar Cambios</button>
           </div>
         </div>
-      </form>
     </div>
   </div>
 </template>
@@ -196,16 +195,20 @@ export default {
         const formData = new FormData();
 
         // Añadir cada campo del objeto usuario a FormData
-        for (const key in this.usuarioSeleccionado) {
-          formData.append(key, this.usuarioSeleccionado[key]);
-        }
+        formData.append("in_nombre", this.usuarioSeleccionado.in_nombre);
+        formData.append("in_apellido", this.usuarioSeleccionado.in_apellido);
+        formData.append("in_correo", this.usuarioSeleccionado.in_correo);
+        formData.append("password", this.usuarioSeleccionado.password);
+        formData.append("in_role", this.usuarioSeleccionado.in_role);
+        formData.append("in_usuario", this.usuarioSeleccionado.in_usuario);
+        formData.append("foto", this.usuarioSeleccionado.foto);
 
         // Enviar la solicitud usando FormData
         const response = await updateUser(this.usuarioSeleccionado.i001i_usuario, formData);
         console.log(response);
         this.$store.dispatch("getShowLoader", false);
       } catch (error) {
-        console.error("Error al crear el usuario:", error);
+        console.error("Error al crear el usuario fasecwececwe:", error);
         alert("Error al crear el usuario");
         this.$store.dispatch("getShowLoader", false);
       }

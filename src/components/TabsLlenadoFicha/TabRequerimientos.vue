@@ -49,7 +49,7 @@
           <span>
             <i class="material-icons"> publish </i>
           </span>
-          <input type="file"  @change="archivoSeleccionado"/>
+          <input type="file" @change="archivoSeleccionado" />
         </div>
         <div class="file-path-wrapper">
           <input
@@ -90,9 +90,7 @@
 
 <script>
 import CrearHistoriaUsuario from "./ComponentesDeCreacion/CrearHistoriaUsuario.vue";
-import {
-  updateProject
-} from "@/Services/Services";
+import { updateProject } from "@/Services/Services";
 
 export default {
   components: {
@@ -113,40 +111,77 @@ export default {
   },
   methods: {
     archivoSeleccionado(event) {
-            // Verifica si hay archivos seleccionados
-            if (event.target.files.length > 0) {
-                // Actualiza la propiedad del archivo con el primer archivo seleccionado
-                this.cargarDataModel = event.target.files[0];
-            }
-        },
+      // Verifica si hay archivos seleccionados
+      if (event.target.files.length > 0) {
+        // Actualiza la propiedad del archivo con el primer archivo seleccionado
+        this.cargarDataModel = event.target.files[0];
+      }
+    },
     guardarDatos() {
-      const id_adi = JSON.parse(localStorage.getItem("entradaData"))?.i003f_i004t_datos_adi?.i004i_datos_adi;
+      const id_adi = JSON.parse(localStorage.getItem("entradaData"))
+        ?.i003f_i004t_datos_adi?.i004i_datos_adi;
       const historias = JSON.parse(localStorage.getItem("historias"));
-      this.$store.dispatch('getShowLoader', true);
+      this.$store.dispatch("getShowLoader", true);
+
       const requerimientos = {
         i003f_i004t_datos_adi: {
           i004i_datos_adi: id_adi,
           tx_interfaz: this.interfaz,
           tx_interconexion: this.interconexión,
-          tx_seguridad: this.seguridad ,
-          tx_datamodelo: this.cargarDataModel,
-          tx_comentario: this.entradaComentario
+          tx_seguridad: this.seguridad,
+          tx_datamodelo: this.cargarDataModel, // Asumiendo que this.cargarDataModel es un archivo de imagen
+          tx_comentario: this.entradaComentario,
         },
-        i003f_i007i_historia_usuario: historias
-      }
-      
-      updateProject(this.entrada.i003i_entrada, requerimientos)
+        i003f_i007i_historia_usuario: historias,
+      };
+
+      const formData = new FormData();
+
+      // Agregar datos simples
+      formData.append(
+        "i003f_i004t_datos_adi[i004i_datos_adi]",
+        requerimientos.i003f_i004t_datos_adi.i004i_datos_adi
+      );
+      formData.append(
+        "i003f_i004t_datos_adi[tx_interfaz]",
+        requerimientos.i003f_i004t_datos_adi.tx_interfaz
+      );
+      formData.append(
+        "i003f_i004t_datos_adi[tx_interconexion]",
+        requerimientos.i003f_i004t_datos_adi.tx_interconexion
+      );
+      formData.append(
+        "i003f_i004t_datos_adi[tx_seguridad]",
+        requerimientos.i003f_i004t_datos_adi.tx_seguridad
+      );
+      formData.append(
+        "i003f_i004t_datos_adi[tx_comentario]",
+        requerimientos.i003f_i004t_datos_adi.tx_comentario
+      );
+
+      // Agregar la imagen
+      formData.append(
+        "i003f_i004t_datos_adi[tx_datamodelo]",
+        this.cargarDataModel
+      );
+
+      // Agregar historias de usuario
+      formData.append(
+        "i003f_i007i_historia_usuario",
+        JSON.stringify(requerimientos.i003f_i007i_historia_usuario)
+      );
+
+      updateProject(this.entrada.i003i_entrada, formData)
         .then((response) => {
           console.log(response);
-          this.$store.dispatch('getShowLoader', false);
+          this.$store.dispatch("getShowLoader", false);
         })
         .catch((error) => {
-          this.$store.dispatch('getShowLoader', false);
+          this.$store.dispatch("getShowLoader", false);
           console.log(error);
         });
-        this.$emit("changeTab", requerimientos);
+      this.$emit("changeTab", requerimientos);
     },
-       
   },
 };
 </script>
