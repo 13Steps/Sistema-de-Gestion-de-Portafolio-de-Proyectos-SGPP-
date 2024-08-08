@@ -126,8 +126,10 @@
     <span> Lista de Historias de Usuarios </span>
   </div>
   <div class="cardsContainer">
-    <div class="row" v-for="(historias, index) in project.i003f_i007i_historia_usuario" :key="historias">
-      <HistoriaUsuario :historia="historias" :codigo="formatIndex(index, project.i003f_i007i_historia_usuario.length)" />
+    <div class="row">
+      <div class="col l3" v-for="(historias, index) in project.i003f_i007i_historia_usuario" :key="historias">
+        <HistoriaUsuario :historia="historias" :codigo="formatIndex(index, project.i003f_i007i_historia_usuario.length)" />
+      </div>
     </div>
   </div>
 </template>

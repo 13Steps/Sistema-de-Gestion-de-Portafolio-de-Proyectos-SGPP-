@@ -3,10 +3,10 @@
       <div class="cardContainer">
         <div class="cardInfo">
           <div class="cardCode">
-            <span>Codigo: {{codigo + 1}}</span>
+            <span>Codigo: 00{{ codigo }} </span>
           </div>
           <div class="center cardTitle">
-            <span>Abrir Modal</span>
+            <span>{{ historia.in_titulo }}</span>
           </div>
         </div>
         <div class="divider"></div>
