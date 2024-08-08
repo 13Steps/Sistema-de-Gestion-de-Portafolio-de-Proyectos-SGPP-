@@ -27,6 +27,12 @@
 import Highcharts, { color } from "highcharts";
 
 export default {
+  props: {
+    seguimiento: {
+      type: Object,
+      default: () => ([]),
+    },
+  },
   data() {
     return {
       chart: null,
@@ -36,8 +42,29 @@ export default {
     this.renderChart();
     window.addEventListener("resize", this.handleResize);
   },
+  computed: {
+    promedioReal() {
+    return this.seguimiento
+      .filter(tarea => tarea.i013f_i014t_seguimiento !== null)
+      .map(tarea => {
+        const completadoReal = tarea.i013f_i014t_seguimiento.nu_completado_real;
+        const promedio = completadoReal.reduce((acc, val) => acc + val, 0) / completadoReal.length;
+        return promedio;
+      });
+  },
+  promedioPlan() {
+    return this.seguimiento
+      .filter(tarea => tarea.i013f_i014t_seguimiento !== null)
+      .map(tarea => {
+        const completadoPlan = tarea.i013f_i014t_seguimiento.nu_completado_planificado;
+        const promedio = completadoPlan.reduce((acc, val) => acc + val, 0) / completadoPlan.length;
+        return promedio;
+      });
+  },
+  },
   methods: {
     renderChart() {
+      console.log("Promedio Real", this.promedioReal);
       const chartContainer = this.$refs.realPlanChart;
       if (!chartContainer) return;
       this.chart = Highcharts.chart(chartContainer, {
@@ -99,10 +126,7 @@ export default {
         series: [
           {
             name: "Real",
-            data: [
-              16.0, 18.2, 23.1, 27.9, 32.2, 36.4, 39.8, 38.4, 35.5, 29.2, 22.0,
-              100,
-            ],
+            data: this.seguimiento[0]?.i013f_i014t_seguimiento?.nu_completado_real,
             color: "#00bcd4",
             lineWidth: 5,
             marker: {
@@ -113,9 +137,7 @@ export default {
           },
           {
             name: "Planificado",
-            data: [
-              2.9, 25.2, 0.6, 4.8, 10.2, 14.5, 17.6, 16.5, 12.0, 6.5, 2.0, 0.9,
-            ],
+            data: this.seguimiento[0]?.i013f_i014t_seguimiento?.nu_completado_plan,
             color: "#e53935",
             lineWidth: 5,
             marker: {

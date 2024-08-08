@@ -14,18 +14,14 @@
         <tr v-for="task in tasksData" :key="task.i013i_tarea" class="tableBody">
           <td>{{ task?.in_nombre }}</td>
           <td>
-            {{
-              task?.i013f_i014t_seguimiento?.i014f_i015t_estado_tarea
-                ?.in_titulo
-            }}
+            {{ task?.i013f_i014t_seguimiento?.i014f_i015t_estado_tarea?.in_titulo }}
           </td>
           <td>
             {{
               task?.i013f_i014t_seguimiento?.nu_completado_real &&
               task.i013f_i014t_seguimiento.nu_completado_real.length > 0
                 ? task.i013f_i014t_seguimiento.nu_completado_real[
-                    task.i013f_i014t_seguimiento.nu_completado_real
-                      .length - 1
+                    task.i013f_i014t_seguimiento.nu_completado_real.length - 1
                   ]
                 : 0
             }}%
@@ -48,14 +44,14 @@
       </a>
     </div>
     <div class="modal-content">
-      <h4>Generación de reportes</h4>
-      <span style="margin: 0px">Estado: En desarrollo</span>
+      <h4>{{task.in_nombre}}</h4>
+      <span style="margin: 0px">Estado: {{task?.i013f_i014t_seguimiento?.i014f_i015t_estado_tarea?.in_titulo}}</span>
       <div class="divider"></div>
       <div class="modalDesc" style="max-height: 230px">
-        <div class="col l7" style="min-width: 25rem;">
+        <div class="col l7" style="min-width: 25rem">
           <span class="Descripcion">Descripcion</span>
           <p style="max-height: 180px; overflow-y: scroll; text-align: justify">
-           {{task?.tx_descripcion}}
+            {{ task?.tx_descripcion }}
           </p>
         </div>
         <div class="col l5 fechasTarea">
@@ -63,12 +59,16 @@
             <span class="mainLabel">Inicio de tarea:</span>
             <div class="center cardSections">
               <div class="section center">
-                <span class="fechaValue">{{task?.i013f_i014t_seguimiento?.fe_real_inicio}}</span>
+                <span class="fechaValue">{{
+                  task?.i013f_i014t_seguimiento?.fe_real_inicio
+                }}</span>
                 <span class="fechaLabel">Real</span>
               </div>
               <div class="v-divider"></div>
               <div class="section center">
-                <span class="fechaValue">{{task?.i013f_i014t_seguimiento?.fe_plan_inicio}}</span>
+                <span class="fechaValue">{{
+                  task?.i013f_i014t_seguimiento?.fe_plan_inicio
+                }}</span>
                 <span class="fechaLabel">Planificado</span>
               </div>
             </div>
@@ -77,12 +77,16 @@
             <span class="mainLabel">Finalizacion de tarea:</span>
             <div class="center cardSections">
               <div class="section center">
-                <span class="fechaValue">{{task?.i013f_i014t_seguimiento?.fe_real_fin}}</span>
+                <span class="fechaValue">{{
+                  task?.i013f_i014t_seguimiento?.fe_real_fin
+                }}</span>
                 <span class="fechaLabel">Real</span>
               </div>
               <div class="v-divider"></div>
               <div class="section center">
-                <span class="fechaValue">{{task?.i013f_i014t_seguimiento?.fe_plan_fin}}</span>
+                <span class="fechaValue">{{
+                  task?.i013f_i014t_seguimiento?.fe_plan_fin
+                }}</span>
                 <span class="fechaLabel">Planificado</span>
               </div>
             </div>
@@ -124,6 +128,12 @@
 import { getTasks, updateProject } from "@/Services/Services";
 
 export default {
+  props: {
+    project: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       tasksData: [],
@@ -135,15 +145,10 @@ export default {
     this.initModal();
     this.fetchTask();
   },
-computed: {
-    getProject() {
-      return this.$store.state.project;
-    },
-  },
   methods: {
     async fetchTask() {
       try {
-        this.tasksData = await this.getProject.i003f_i013t_tareas;
+        this.tasksData = await this.project?.i003f_i013t_tareas;
         console.log(this.tasksData); // Haz algo con la respuesta, como almacenarla en el estado del componente
       } catch (error) {
         console.error("Error fetching project:", error);
@@ -159,6 +164,7 @@ computed: {
       if (this.modalInstance) {
         this.modalInstance.open();
         this.task = task;
+        this.nu_completado_real = this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1]
       }
     },
     closeModal() {
@@ -175,26 +181,24 @@ computed: {
       }
     },
     updateTarea() {
-      // hacer push del nuevo nu_completado_real al array de nu_completado_real
-      this.task.i013f_i014t_seguimiento.nu_completado_real.push(
-        this.nu_completado_real
-      );
-      const newSeguimiento = {
-        i003f_i013t_tareas : {
-          i013i_tarea: this.task.i013i_tarea,
-          i013f_i014t_seguimiento: {
-            nu_completado_real: this.task.i013f_i014t_seguimiento.nu_completado_real,
-          },
+
+      const seguimientoEditado = this.tasksData.map(item => {
+        if (item.i013i_tarea === this.task.i013i_tarea) {
+          console.log(this.task)
+          item.i013f_i014t_seguimiento.nu_completado_real = [...item.i013f_i014t_seguimiento.nu_completado_real, this.nu_completado_real]
         }
-      } 
-      
-      updateProject(this.getProject.i003i_entrada, newSeguimiento)
+      })
+      const newSeguimiento = {
+        i003f_i013t_tareas: [...this.tasksData, this.task]
+      };
+
+      updateProject(this.project.i003i_entrada, newSeguimiento)
         .then((response) => {
           console.log(response);
-          this.$store.dispatch('getShowLoader', false);
+          this.$store.dispatch("getShowLoader", false);
         })
         .catch((error) => {
-          this.$store.dispatch('getShowLoader', false);
+          this.$store.dispatch("getShowLoader", false);
           console.log(error);
         });
       this.closeModal();

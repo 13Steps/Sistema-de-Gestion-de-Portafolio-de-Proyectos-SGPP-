@@ -98,6 +98,7 @@ export default {
         indicador: {},
         nombre: '',
         cargo: '',
+        tipo: '',
       },
       users: [],
       //Valida Usuarios desde la base de datos
@@ -120,6 +121,7 @@ export default {
   },
   methods: {
     agregarMiembro() {
+      this.nuevoMiembro.tipo = this.tab;
       const indicador = this.nuevoMiembro.indicador
       const cargo = this.nuevoMiembro.cargo.trim();
       // Verificar si el usuario ya existe en el grupo
@@ -154,6 +156,7 @@ export default {
         indicador: '',
         nombre: '',
         cargo: '',
+        tipo: '',
       };
 
       const lideres = {
@@ -161,7 +164,16 @@ export default {
         c008f_i001t_lider_negocio: this.miembros.find(miembro => miembro.cargo === 'Líder GALBA')?.indicador,
         c008f_i001t_lider_tecnico: this.miembros.find(miembro => miembro.cargo === 'Líder Técnico')?.indicador,
       }
-      localStorage.setItem('miembros', JSON.stringify(lideres));
+      
+      if (this.tab === 'Lider') {
+          localStorage.setItem('miembros', JSON.stringify(lideres));
+      } 
+      if (this.tab === 'Trabajador') {
+        const trabajadores = this.miembros.filter(miembro => miembro.tipo === 'Trabajador');
+          localStorage.setItem('trabajadores', JSON.stringify(trabajadores));
+      }
+      console.log(this.miembros);
+      
     },
     eliminarMiembro(index) {
       this.miembros.splice(index, 1);

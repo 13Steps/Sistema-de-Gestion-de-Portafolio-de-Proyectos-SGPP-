@@ -42,27 +42,27 @@
                 </form>
               </div>
             </div>
-            <div class="col l5 offset-l3">
-              <div class="card databaseCard">
-                <div class="card-content">
-                  <div class="cardTitle">
-                    <span>
-                      Base de datos:
-                    </span>
-                  </div>
-                  <div class="databaseOption">
-                    <div class="v-line"></div>
-                    <div class="cardOption hoverable">
-                        <i class="material-icons">
-                          download
-                        </i>
-                        <span>Exportar</span>
-                    </div>
-                    <div class="v-line"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <div class="col l5 offset-l3">
+    <div class="card databaseCard">
+      <div class="card-content">
+        <div class="cardTitle">
+          <span>
+            Base de datos:
+          </span>
+        </div>
+        <div class="databaseOption">
+          <div class="v-line"></div>
+          <a class="cardOption hoverable" href="@/assets/database-08-08-2024.xlsx" download>
+            <i class="material-icons">
+              download
+            </i>
+            <span>Exportar</span>
+          </a>
+          <div class="v-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
           </div>
           <div class="row">
             <div class="col l12">
@@ -97,6 +97,7 @@
       return {
         nuevoIndicador: '',
         usuarios: [],
+        documentUrl: require('@/assets/database-08-08-2024.xlsx')
       };
     },
     components: {

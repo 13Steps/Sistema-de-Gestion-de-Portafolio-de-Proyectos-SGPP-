@@ -7,7 +7,10 @@
         <label>Gerencia GALBA</label>
         <select v-model="galba" class="browser-default">
           <option disabled selected class="hide"></option>
-          <option v-for="gerenciaG in gerencias" :value="gerenciaG.i009i_gerencia">
+          <option
+            v-for="gerenciaG in gerencias"
+            :value="gerenciaG.i009i_gerencia"
+          >
             {{ gerenciaG.in_nombre }}
           </option>
         </select>
@@ -16,7 +19,10 @@
         <label>Gerencia Técnica</label>
         <select v-model="technical" class="browser-default">
           <option disabled selected class="hide"></option>
-          <option v-for="gerenciaT in gerencias" :value="gerenciaT.i009i_gerencia">
+          <option
+            v-for="gerenciaT in gerencias"
+            :value="gerenciaT.i009i_gerencia"
+          >
             {{ gerenciaT.in_nombre }}
           </option>
         </select>
@@ -25,7 +31,10 @@
         <label>Gerencia Funcional</label>
         <select v-model="functional" class="browser-default">
           <option disabled selected class="hide"></option>
-          <option v-for="gerenciaF in gerencias" :value="gerenciaF.i009i_gerencia">
+          <option
+            v-for="gerenciaF in gerencias"
+            :value="gerenciaF.i009i_gerencia"
+          >
             {{ gerenciaF.in_nombre }}
           </option>
         </select>
@@ -39,7 +48,10 @@
         <label>Tipo de Proyecto</label>
         <select v-model="selectedType" class="browser-default">
           <option disabled selected class="hide"></option>
-          <option v-for="types in projectTypes" :value="types.i011i_tipo_proyecto">
+          <option
+            v-for="types in projectTypes"
+            :value="types.i011i_tipo_proyecto"
+          >
             {{ types.in_nombre }}
           </option>
         </select>
@@ -65,7 +77,12 @@
 <script>
 import CrearTarea from "./ComponentesDeCreacion/CrearTarea.vue";
 import CrearEquipo from "./ComponentesDeCreacion/CrearEquipo.vue";
-import { getManagements, getProjectTypes, updateProject } from "@/Services/Services";
+import {
+  getManagements,
+  getProjectTypes,
+  updateProject,
+  getProjectById
+} from "@/Services/Services";
 
 export default {
   components: {
@@ -82,11 +99,15 @@ export default {
       galba: {},
       projectTypes: [],
       selectedType: {},
-      entrada: null
+      entrada: null,
+      projectTareas: [],
+      project: {},
     };
   },
   async mounted() {
     this.entrada = JSON.parse(localStorage.getItem("entradaData"));
+    this.project = await getProjectById(this.entrada.i003i_entrada);
+    this.projectTareas = this.project.i003f_i013t_tareas;
     try {
       this.gerencias = await getManagements();
       this.projectTypes = await getProjectTypes();
@@ -97,36 +118,55 @@ export default {
       // Manejo de errores, por ejemplo, mostrar un mensaje al usuario
     }
   },
-  methods: {
-    setActividades() {
-      this.$store.dispatch('getShowLoader', true);
-      const miembros = JSON.parse(localStorage.getItem("miembros"));
-      const tareas = JSON.parse(localStorage.getItem("tareas"));
-      const actividades = {
-        i0003f_i008t_equipo_trabajo: {
-          c008f_i009t_gerencia_funcional: this.functional,
-          c008f_i009t_gerencia_tecnica: this.technical,
-          c008f_i009t_gerencia_galba: this.galba,
-          c008f_i001t_lider_funcional: miembros?.c008f_i001t_lider_funcional?.i001i_usuario,
-          c008f_i001t_lider_negocio: miembros?.c008f_i001t_lider_negocio?.i001i_usuario,
-          c008f_i001t_lider_tecnico: miembros?.c008f_i001t_lider_tecnico?.i001i_usuario,
-          in_cargo: "strasdasdasing",
-        },
-        i003f_i011_tipo_proyecto: this.selectedType,
-        i003f_i013t_tareas: tareas,
-      };
-      updateProject(this.entrada.i003i_entrada, actividades)
-        .then((response) => {
-          console.log(response);
-          this.$store.dispatch('getShowLoader', false);
-        })
-        .catch((error) => {
-          this.$store.dispatch('getShowLoader', false);
-          console.log(error);
-        });
-      this.$emit("changeTab", actividades);
-    },
+ methods: {
+  setActividades() {
+    this.$store.dispatch("getShowLoader", true);
+    const miembros = JSON.parse(localStorage.getItem("miembros")) ?? {};
+    const trabajadores = JSON.parse(localStorage.getItem("trabajadores")) ?? [];
+    const tareas = JSON.parse(localStorage.getItem("tareas")) ?? [];
+    const actividades = {
+      i0003f_i008t_equipo_trabajo: {
+        c008f_i009t_gerencia_funcional: this.functional,
+        c008f_i009t_gerencia_tecnica: this.technical,
+        c008f_i009t_gerencia_galba: this.galba,
+        c008f_i001t_lider_funcional:
+          miembros?.c008f_i001t_lider_funcional?.i001i_usuario,
+        c008f_i001t_lider_negocio:
+          miembros?.c008f_i001t_lider_negocio?.i001i_usuario,
+        c008f_i001t_lider_tecnico:
+          miembros?.c008f_i001t_lider_tecnico?.i001i_usuario,
+        in_cargo: "strasdasdasing",
+        c008f_i001t_trabajador: trabajadores.map(item => (item.indicador)),
+      },
+      i003f_i011_tipo_proyecto: this.selectedType,
+      i003f_i013t_tareas: [],
+    };
+
+    // Verificar el contenido de this.projectTareas
+    console.log("Contenido de projectTareas:", tareas);
+
+    if (this.projectTareas.length > 0) {
+      actividades.i003f_i013t_tareas = [...tareas, ...this.projectTareas];
+    } else {
+      actividades.i003f_i013t_tareas = tareas;
+    }
+
+    console.log("Actividades1:", actividades);
+    console.log("Actividades2:", this.projectTareas);
+    console.log("Actividades3:", this.tareas);
+
+    updateProject(this.entrada.i003i_entrada, actividades)
+      .then((response) => {
+        console.log(response);
+        this.$store.dispatch("getShowLoader", false);
+      })
+      .catch((error) => {
+        this.$store.dispatch("getShowLoader", false);
+        console.log(error);
+      });
+    this.$emit("changeTab", actividades);
   },
+}
 };
 </script>
 
