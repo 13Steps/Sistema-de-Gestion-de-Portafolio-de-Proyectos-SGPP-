@@ -126,8 +126,10 @@
     <span> Lista de Historias de Usuarios </span>
   </div>
   <div class="cardsContainer">
-    <div class="row" v-for="(historias, index) in project.i003f_i007i_historia_usuario" :key="historias">
-      <HistoriaUsuario :historia="historias" :codigo="formatIndex(index, project.i003f_i007i_historia_usuario.length)" />
+    <div class="row">
+      <div class="col l3 m6 s12" v-for="(historias, index) in project.i003f_i007i_historia_usuario" :key="historias">
+        <HistoriaUsuario :historia="historias" :codigo="formatIndex(index, project.i003f_i007i_historia_usuario.length)" />
+      </div>
     </div>
   </div>
 </template>
@@ -161,8 +163,7 @@ export default {
       this.collapsibleInstance = M.Collapsible.init(collapsibleElement);
     },
     formatIndex(index, total) {
-      const digits = String(total).length;
-      return String(index).padStart(digits, '0');
+      return String(index + 1).padStart(3, '0');
     }
   },
 };

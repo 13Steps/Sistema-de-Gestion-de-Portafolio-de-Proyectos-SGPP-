@@ -48,50 +48,55 @@
       <span style="margin: 0px">Estado: {{task?.i013f_i014t_seguimiento?.i014f_i015t_estado_tarea?.in_titulo}}</span>
       <div class="divider"></div>
       <div class="modalDesc" style="max-height: 230px">
-        <div class="col l7" style="min-width: 25rem">
-          <span class="Descripcion">Descripcion</span>
-          <p style="max-height: 180px; overflow-y: scroll; text-align: justify">
-            {{ task?.tx_descripcion }}
-          </p>
-        </div>
-        <div class="col l5 fechasTarea">
-          <div class="card teal fechasContainer">
-            <span class="mainLabel">Inicio de tarea:</span>
-            <div class="center cardSections">
-              <div class="section center">
-                <span class="fechaValue">{{
-                  task?.i013f_i014t_seguimiento?.fe_real_inicio
-                }}</span>
-                <span class="fechaLabel">Real</span>
+        <div class="">
+          <div class="col l6">
+
+            <span class="Descripcion">Descripcion</span>
+            <p style="max-height: 180px; overflow-y: scroll; text-align: justify">
+              {{ task?.tx_descripcion }}
+            </p>
+          </div>
+
+          <div class="col l6 fechasTarea">
+            <div class="card teal fechasContainer">
+              <span class="mainLabel">Inicio de tarea:</span>
+              <div class="center cardSections">
+                <div class="section center">
+                  <span class="fechaValue">{{
+                    task?.i013f_i014t_seguimiento?.fe_real_inicio
+                  }}</span>
+                  <span class="fechaLabel">Real</span>
+                </div>
+                <div class="v-divider"></div>
+                <div class="section center">
+                  <span class="fechaValue">{{
+                    task?.i013f_i014t_seguimiento?.fe_plan_inicio
+                  }}</span>
+                  <span class="fechaLabel">Planificado</span>
+                </div>
               </div>
-              <div class="v-divider"></div>
-              <div class="section center">
-                <span class="fechaValue">{{
-                  task?.i013f_i014t_seguimiento?.fe_plan_inicio
-                }}</span>
-                <span class="fechaLabel">Planificado</span>
+            </div>
+            <div class="card indigo lighten-2 fechasContainer">
+              <span class="mainLabel">Finalizacion de tarea:</span>
+              <div class="center cardSections">
+                <div class="section center">
+                  <span class="fechaValue">{{
+                    task?.i013f_i014t_seguimiento?.fe_real_fin
+                  }}</span>
+                  <span class="fechaLabel">Real</span>
+                </div>
+                <div class="v-divider"></div>
+                <div class="section center">
+                  <span class="fechaValue">{{
+                    task?.i013f_i014t_seguimiento?.fe_plan_fin
+                  }}</span>
+                  <span class="fechaLabel">Planificado</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="card indigo lighten-2 fechasContainer">
-            <span class="mainLabel">Finalizacion de tarea:</span>
-            <div class="center cardSections">
-              <div class="section center">
-                <span class="fechaValue">{{
-                  task?.i013f_i014t_seguimiento?.fe_real_fin
-                }}</span>
-                <span class="fechaLabel">Real</span>
-              </div>
-              <div class="v-divider"></div>
-              <div class="section center">
-                <span class="fechaValue">{{
-                  task?.i013f_i014t_seguimiento?.fe_plan_fin
-                }}</span>
-                <span class="fechaLabel">Planificado</span>
-              </div>
-            </div>
-          </div>
         </div>
+
       </div>
     </div>
     <div class="divider"></div>
@@ -271,6 +276,7 @@ export default {
   margin: 10px 0 10px 0;
   max-height: 300px;
   overflow: scroll;
+  scrollbar-width: none;
 }
 .modalDesc .Descripcion {
   color: rgb(52, 52, 97);

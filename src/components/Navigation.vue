@@ -56,9 +56,9 @@
       </li>
       <li>
         <div class="userContainer">
-          <div class="picContainer">
-            <img v-if="typeof user.foto === 'string' &&  user.foto !== null" :src="`http://34.225.211.222:3000/${user.foto}`" alt="#" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
-            <img v-else src="../assets/Imagenes/perfil.jpg" class="circle z-depth-4 userPic" style="width: 84px; height: 84px;">
+          <div class="imgContainer">
+            <img v-if="typeof user.foto === 'string' &&  user.foto !== null" :src="`http://34.225.211.222:3000/${user.foto}`" alt="#" class="circle">
+            <img v-else src="../assets/Imagenes/perfil.jpg" class="circle">
           </div>
           <div class="userName">
             <span><h5>{{user.nombre}} {{user.apellido}}</h5></span>
@@ -335,14 +335,22 @@ export default {
     align-items: center;
     margin-top: -5px;
   }
-  .picContainer{
-    margin-top: -25px;
-  }
-  .userPic{
-    border: 2px inset rgb(133, 133, 219);
-  }
+  .imgContainer {
+  margin-top: -25px;
+  max-width: 80px;
+  max-height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px inset rgb(133, 133, 219);;
+}
+
+.imgContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
   .userName{
-    margin-top: -30px;
+    margin-top: -10px;
   }
   .userId{
     margin-top: -25px;

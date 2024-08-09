@@ -32,10 +32,10 @@ export default {
     min-height: 100vh;
     scrollbar-width: none;
   }
-  .ganttContainer, .collapsible-body, textarea, p{
+  .ganttContainer, .row, .collapsible-body, textarea, p{
     scrollbar-width: none;
   }
-  .table-container{
+  .table-container, .modal{
     overflow-y: scroll;
     scrollbar-width: thin;
   }
