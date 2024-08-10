@@ -63,14 +63,14 @@
               <div class="center cardSections">
                 <div class="section center">
                   <span class="fechaValue">{{
-                    task?.i013f_i014t_seguimiento?.fe_real_inicio
+                    formatValue(task?.i013f_i014t_seguimiento?.fe_real_inicio)
                   }}</span>
                   <span class="fechaLabel">Real</span>
                 </div>
                 <div class="v-divider"></div>
                 <div class="section center">
                   <span class="fechaValue">{{
-                    task?.i013f_i014t_seguimiento?.fe_plan_inicio
+                    formatValue(task?.i013f_i014t_seguimiento?.fe_plan_inicio)
                   }}</span>
                   <span class="fechaLabel">Planificado</span>
                 </div>
@@ -81,14 +81,14 @@
               <div class="center cardSections">
                 <div class="section center">
                   <span class="fechaValue">{{
-                    task?.i013f_i014t_seguimiento?.fe_real_fin
+                    formatValue(task?.i013f_i014t_seguimiento?.fe_real_fin)
                   }}</span>
                   <span class="fechaLabel">Real</span>
                 </div>
                 <div class="v-divider"></div>
                 <div class="section center">
                   <span class="fechaValue">{{
-                    task?.i013f_i014t_seguimiento?.fe_plan_fin
+                    formatValue(task?.i013f_i014t_seguimiento?.fe_plan_fin)
                   }}</span>
                   <span class="fechaLabel">Planificado</span>
                 </div>
@@ -142,7 +142,15 @@ export default {
   data() {
     return {
       tasksData: [],
-      task: {},
+      task: {
+        i013f_i014t_seguimiento: {
+          fe_real_inicio: null,
+          fe_real_fin: null,
+          i014f_i015t_estado_tarea: {
+            in_titulo: ""
+          }
+        }
+      },
       nu_completado_real: 0,
     };
   },
@@ -150,11 +158,76 @@ export default {
     this.initModal();
     this.fetchTask();
   },
+  watch: {
+    'task.i013f_i014t_seguimiento.i014f_i015t_estado_tarea.in_titulo': function(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        const today = this.getLocalDate(); // Utiliza la fecha local
+
+        switch(newVal) {
+          case 'Por Iniciar':
+            this.task.i013f_i014t_seguimiento.fe_real_inicio = null;
+            this.task.i013f_i014t_seguimiento.fe_real_fin = null;
+            break;
+          case 'En Desarrollo':
+            this.task.i013f_i014t_seguimiento.fe_real_inicio = today;
+            this.task.i013f_i014t_seguimiento.fe_real_fin = null;
+            break;
+          case 'Completada':
+            this.task.i013f_i014t_seguimiento.fe_real_fin = today;
+            break;
+          case 'Atrasada':
+            this.checkForDelayedTasks()
+            break;
+        }
+      }
+    }
+  },
   methods: {
+    formatValue(value) {
+      return value === null ? "-" : value;
+    },
+    getLocalDate() {
+      const today = new Date();
+      const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000);
+      return localDate.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+    },
+    checkForDelayedTasks() {
+      const today = this.getLocalDate(); // Formato YYYY-MM-DD
+
+      this.tasksData = this.tasksData.map(task => {
+        const planFinishDate = task.i013f_i014t_seguimiento.fe_plan_fin;
+
+        if (new Date(planFinishDate) < new Date(today) && task.i013f_i014t_seguimiento.nu_completado_real < 100) {
+          task.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
+            i015i_estado_tarea: 4,
+            in_titulo: "Atrasada",
+            tx_descripcion: " "
+          };
+          // Inicializar fechas reales como null si no están definidas
+          if (!this.task.i013f_i014t_seguimiento.fe_real_inicio) {
+            this.task.i013f_i014t_seguimiento.fe_real_inicio = null;
+          }
+          if (!this.task.i013f_i014t_seguimiento.fe_real_fin) {
+            this.task.i013f_i014t_seguimiento.fe_real_fin = null;
+          }
+          if(this.nu_completado_real < 100 && this.nu_completado_real >= 0){
+            this.task.i013f_i014t_seguimiento.fe_real_fin = null;
+          }
+          if(this.nu_completado_real > 0){
+            this.task.i013f_i014t_seguimiento.fe_real_inicio = today;
+          }
+          if(this.nu_completado_real === 0){
+            this.task.i013f_i014t_seguimiento.fe_real_inicio = null;
+          }
+        }
+        return task;
+      });
+    },
     async fetchTask() {
       try {
         this.tasksData = await this.project?.i003f_i013t_tareas;
-        console.log(this.tasksData); // Haz algo con la respuesta, como almacenarla en el estado del componente
+        console.log(this.tasksData); 
+        this.checkForDelayedTasks();  // Revisa si hay tareas atrasadas
       } catch (error) {
         console.error("Error fetching project:", error);
       }
@@ -169,7 +242,9 @@ export default {
       if (this.modalInstance) {
         this.modalInstance.open();
         this.task = task;
-        this.nu_completado_real = this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1]
+        this.checkForDelayedTasks();
+
+        this.nu_completado_real = this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1];
       }
     },
     closeModal() {
@@ -177,34 +252,51 @@ export default {
         this.modalInstance.close();
       }
     },
-    validateInput() {
+    validateInput(event) {
       let value = event.target.value;
-      if (value < 0) {
-        event.target.value = 0;
-      } else if (value > 100) {
-        event.target.value = 100;
+      const numericValue = Number(value);
+
+      if (isNaN(numericValue) || numericValue < 0 || numericValue > 100) {
+        alert("Por favor, ingresa un valor numérico entre 0 y 100.");
+        event.target.value = "";
+        this.nu_completado_real = 0;
+        return;
       }
+
+      this.nu_completado_real = numericValue;
     },
     updateTarea() {
       const seguimientoEditado = this.tasksData.map(item => {
         if (item.i013i_tarea === this.task.i013i_tarea) {
-          console.log(this.task);
           item.i013f_i014t_seguimiento.nu_completado_real = [...item.i013f_i014t_seguimiento.nu_completado_real, this.nu_completado_real];
-          
-          // Cambiar i015i_estado_tarea si el cumplimiento es mayor de cero o igual a 100
-          if (this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1] > 0) {
-              item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
-                i015i_estado_tarea: 2,
-                in_titulo: "En Desarrollo",
-                tx_descripcion:" "
-              };
-          }
-          if (this.task.i013f_i014t_seguimiento.nu_completado_real[this.task.i013f_i014t_seguimiento.nu_completado_real.length - 1] === 100) {
+          const today = this.getLocalDate(); // Utiliza la fecha local
+          const planFinishDate = new Date(item.i013f_i014t_seguimiento.fe_plan_fin);
+
+          if (planFinishDate < new Date() && this.nu_completado_real < 100) {
             item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
-                i015i_estado_tarea: 1,
-                in_titulo: "Completada",
-                tx_descripcion:" "
-              };
+              i015i_estado_tarea: 4,
+              in_titulo: "Atrasada",
+              tx_descripcion: " ",
+            };
+          } else if (this.nu_completado_real === 0) {
+            item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
+              i015i_estado_tarea: 3,
+              in_titulo: "Por Iniciar",
+              tx_descripcion: " "
+            };
+          } else if (this.nu_completado_real > 0 && this.nu_completado_real < 100) {
+            item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
+              i015i_estado_tarea: 2,
+              in_titulo: "En Desarrollo",
+              tx_descripcion: " "
+            };
+          } else if (this.nu_completado_real === 100) {
+            item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
+              i015i_estado_tarea: 1,
+              in_titulo: "Completada",
+              tx_descripcion: " "
+            };
+            this.task.i013f_i014t_seguimiento.fe_real_fin = today; // Ajusta la fecha de finalización
           }
         }
         return item;
@@ -224,7 +316,7 @@ export default {
           console.log(error);
         });
       this.closeModal();
-    }
+    },
   },
 };
 </script>
