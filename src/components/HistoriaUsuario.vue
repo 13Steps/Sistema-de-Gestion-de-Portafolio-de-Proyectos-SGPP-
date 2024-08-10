@@ -3,10 +3,10 @@
       <div class="cardContainer">
         <div class="cardInfo">
           <div class="cardCode">
-            <span>Codigo: {{codigo + 1}}</span>
+            <span>Codigo: {{formattedCodigo}}</span>
           </div>
           <div class="center cardTitle">
-            <span>Abrir Modal</span>
+            <span><b>{{historia.in_titulo}}</b></span>
           </div>
         </div>
         <div class="divider"></div>
@@ -27,7 +27,7 @@
     </div>
     <div class="modal-content">
       <h4>{{historia.in_titulo}}</h4>
-      <span style="margin: 0px">Codigo: {{codigo + 1}}</span>
+      <span style="margin: 0px">Codigo: {{formattedCodigo}}</span>
       <div class="divider"></div>
       <div class="modalDesc">
         <span>Descripción:</span>
@@ -85,6 +85,11 @@ export default {
         required: true,
       },
     },
+    computed: {
+    formattedCodigo() {
+      return String(this.codigo).padStart(3, '0');
+    }
+  },
   data() {
     return {
       tab: "rol",
