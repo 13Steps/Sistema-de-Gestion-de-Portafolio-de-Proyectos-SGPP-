@@ -62,12 +62,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Creador del proyecto, Se registra cuando se crea una nueva entrada -->
-          <tr>
-            <td class="hoverExpandir mayusCase">INDICADOR de TablaUsuarios</td>
-            <td class="hoverExpandir">Nombre de TablaUsuarios</td>
-            <td class="hoverExpandir">Rol de TablaUsuarios</td>
-          </tr>
           <!-- //Resto de Miembros -->
           <tr class="tableBody" v-for="(miembro, index) in miembros" :key="index" :class="{
             'lider': ['Líder Técnico', 'Líder Funcional', 'Líder GALBA'].includes(miembro.cargo)}

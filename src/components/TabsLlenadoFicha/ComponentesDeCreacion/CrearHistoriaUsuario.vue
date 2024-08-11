@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="row alignOpciones">
-      <div class="col l7 offset-l1 collectionContainer">
+      <div class="col l3 nuevaHistoria">
+        <a class="btn" @click="abrirModalCrearHistoria">Nueva Historia</a>
+      </div>
+      <div class="col l7 collectionContainer">
         <ul class="collection">
           <li
             class="collection-item"
@@ -48,9 +51,6 @@
             </div>
           </li>
         </ul>
-      </div>
-      <div class="col l3 offset-l1 nuevaHistoria">
-        <a class="btn" @click="abrirModalCrearHistoria">Nueva Historia</a>
       </div>
     </div>
   </div>
@@ -99,6 +99,7 @@ export default {
 .collectionContainer {
   max-height: 220px;
   overflow-y: auto;
+  scrollbar-width: thin;
 }
 .collection-item {
   overflow-wrap: break-word;
@@ -143,20 +144,22 @@ export default {
   cursor: pointer;
 }
 .listadoBody {
-  padding: 8px;
+  border: 1px solid rgb(52, 52, 97);
 }
 .listadoBody p {
   font-size: 13px;
   font-weight: 500;
   color: rgb(20, 20, 20);
+  padding: 8px;
 }
 .card-tabs {
   margin-top: 10px;
   width: 100%;
   font-weight: 700;
+  background-color: rgb(52, 52, 97);
 }
 .card-tabs a {
-  color: rgb(52, 52, 97) !important;
+  color: white !important;
 }
 .card-tabs a:hover {
   color: rgb(94, 94, 119) !important;

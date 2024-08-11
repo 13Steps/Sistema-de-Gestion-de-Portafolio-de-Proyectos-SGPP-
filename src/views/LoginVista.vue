@@ -28,7 +28,8 @@
                   <div class="input-field userLogin">
                     <i class="material-icons prefix">account_circle</i>
                     <input
-                      v-model="email"
+                      @input="convertirAMayusculas"
+                      v-model="indicador"
                       id="username"
                       type="text"
                       class="validate"
@@ -74,16 +75,22 @@ import { mapActions } from 'vuex'; // Asegúrate de usarlo si lo necesitas, de l
 export default {
   name: "LoginVista",
   data: () => ({
-    email: "",
+    indicador: "",
     password: "",
   }),
   methods: {
     ...mapActions(['setUserData', 'setToken']), // Asegúrate de definir estas acciones en tu store de Vuex si planeas usarlas
+    convertirAMayusculas() {
+      this.indicador = this.indicador.toUpperCase();
+    },
     async login() {
+      this.convertirAMayusculas();
+
       const formData = {
-        in_usuario: this.email,
+        in_usuario: this.indicador,
         password: this.password,
       };
+      
       try {
         const response = await loginUser(formData);
         localStorage.setItem('token', response.token);
@@ -100,5 +107,6 @@ export default {
   }
 }
 </script>
+
 
 <style src="../assets/Style/Login.css" scoped></style>
