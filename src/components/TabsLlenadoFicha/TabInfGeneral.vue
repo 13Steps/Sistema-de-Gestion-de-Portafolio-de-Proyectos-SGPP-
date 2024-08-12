@@ -103,7 +103,8 @@ import {
   getTechnicalAreas,
   getManagements,
   createProject,
-  updateProject
+  updateProject,
+  getProjectById
 } from "@/Services/Services";
 
 export default {
@@ -137,14 +138,24 @@ export default {
       immediate: true,
     },
   },
+
   async mounted() {
     this.entrada = JSON.parse(localStorage.getItem("entradaData"));
-    console.log("Entrada:", this.entrada);
+    this.project = await getProjectById(this.entrada.i003i_entrada);
     this.entradaTitulo = this.entrada?.in_titulo;
+    this.entradaDescripcion = this.entrada?.tx_descripcion;
+    this.entradaObjetivo = this.entrada?.tx_objetivo;
+    this.entradaAlcance = this.entrada?.tx_alcance;
+    this.technicalArea = this.entrada?.i003f_i010t_area_tecnica.i010i_area_tecnica;
+    this.managementVal = this.entrada?.i003f_i010t_area_tecnica.i010i_area_tecnica;
+
     this.initDatepickers();
     try {
-      this.technicalAreas = await getTechnicalAreas();
-      this.managements = await getManagements();
+       const technicalAreas = await getTechnicalAreas();
+    const managements = await getManagements();
+
+    this.technicalAreas = technicalAreas.filter((area) => area.in_nombre !== null);
+    this.managements = managements.filter((area) => area.in_nombre !== null);
       console.log("Áreas técnicas:", this.technicalAreas);
       console.log("Gestiones:", this.managements);
     } catch (error) {

@@ -35,7 +35,7 @@ const routes = [
       },
     ]},
   { beforeEnter: [estaAutenticado],
-    path: '/fichaEntrada/:entryId', name: 'FichaEntrada', meta: {breadcrumb: ' / ProyectoPrueba'},
+    path: '/fichaEntrada/:entryId', name: 'FichaEntrada', meta: {breadcrumb: ' / Detalles'},
     children: [
       {
         path: '',
@@ -44,7 +44,7 @@ const routes = [
       },
     ]}, 
     { beforeEnter: [estaAutenticado],
-      path: '/fichaLlenado/:entryId', name: 'fichaLlenadoId', meta: {breadcrumb: ' / fichaLlenado id'},
+      path: '/fichaLlenado/:entryId', name: 'fichaLlenadoId', meta: {breadcrumb: ' / Crear Ficha'},
       children: [
         {
           path: '',

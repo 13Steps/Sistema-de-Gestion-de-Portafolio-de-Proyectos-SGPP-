@@ -17,7 +17,7 @@
       </div>
       <div class="col l3 right">
         <label>Gerencia Técnica</label>
-        <select v-model="technical" class="browser-default">
+        <select v-model="technical" :value="technical" class="browser-default">
           <option disabled selected class="hide"></option>
           <option
             v-for="gerenciaT in gerencias"
@@ -29,7 +29,7 @@
       </div>
       <div class="col l3 right">
         <label>Gerencia Funcional</label>
-        <select v-model="functional" class="browser-default">
+        <select v-model="functional" :value="functional" class="browser-default">
           <option disabled selected class="hide"></option>
           <option
             v-for="gerenciaF in gerencias"
@@ -58,12 +58,12 @@
       </div>
     </div>
     <div class="col l12 tableArea">
-      <CrearTarea />
+      <CrearTarea :tareasAc="tareas" />
     </div>
   </div>
   <div class="row tableArea tableArea">
     <h6>Equipo de Trabajo</h6>
-    <CrearEquipo />
+    <CrearEquipo :equipo="equipo" />
   </div>
 
   <div class="row center">
@@ -104,13 +104,30 @@ export default {
       project: {},
     };
   },
+  watch: {
+    projectTareas: {
+      handler: function (val) {
+        this.tareas = val;
+      },
+      deep: true,
+    },
+  },
   async mounted() {
     this.entrada = JSON.parse(localStorage.getItem("entradaData"));
     this.project = await getProjectById(this.entrada.i003i_entrada);
-    this.projectTareas = this.project.i003f_i013t_tareas;
+   this.projectTareas = this.project?.i003f_i013t_tareas
+this.functional = this.project?.i0003f_i008t_equipo_trabajo?.c008f_i009t_gerencia_funcional?.i009i_gerencia
+this.technical = this.project?.i0003f_i008t_equipo_trabajo?.c008f_i009t_gerencia_tecnica?.i009i_gerencia
+this.galba = this.project?.i0003f_i008t_equipo_trabajo?.c008f_i009t_gerencia_galba?.i009i_gerencia
+this.selectedType = this.project?.i003f_i011_tipo_proyecto?.i011i_tipo_proyecto
+this.tareas = this.project?.i003f_i013t_tareas
+this.equipo = this.project?.i0003f_i008t_equipo_trabajo
+
     try {
-      this.gerencias = await getManagements();
-      this.projectTypes = await getProjectTypes();
+      const gerencias = await getManagements();
+      this.gerencias = gerencias.filter((area) => area.in_nombre !== null);
+      const projectTypes = await getProjectTypes();
+      this.projectTypes = projectTypes.filter((type) => type.in_nombre !== null);
       console.log("Áreas técnicas:", this.technicalAreas);
       console.log("Gestiones:", this.managements);
     } catch (error) {

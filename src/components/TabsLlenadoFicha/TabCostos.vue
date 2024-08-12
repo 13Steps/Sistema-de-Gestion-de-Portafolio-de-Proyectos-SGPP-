@@ -1,6 +1,6 @@
 <template>
   <h6>Estimación de Costo</h6>
-  <CrearCosto />
+  <CrearCosto :costosEdi="costos"/>
 
   <div class="row center">
     <div class="divider"></div>
@@ -12,7 +12,7 @@
 
 <script>
 import CrearCosto from "./ComponentesDeCreacion/CrearCosto.vue";
-import { createProject, updateProject } from "@/Services/Services";
+import { createProject, updateProject, getProjectById } from "@/Services/Services";
 
 export default {
   components: {
@@ -24,8 +24,10 @@ export default {
       entrada: null,
     };
   },
-  mounted() {
+  async mounted() {
     this.entrada = JSON.parse(localStorage.getItem("entradaData"));
+    this.project = await getProjectById(this.entrada.i003i_entrada);
+    this.costos = this.project.i003f_i016i_costo;
   },
   methods: {
     CrearProyecto() {

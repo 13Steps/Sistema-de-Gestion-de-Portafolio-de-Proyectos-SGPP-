@@ -17,7 +17,7 @@
         <span>
           <div class="itemIcon"><i class="material-icons"> lan </i></div>
           <div class="itemTitle">Linea de Negocio:</div>
-          <div class="itemContent">Automatización Industrial.</div>
+          <div class="itemContent">{{project?.i003f_i010t_area_tecnica?.in_nombre}}.</div>
         </span>
       </li>
       <li class="collection-item">

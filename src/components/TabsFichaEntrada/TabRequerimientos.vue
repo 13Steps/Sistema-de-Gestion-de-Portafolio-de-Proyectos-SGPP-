@@ -57,7 +57,7 @@
             <!-- {{typeof project?.i003f_i004t_datos_adi?.tx_datamodelo !== 'string' ? 'Modelo' : project?.i003f_i004t_datos_adi?.tx_datamodelo }} -->
             Modelo de datos
           </span>
-          <a class="btn-flat right descargarBoton" :href="documentUrl" download> Descargar </a>
+          <a class="btn-flat right descargarBoton" :href="`http://34.225.211.222:3000/${project.i003f_i004t_datos_adi.tx_datamodelo}`" target="_blank" download> Descargar </a>
         </div>
       </div>
     </li>

@@ -62,6 +62,12 @@
 import ModalsForms from "../../ModalsForms.vue";
 
 export default {
+  props: {
+    historiasUsuario: {
+      type: Array,
+      default: () => [],
+    },
+  },
   components: {
     ModalsForms,
   },
@@ -70,6 +76,18 @@ export default {
       historias: [],
       tab: "Rol",
     };
+  },
+  mounted() {
+    this.historias = this.historiasUsuario;
+    console.log("Historias de usuario:", this.historias);
+  },
+  watch: {
+    historiasUsuario: {
+      handler(nuevasHistorias) {
+        this.historias = nuevasHistorias;
+      },
+      deep: true,
+    },
   },
   methods: {
     abrirModalCrearHistoria() {

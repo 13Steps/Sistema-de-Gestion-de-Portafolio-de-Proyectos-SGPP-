@@ -84,9 +84,22 @@ export default {
       },
     };
   },
+  props: {
+    tareasAc: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  watch: {
+    tareasAc: {
+      handler() {
+        this.tareas = this.tareasAc;
+      },
+      immediate: true,
+    },
+  },
   methods: {
     agregarTarea() {
-
       if (this.nuevaTarea.in_nombre.trim() !== "") {
         const nuevaTareaEstructurada = {
           tx_descripcion: this.nuevaTarea.tx_descripcion,
@@ -108,7 +121,7 @@ export default {
           fechaFinalizacion: "",
           tx_descripcion: "",
         };
-
+console.log(this.tareas)
         localStorage.setItem("tareas", JSON.stringify(this.tareas));
       }
     },

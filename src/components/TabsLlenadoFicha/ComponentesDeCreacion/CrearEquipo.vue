@@ -70,11 +70,11 @@
           </tr>
           <!-- //Resto de Miembros -->
           <tr class="tableBody" v-for="(miembro, index) in miembros" :key="index" :class="{
-            'lider': ['Líder Técnico', 'Líder Funcional', 'Líder GALBA'].includes(miembro.cargo)}
+            'lider': ['Líder Técnico', 'Líder Funcional', 'Líder GALBA'].includes(miembro?.cargo)}
             ">
-            <td class="hoverExpandir mayusCase">{{ miembro.indicador.in_nombre }}</td>
-            <td class="hoverExpandir">{{ miembro.indicador.in_nombre || 'Nombre desde base de datos' }}</td>
-            <td class="hoverExpandir">{{ miembro.cargo }}</td>
+            <td class="hoverExpandir mayusCase">{{ miembro?.indicador?.in_nombre }}</td>
+            <td class="hoverExpandir">{{ miembro?.indicador?.in_nombre || 'Nombre desde base de datos' }}</td>
+            <td class="hoverExpandir">{{ miembro?.cargo }}</td>
             <td class="actionButtons">
               <button class="btn-floating" @click="eliminarMiembro(index)">
                 <i class="material-icons">delete</i>
@@ -106,8 +106,90 @@ export default {
       cargosReservados: ['Líder Técnico', 'Líder Funcional', 'Líder GALBA'],
     };
   },
+  props: {
+    equipo: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  watch: {
+    equipo: {
+      handler() {
+        this.miembros = [
+          ...(this.equipo?.c008f_i001t_lider_funcional
+            ? [
+                {
+                  indicador: this.equipo.c008f_i001t_lider_funcional,
+                  nombre: "",
+                  cargo: "Líder Funcional",
+                  tipo: "Lider",
+                },
+              ]
+            : []),
+         ...(this.equipo?.c008f_i001t_lider_negocio
+            ? [
+                {
+                  indicador: this.equipo.c008f_i001t_lider_negocio,
+                  nombre: "",
+                  cargo: "Líder GALBA",
+                  tipo: "Lider",
+                },
+              ]
+            : []),
+          ...(this.equipo?.c008f_i001t_lider_tecnico
+            ? [
+                {
+                  indicador: this.equipo.c008f_i001t_lider_tecnico,
+                  nombre: "",
+                  cargo: "Líder Técnico",
+                  tipo: "Lider",
+                },
+              ]
+            : []),
+          ...(this.equipo?.c008f_i001t_trabajador
+            ? this.equipo.c008f_i001t_trabajador.map((trabajador) => ({
+                indicador: trabajador,
+                nombre: "",
+                cargo: "Trabajador",
+                tipo: "Trabajador",
+              }))
+            : []),
+        ];
+      },
+      deep: true,
+    },
+  },
   async mounted() {
     this.users = await getUsers();
+    this.miembros = [
+  {
+    indicador: this.equipo.c008f_i001t_lider_funcional,
+    nombre: "",
+    cargo: "Líder Funcional",
+    tipo: "Lider"
+  },
+  {
+    indicador: this.equipo.c008f_i001t_lider_negocio,
+    nombre: "",
+    cargo: "Líder Negocio",
+    tipo: "Lider"
+  },
+  {
+    indicador: this.equipo.c008f_i001t_lider_tecnico,
+    nombre: "",
+    cargo: "Líder Técnico",
+    tipo: "Lider"
+  },
+  ...(this.equipo?.c008f_i001t_trabajador
+        ? this.equipo.c008f_i001t_trabajador.map((trabajador) => ({
+            indicador: trabajador,
+            nombre: "",
+            cargo: "Trabajador",
+            tipo: "Trabajador",
+          }))
+        : []),
+];
+console.log( this.miembros)
   },
   computed: {
   indicador: {
@@ -172,7 +254,7 @@ export default {
         const trabajadores = this.miembros.filter(miembro => miembro.tipo === 'Trabajador');
           localStorage.setItem('trabajadores', JSON.stringify(trabajadores));
       }
-      console.log(this.miembros);
+      console.log(this.miembros, 'miembros');
       
     },
     eliminarMiembro(index) {

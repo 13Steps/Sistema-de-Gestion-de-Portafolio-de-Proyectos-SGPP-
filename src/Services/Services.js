@@ -2,6 +2,18 @@ import axios from "axios";
 
 const BASE_URL = "http://34.225.211.222:3000";
 
+//funcion para exportar base de datos
+export async function exportDatabase() {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/v1/database/csv`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
 // Función para registrar un usuario
 export async function registerUser(userData) {
   try {
