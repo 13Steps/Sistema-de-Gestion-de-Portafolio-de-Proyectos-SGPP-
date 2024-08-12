@@ -265,8 +265,49 @@ export default {
 
       this.nu_completado_real = numericValue;
     },
+  calcularPromedios(tareas) {
+    if (tareas.length === 0) return [];
+
+    // Encuentra la longitud máxima de los arreglos nu_completado_real
+    const maxLength = Math.max(...tareas.map(tarea => tarea.i013f_i014t_seguimiento.nu_completado_real.length));
+    const promedios = Array(maxLength).fill(0);
+    const counts = Array(maxLength).fill(0);
+    const fechas = Array(maxLength).fill('');
+
+    // Arreglo con los nombres de los meses en español
+    const mesesEnEspanol = [
+      'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+    ];
+
+    tareas.forEach(tarea => {
+      tarea.i013f_i014t_seguimiento.nu_completado_real.forEach((num, index) => {
+        promedios[index] += num;
+        counts[index] += 1;
+        // Obtener el mes de updatedAt en español y tomar las primeras 3 letras
+        const updatedAt = new Date(tarea?.i013f_i014t_seguimiento?.updatedAt);
+        fechas[index] = updatedAt
+      });
+    });
+
+    // Agregar un nuevo promedio con el mes correspondiente
+    const updatedAt = new Date();
+    const mesActual = updatedAt.getMonth();
+    const nuevoPromedio = {
+      promedio: Math.round(promedios.reduce((a, b) => a + b, 0) / counts.reduce((a, b) => a + b, 0)),
+      fecha: updatedAt
+    };
+
+    return promedios.map((suma, index) => ({
+      promedio: Math.round(suma / counts[index]),
+      fecha: fechas[index]
+    })).concat(nuevoPromedio);
+  },
     updateTarea() {
+      this.calcularPromedios(this.tasksData);
+      console.log(this.calcularPromedios(this.tasksData));
       const seguimientoEditado = this.tasksData.map(item => {
+        const avanceReal = item.i013f_i014t_seguimiento.nu_completado_real
         if (item.i013i_tarea === this.task.i013i_tarea) {
           item.i013f_i014t_seguimiento.nu_completado_real = [...item.i013f_i014t_seguimiento.nu_completado_real, this.nu_completado_real];
           const today = this.getLocalDate(); // Utiliza la fecha local
@@ -275,25 +316,25 @@ export default {
           if (planFinishDate < new Date() && this.nu_completado_real < 100) {
             item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
               i015i_estado_tarea: 4,
-              in_titulo: "Atrasada",
+              in_titulo: "Atrasado",
               tx_descripcion: " ",
             };
           } else if (this.nu_completado_real === 0) {
             item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
               i015i_estado_tarea: 3,
-              in_titulo: "Por Iniciar",
+              in_titulo: "Completado",
               tx_descripcion: " "
             };
           } else if (this.nu_completado_real > 0 && this.nu_completado_real < 100) {
             item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
               i015i_estado_tarea: 2,
-              in_titulo: "En Desarrollo",
+              in_titulo: "Ejecucion",
               tx_descripcion: " "
             };
           } else if (this.nu_completado_real === 100) {
             item.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
               i015i_estado_tarea: 1,
-              in_titulo: "Completada",
+              in_titulo: "Revision",
               tx_descripcion: " "
             };
             this.task.i013f_i014t_seguimiento.fe_real_fin = today; // Ajusta la fecha de finalización
@@ -303,7 +344,8 @@ export default {
       });
 
       const newSeguimiento = {
-        i003f_i013t_tareas: seguimientoEditado
+        i003f_i013t_tareas: seguimientoEditado,
+        promedio_tareas_real: this.calcularPromedios(this.tasksData),
       };
 
       updateProject(this.project.i003i_entrada, newSeguimiento)

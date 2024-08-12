@@ -1,17 +1,10 @@
 <template>
   <div class="chartCard">
     <span class="white-text">
-      <i class="material-icons">stacked_line_chart</i>Grafica Real Vs.
-      Planificado
+      <i class="material-icons">stacked_line_chart</i>Grafica Real
     </span>
     <div class="divider"></div>
     <div class="cardsContainer">
-      <div class="col l6 m6 s6">
-        <div class="card-panel red white-text hoverable labelChart">
-          <i class="material-icons"> edit_note </i>
-          <span> Planificado </span>
-        </div>
-      </div>
       <div class="col l6 m6 s6">
         <div class="card-panel cyan white-text hoverable labelChart">
           <i class="material-icons"> task </i>
@@ -24,12 +17,12 @@
 </template>
 
 <script>
-import Highcharts, { color } from "highcharts";
+import Highcharts from "highcharts";
 
 export default {
   props: {
     seguimiento: {
-      type: Object,
+      type: Array,
       default: () => ([]),
     },
   },
@@ -52,31 +45,33 @@ export default {
       immediate: true,
     },
   },
-  computed: {
-    promedioReal() {
-    return this.seguimiento
-      .filter(tarea => tarea.i013f_i014t_seguimiento !== null)
-      .map(tarea => {
-        const completadoReal = tarea.i013f_i014t_seguimiento.nu_completado_real;
-        const promedio = completadoReal.reduce((acc, val) => acc + val, 0) / completadoReal.length;
-        return promedio;
-      });
-  },
-  promedioPlan() {
-    return this.seguimiento
-      .filter(tarea => tarea.i013f_i014t_seguimiento !== null)
-      .map(tarea => {
-        const completadoPlan = tarea.i013f_i014t_seguimiento.nu_completado_planificado;
-        const promedio = completadoPlan.reduce((acc, val) => acc + val, 0) / completadoPlan.length;
-        return promedio;
-      });
-  },
-  },
+
   methods: {
     renderChart() {
       console.log("Promedio Real", this.seguimiento);
       const chartContainer = this.$refs.realPlanChart;
-      if (!chartContainer) return;
+      if (!chartContainer || !this.seguimiento) return;
+
+      let categories = [];
+      let promedioReal = [];
+
+      if (Array.isArray(this.seguimiento.promedio_tareas_real)) {
+        categories = this.seguimiento.promedio_tareas_real.map(item => item.fecha);
+        promedioReal = this.seguimiento.promedio_tareas_real.map(item => item.promedio);
+      }
+
+      if (categories.length === 0) return;
+
+      const allSameMonth = categories.every(date => new Date(date).getMonth() === new Date(categories[0]).getMonth());
+
+      const formattedCategories = categories.map(date => {
+        const d = new Date(date);
+        const month = d.toLocaleString('es-ES', { month: 'short' });
+        return `${month} ${d.getDate()}`;
+      });
+
+      console.log(formattedCategories);
+
       this.chart = Highcharts.chart(chartContainer, {
         chart: {
           type: "line",
@@ -95,20 +90,7 @@ export default {
         xAxis: {
           lineWidth: 0,
           gridLineWidth: 0,
-          categories: [
-            "Ene",
-            "Feb",
-            "Mar",
-            "Abr",
-            "May",
-            "Jun",
-            "Jul",
-            "Ago",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dic",
-          ],
+          categories: formattedCategories,
           labels: {
             style: {
               color: "white",
@@ -132,11 +114,10 @@ export default {
             },
           },
         },
-
         series: [
           {
             name: "Real",
-            data: this.seguimiento[0]?.i013f_i014t_seguimiento?.nu_completado_real,
+            data: promedioReal,
             color: "#00bcd4",
             lineWidth: 5,
             marker: {
@@ -145,17 +126,6 @@ export default {
               fillColor: "#4dd0e1",
             },
           },
-          // {
-          //   name: "Planificado",
-          //   data: this.seguimiento[0]?.i013f_i014t_seguimiento?.nu_completado_planificado,
-          //   color: "#e53935",
-          //   lineWidth: 5,
-          //   marker: {
-          //     symbol: "square",
-          //     radius: 4,
-          //     fillColor: "#ef5350",
-          //   },
-          // },
         ],
       });
     },

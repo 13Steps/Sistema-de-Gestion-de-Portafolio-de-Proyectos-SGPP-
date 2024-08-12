@@ -9,7 +9,8 @@
       <div class="row seccionChart">
         <div class="col l8 m8 s12 chartCards proyectosChart">
           <div class="card grey lighten-5 hoverable">
-            <div class="card-content">
+            <div class="card-content" style="    max-height: 40rem;
+    overflow: auto;">
               <div class="cardTitle">
                 <i class="material-icons" style="font-size: 32px;">analytics</i>
                 <span>Proyectos Asignados</span>
@@ -192,6 +193,7 @@ export default {
       this.proyectos = response.filter((entrada) => {
         return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes("proyecto");
       });
+      console.log(this.proyectos, 'hbs')
       this.requerimientos = response.filter((entrada) => {
         return entrada?.i003f_i005t_fase_entrada?.in_nombre_fase.toLowerCase().includes("requerimiento");
       });

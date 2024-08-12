@@ -82,7 +82,7 @@
               <input
                 id="contraseñaUsuario"
                 type="password"
-                v-model="usuarioSeleccionado.password"
+                v-model="password"
                 maxlength="50"
                 required
               />
@@ -189,6 +189,7 @@ export default {
     async editarUsuario() {
       //Lofica de actualizar usuario
       this.$store.dispatch("getShowLoader", true);
+      this.usuarioSeleccionado.password = this.password;
       console.log(this.usuarioSeleccionado)
       try {
         // Crear una instancia de FormData

@@ -232,19 +232,21 @@ export default {
           tx_alcance: "",
           tx_objetivo: "",
           i0003f_i008t_equipo_trabajo: {},
-          i003f_i005t_fase_entrada: {},
-          i003f_i006t_estado_entrada: {},
+          i003f_i005t_fase_entrada: 3,
+          i003f_i006t_estado_entrada: 1,
           i003f_i004t_datos_adi: {},
           i003f_i013t_tareas: [],
           i003f_i007i_historia_usuario: [],
           i003f_i016i_costo: [],
+          promedio_tareas_plan:[0],
+          promedio_tareas_real:[0]
         };
 
         createProject(projectPayload)
           .then((response) => {
             const project = response;
             localStorage.setItem("entradaData", JSON.stringify(project));
-            movToFichaLlenado(this.$router);
+            movToFichaLlenado(this.$router, response.i003i_entrada);
             this.$store.dispatch("getShowLoader", false);
           })
           .catch((error) => {
@@ -275,21 +277,21 @@ export default {
       this.closeModal(1);
     },
     async downloadReporteE() {
-      console.log('ejecutando downloadReporteE'); 
-      
+      console.log('ejecutando downloadReporteE');
+
       this.$emit("downloadReporteE");
-      
+
       this.closeModal(2);
     },
     async confirmarEliminar() {
       try {
           // Espera a que la solicitud de eliminación se complete
           const response = await deleteProject(this.entryId);
-        
+
           if (response.ok) {
             // Emitir el evento de confirmación de eliminación
             this.$emit("confirmarEliminar");
-          
+
             // Recargar la página para reflejar los cambios
             window.location.reload();
           } else {

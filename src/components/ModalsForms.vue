@@ -119,7 +119,7 @@
                 <input
                   id="contraseñaUsuario"
                   type="password"
-                  v-model="usuario.password"
+                  v-model="password"
                   maxlength="50"
                   required
                 />
@@ -191,10 +191,10 @@ export default {
         in_nombre: "",
         in_apellido: "",
         in_correo: "",
-        password: "",
         in_role: "",
         foto: null,
       },
+      password: "",
     };
   },
   mounted() {
@@ -239,6 +239,7 @@ export default {
       this.closeModal("modal-historia");
     },
     async submitFormUsuario() {
+      this.usuario.password = this.password;
       this.$store.dispatch('getShowLoader', true);
       try {
         // Crear una instancia de FormData

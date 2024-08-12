@@ -76,7 +76,7 @@
         <div
           class="card-panel z-depth-2 hoverable completacionChart indigo lighten-2"
         >
-          <RealPlanChart :seguimiento="project?.i003f_i013t_tareas" />
+          <RealPlanChart :seguimiento="project" />
         </div>
       </div>
       <div class="col l5 m4 s12">

@@ -234,8 +234,8 @@ export default {
     return {
       tab: "resumen",
       entrada: {
-        fase: "Proyecto",
-        estado: "En Desarrollo",
+        fase: 3,
+        estado: 1,
       },
       modalInstances: [],
       entradas: null,
@@ -258,6 +258,8 @@ export default {
     this.id = parts[parts.length - 1]; // Obtiene la última parte, que es el ID
     try {
       this.projectt = await getProjectById(this.id);
+      this.entrada.fase = this.projectt.i003f_i005t_fase_entrada.i0005i_fase_entrada;
+      this.entrada.estado = this.projectt.i003f_i006t_estado_entrada.i006i_estado_entrada;
       console.log(this.projectt)
     } catch (error) {
       console.log(error);
@@ -352,8 +354,10 @@ export default {
             ? 2
             : this.entrada.estado === "Completado"
               ? 3
-              : 4;
-
+              : this.entrada.estado === "Atrasado"
+                ? 4
+                : this.entrada.estado;
+console.log( this.entrada)
       const estados = {
         i003f_i006t_estado_entrada: projectState,
         i003f_i005t_fase_entrada:
@@ -367,6 +371,11 @@ export default {
           console.log(response);
           this.$store.dispatch("getShowLoader", false);
           this.$store.dispatch("project", response);
+
+          if (response) {
+            this.projectt = response
+          }
+          
         })
         .catch((error) => {
           this.$store.dispatch("getShowLoader", false);

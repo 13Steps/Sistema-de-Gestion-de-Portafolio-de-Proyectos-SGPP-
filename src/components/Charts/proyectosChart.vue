@@ -17,8 +17,8 @@ export default {
   data() {
     return {
       chartItem: [],
-      promedio1: 0,
-      promedio2: 0,
+      promedio1: [],
+      promedioReal: [],
     };
   },
   watch: {
@@ -26,15 +26,14 @@ export default {
       handler(newProyectos) {
         if (newProyectos && newProyectos.length !== 0) {
           this.chartItem = newProyectos.map((proyecto) => proyecto.in_titulo);
-          this.promedio1 = newProyectos.map((proyecto) =>
-            proyecto?.i003f_i013t_tareas.map(
-              (tarea) =>
-                tarea?.i013f_i014t_seguimiento?.nu_completado_planificado[
-                  tarea?.i013f_i014t_seguimiento?.nu_completado_planificado
-                    .length - 1
-                ]
-            )
-          );
+          this.promedio1 = newProyectos.map((proyecto) => {
+            if (proyecto.promedio_tareas_real) {
+              return proyecto.promedio_tareas_real[proyecto.promedio_tareas_real.length - 1].promedio;
+            } else {
+              return 0;
+            }
+          });
+
           this.initChart();
         }
       },
@@ -43,7 +42,8 @@ export default {
   },
   methods: {
     initChart() {
-      console.log([this.proyectos[0]?.in_titulo, this.proyectos[1]?.in_titulo], 'dead')
+      if (!this.$refs.proyectosChart) return;
+      console.log(this.chartItem, this.promedio1);
       Highcharts.chart(this.$refs.proyectosChart, {
         chart: {
           type: "bar",
@@ -61,7 +61,7 @@ export default {
           text: "",
         },
         xAxis: {
-          categories: [this.proyectos[0]?.in_titulo, this.proyectos[1]?.in_titulo],
+          categories: this.chartItem,
           title: {
             text: "Proyectos",
           },
@@ -87,12 +87,8 @@ export default {
         },
         series: [
           {
-            name: "Planificado",
-            data: [2, 53],
-          },
-          {
             name: "Real",
-            data: [35, 42],
+            data: this.promedio1, // Usar los datos calculados
           },
         ],
       });

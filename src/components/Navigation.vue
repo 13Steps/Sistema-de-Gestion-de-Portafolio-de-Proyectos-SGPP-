@@ -4,10 +4,10 @@
 <!-- Navbar -->
     <div class="navBanner">
       <div class="logo1">
-        <img src="../assets/Logos/topleft.png" class="brand-logo responsive-img left leftLogo">
+        <img  src="../assets/Logos/topleft.png" class="brand-logo responsive-img left leftLogo">
       </div>
       <div class="logo2">
-        <img src="../assets//Logos/topright.png" class="brand-logo responsive-img right rightLogo">
+        <img  src="../assets//Logos/topright.png" class="brand-logo responsive-img right rightLogo">
       </div>
     </div>
     <div class="containerDos">
@@ -345,8 +345,8 @@ export default {
 }
 
 .imgContainer img {
-  width: 100%;
-  height: 100%;
+  width: 75px;
+    height: 75px;
   object-fit: cover;
 }
   .userName{

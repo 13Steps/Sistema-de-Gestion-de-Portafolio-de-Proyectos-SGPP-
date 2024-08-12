@@ -32,8 +32,16 @@ export default {
       immediate: true,
     },
   },
+  mounted() {
+    this.renderChart();
+  },
   methods: {
     renderChart() {
+      if (!this.$refs.ganttChart) {
+        console.error("ganttChart element is not available");
+        return;
+      }
+
       Highcharts.setOptions({
         lang: {
           months: [
@@ -94,6 +102,9 @@ export default {
           task?.i013f_i014t_seguimiento?.fe_plan_inicio
         ).getTime(),
         end: new Date(task?.i013f_i014t_seguimiento?.fe_plan_fin).getTime(),
+        completed: {
+                amount: task?.i013f_i014t_seguimiento?.nu_completado_real[task?.i013f_i014t_seguimiento?.nu_completado_real.length - 1]/100,
+            },
       }));
 
       Highcharts.ganttChart(this.$refs.ganttChart, {
