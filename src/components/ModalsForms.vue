@@ -110,6 +110,7 @@
                   id="correoUsuario"
                   type="email"
                   v-model="usuario.in_correo"
+                  @blur="checkEmailDomain"
                   maxlength="50"
                   required
                 />
@@ -238,6 +239,13 @@ export default {
       });
       this.closeModal("modal-historia");
     },
+    checkEmailDomain() {
+      const domain = "@pdvsa.com";
+      if (!this.usuario.in_correo.endsWith(domain)) {
+        alert(`El dominio del correo debe ser ${domain}`);
+        this.usuario.in_correo = ""; // Limpiar el campo de correo
+      }
+    },
     async submitFormUsuario() {
       this.usuario.password = this.password;
       this.$store.dispatch('getShowLoader', true);
@@ -260,6 +268,7 @@ export default {
         this.$store.dispatch('getShowLoader', falso);
       }
       this.$emit("submit-usuario", { ...this.usuario });
+      location.reload();
       this.closeModal("modal-nuevo-usuario");
     },
     clearFormFieldsHistoria() {

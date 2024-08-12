@@ -17,7 +17,7 @@
             {{ usuario.in_nombre }} {{ usuario.in_apellido }}
           </td>
           <td>{{ usuario.in_role.replace("rol", "") }}</td>
-          <td>{{ usuario?.createdAt?.toLocaleString()}}</td>
+          <td>{{ formatLocalDate(usuario.createdAt)}}</td>
           <td class="actionButtons">
             <a class="btn-floating">
               <i class="material-icons" @click="openModal(usuario)"
@@ -71,6 +71,7 @@
                 id="correoUsuario"
                 type="email"
                 v-model="usuarioSeleccionado.in_correo"
+                @blur="checkEmailDomain"
                 maxlength="50"
                 required
               />
@@ -186,6 +187,18 @@ export default {
         this.modalInstance.close();
       }
     },
+    formatLocalDate(date) {
+      if (!date) return '';
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(date).toLocaleDateString(undefined, options);
+    },
+    checkEmailDomain() {
+      const domain = "@pdvsa.com";
+      if (!this.usuarioSeleccionado.in_correo.endsWith(domain)) {
+        alert(`El dominio del correo debe ser ${domain}`);
+        this.usuarioSeleccionado.in_correo = ""; // Limpiar el campo de correo
+      }
+    },
     async editarUsuario() {
       //Lofica de actualizar usuario
       this.$store.dispatch("getShowLoader", true);
@@ -204,6 +217,8 @@ export default {
         formData.append("in_usuario", this.usuarioSeleccionado.in_usuario);
         formData.append("foto", this.usuarioSeleccionado.foto);
 
+        this.usuarios = await getUsers();
+
         // Enviar la solicitud usando FormData
         const response = await updateUser(this.usuarioSeleccionado.i001i_usuario, formData);
         console.log(response);
@@ -215,6 +230,7 @@ export default {
       }
 
       this.closeModal();
+      location.reload();
     },
     async eliminarUsuario() {
       const confirmed = confirm(
@@ -257,6 +273,10 @@ export default {
 <style scoped>
 .table-container {
   overflow-x: auto;
+  scrollbar-width: none;
+  max-height: 350px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
 
 .fixedTable {
