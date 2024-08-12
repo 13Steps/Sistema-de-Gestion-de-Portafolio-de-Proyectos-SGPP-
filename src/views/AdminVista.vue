@@ -9,7 +9,6 @@
       <h2>Administrador</h2>
       <p>Sistema de Gestión de Portafolio de Proyectos</p>
     </div>
-
     <div class="customContainer">
       <div class="row">
         <div class="col l12">
@@ -114,19 +113,27 @@ export default {
       this.nuevoIndicador = this.nuevoIndicador.toUpperCase();
     },
     crearUser() {
+      // Asegurarte de que el indicador esté en mayúsculas
+      this.convertirAMayusculas();
+
       if (
         this.usuarios.some((user) => user.in_usuario === this.nuevoIndicador)
       ) {
         alert("El indicador ya existe.");
+        this.$store.dispatch("getShowLoader", true);
         this.nuevoIndicador = "";
+        this.$store.dispatch("getShowLoader", false);
       } else {
         this.$refs.modalesFormRef.openModal(
           "modal-nuevo-usuario",
           this.nuevoIndicador
         );
+        this.$store.dispatch("getShowLoader", true);
         this.nuevoIndicador = "";
+        this.$store.dispatch("getShowLoader", false);
       }
     },
+
     async exporttDatabase() {
       const response = await exportDatabase();
 

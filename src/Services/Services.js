@@ -78,23 +78,6 @@ export async function updateUser(userId, userData) {
   }
 }
 
-// export async function deleteUser(userId) {
-//   try {
-//     const response = await fetch(`/api/users/${userId}`, {
-//       method: 'DELETE',
-//     });
-
-//     if (!response.ok) {
-//       throw new Error('Error al eliminar el usuario');
-//     }
-
-//     return response.json();
-//   } catch (error) {
-//     console.error('Error en deleteUser:', error);
-//     throw error;
-//   }
-// }
-
 // Función para eliminar un usuario
 export async function deleteUser(userId) {
   try {
