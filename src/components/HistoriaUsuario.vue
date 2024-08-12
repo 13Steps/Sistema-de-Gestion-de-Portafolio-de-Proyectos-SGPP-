@@ -6,7 +6,7 @@
             <span>Codigo: {{formattedCodigo}}</span>
           </div>
           <div class="center cardTitle">
-            <span><b>{{historia.in_titulo}}</b></span>
+            <span><b>{{historia?.in_titulo}}</b></span>
           </div>
         </div>
         <div class="divider"></div>
@@ -31,27 +31,27 @@
       <div class="divider"></div>
       <div class="modalDesc">
         <span>Descripción:</span>
-        <p>{{historia.tx_descripcion}}</p>
+        <p>{{historia?.tx_descripcion}}</p>
 
         <div v-if="tab === 'funcionalidad'">
           <div class="modalTab">
             <span>Funcionalidad:</span>
             <p>
-              {{historia.tx_funcionalidad}}
+              {{historia?.tx_funcionalidad}}
             </p>
           </div>
         </div>
         <div v-else-if="tab === 'criterio'">
           <div class="modalTab">
             <span>Criterio de Evaluación:</span>
-            <p>{{historia.tx_criterio}}</p>
+            <p>{{historia?.tx_criterio}}</p>
           </div>
         </div>
         <div v-else>
           <div class="modalTab">
             <span>Rol:</span>
             <p>
-              {{historia.tx_rol}}
+              {{historia?.tx_rol}}
             </p>
           </div>
         </div>

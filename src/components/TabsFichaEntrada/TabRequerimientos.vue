@@ -26,7 +26,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-         {{project.tx_objetivo}}
+         {{project?.tx_objetivo}}
         </p>
       </div>
     </li>
@@ -39,7 +39,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-          {{project.tx_alcance}}
+          {{project?.tx_alcance}}
         </p>
       </div>
     </li>
@@ -57,7 +57,7 @@
             <!-- {{typeof project?.i003f_i004t_datos_adi?.tx_datamodelo !== 'string' ? 'Modelo' : project?.i003f_i004t_datos_adi?.tx_datamodelo }} -->
             Modelo de datos
           </span>
-          <a class="btn-flat right descargarBoton" :href="`http://34.225.211.222:3000/${project.i003f_i004t_datos_adi.tx_datamodelo}`" target="_blank" download> Descargar </a>
+          <a class="btn-flat right descargarBoton" :href="`http://34.225.211.222:3000/${project.i003f_i004t_datos_adi?.tx_datamodelo}`" target="_blank" download> Descargar </a>
         </div>
       </div>
     </li>
@@ -70,7 +70,7 @@
       </div>
       <div class="collapsible-body textContainer">
         <p>
-          {{project.i003f_i004t_datos_adi.tx_comentario}}
+          {{project.i003f_i004t_datos_adi?.tx_comentario}}
         </p>
       </div>
     </li>
@@ -89,7 +89,7 @@
         </div>
         <div class="center infoContainer">
           <p>
-            {{project.i003f_i004t_datos_adi.tx_interfaz}}
+            {{project.i003f_i004t_datos_adi?.tx_interfaz}}
           </p>
         </div>
       </div>
@@ -103,7 +103,7 @@
           <h4>Seguridad</h4>
         </div>
         <div class="center infoContainer">
-          <p>{{project.i003f_i004t_datos_adi.tx_seguridad}}</p>
+          <p>{{project.i003f_i004t_datos_adi?.tx_seguridad}}</p>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@
           <h4>Interconexión</h4>
         </div>
         <div class="center infoContainer">
-          <p>{{project.i003f_i004t_datos_adi.tx_interconexion}}</p>
+          <p>{{project.i003f_i004t_datos_adi?.tx_interconexion}}</p>
         </div>
       </div>
     </div>
