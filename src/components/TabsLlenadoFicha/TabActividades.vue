@@ -165,12 +165,12 @@ this.equipo = this.project?.i0003f_i008t_equipo_trabajo
     if (this.projectTareas.length > 0) {
       actividades.i003f_i013t_tareas = [...tareas, ...this.projectTareas];
     } else {
-      actividades.i003f_i013t_tareas = tareas;
+      actividades.i003f_i013t_tareas = this.tareas;
     }
 
     console.log("Actividades1:", actividades);
     console.log("Actividades2:", this.projectTareas);
-    console.log("Actividades3:", this.tareas);
+    console.log("Actividades3:", this.tareas, actividades);
 
     updateProject(this.entrada.i003i_entrada, actividades)
       .then((response) => {

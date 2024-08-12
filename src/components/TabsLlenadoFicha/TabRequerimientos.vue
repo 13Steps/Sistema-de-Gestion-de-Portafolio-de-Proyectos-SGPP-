@@ -156,7 +156,7 @@ export default {
         datosAdi.tx_seguridad
       );
       formData.append(
-        "tx_datamodelo",
+        "tx_comentario",
         datosAdi.tx_comentario
       );
 

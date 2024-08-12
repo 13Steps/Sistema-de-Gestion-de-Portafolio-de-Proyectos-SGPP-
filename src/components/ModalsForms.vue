@@ -110,7 +110,6 @@
                   id="correoUsuario"
                   type="email"
                   v-model="usuario.in_correo"
-                  @blur="checkEmailDomain"
                   maxlength="50"
                   required
                 />

@@ -33,7 +33,6 @@
   </ul>
 
   <div class="col l4 styleForm">
-    <form @submit.prevent="agregarTarea">
       <div class="formTitulo">
         <span>Agregar Tarea</span>
       </div>
@@ -54,7 +53,7 @@
         <input type="date" v-model="nuevaTarea.fechaFinalizacion" required />
       </div>
       <div class="col l4 centerButton">
-        <button type="submit" class="btn-floating">
+        <button @click="agregarTarea" class="btn-floating">
           <i class="material-icons" style="font-size: 36px"> add </i>
         </button>
       </div>
@@ -67,7 +66,6 @@
           required
         ></textarea>
       </div>
-    </form>
   </div>
 </template>
 
@@ -90,16 +88,27 @@ export default {
       default: () => [],
     },
   },
-  watch: {
-    tareasAc: {
-      handler() {
-        this.tareas = this.tareasAc;
-      },
-      immediate: true,
-    },
+watch: {
+  tareasAc: {
+    handler() {
+  // Filtrar tareas duplicadas por nombre
+  const tareasUnicas = this.tareasAc.reduce((acc, tarea) => {
+    if (!acc.some(t => t.in_nombre === tarea.in_nombre)) {
+      acc.push(tarea);
+    }
+    return acc;
+  }, []);
+
+  // Si no hay tareas únicas, asignar el arreglo original
+  this.tareas = tareasUnicas.length > 0 ? tareasUnicas : this.tareasAc;
+  console.log(this.tareasAc);
+},
+    immediate: true,
   },
+},
   methods: {
     agregarTarea() {
+      console.log(this.nuevaTarea, this.nuevaTarea.in_nombre.trim());
       if (this.nuevaTarea.in_nombre.trim() !== "") {
         const nuevaTareaEstructurada = {
           tx_descripcion: this.nuevaTarea.tx_descripcion,
@@ -111,7 +120,6 @@ export default {
             fe_plan_fin: new Date(this.nuevaTarea.fechaFinalizacion),
             fe_real_inicio: new Date(this.nuevaTarea.fechaInicio),
             fe_real_fin: new Date(this.nuevaTarea.fechaFinalizacion),
-            i014f_i015t_estado_tarea: 4,
           },
         };
         this.tareas.push(nuevaTareaEstructurada);
@@ -125,6 +133,10 @@ console.log(this.tareas)
         localStorage.setItem("tareas", JSON.stringify(this.tareas));
       }
     },
+    eliminarTarea(index) {
+      this.tareas.splice(index, 1);
+      localStorage.setItem("tareas", JSON.stringify(this.tareas));
+    }
   },
 };
 </script>

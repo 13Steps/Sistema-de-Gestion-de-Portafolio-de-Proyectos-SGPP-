@@ -164,18 +164,18 @@ export default {
         const today = this.getLocalDate(); // Utiliza la fecha local
 
         switch(newVal) {
-          case 'Por Iniciar':
+          case 'Revision':
             this.task.i013f_i014t_seguimiento.fe_real_inicio = null;
             this.task.i013f_i014t_seguimiento.fe_real_fin = null;
             break;
-          case 'En Desarrollo':
+          case 'Ejecucion':
             this.task.i013f_i014t_seguimiento.fe_real_inicio = today;
             this.task.i013f_i014t_seguimiento.fe_real_fin = null;
             break;
-          case 'Completada':
+          case 'Completados':
             this.task.i013f_i014t_seguimiento.fe_real_fin = today;
             break;
-          case 'Atrasada':
+          case 'Atrasados':
             this.checkForDelayedTasks()
             break;
         }
@@ -200,7 +200,7 @@ export default {
         if (new Date(planFinishDate) < new Date(today) && task.i013f_i014t_seguimiento.nu_completado_real < 100) {
           task.i013f_i014t_seguimiento.i014f_i015t_estado_tarea = {
             i015i_estado_tarea: 4,
-            in_titulo: "Atrasada",
+            in_titulo: "Atrasado",
             tx_descripcion: " "
           };
           // Inicializar fechas reales como null si no están definidas
@@ -226,6 +226,17 @@ export default {
     async fetchTask() {
       try {
         this.tasksData = await this.project?.i003f_i013t_tareas;
+        // Filtrar tareas duplicadas por nombre
+if (this.tasksData) {
+  const tareasUnicas = this.tasksData.reduce((acc, tarea) => {
+    if (!acc.some(t => t.in_nombre === tarea.in_nombre)) {
+      acc.push(tarea);
+    }
+    return acc;
+  }, []);
+  
+  this.tasksData = tareasUnicas;
+}
         console.log(this.tasksData); 
         this.checkForDelayedTasks();  // Revisa si hay tareas atrasadas
       } catch (error) {
