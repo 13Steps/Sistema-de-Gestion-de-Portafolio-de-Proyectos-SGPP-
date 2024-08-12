@@ -298,6 +298,7 @@ export default {
             };
             this.task.i013f_i014t_seguimiento.fe_real_fin = today; // Ajusta la fecha de finalización
           }
+          
         }
         return item;
       });
